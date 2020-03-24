@@ -14,15 +14,3 @@ for commit guidelines.
   ([a8c2a57](https://github.com/vivaxy/vscode-conventional-commits/commit/a8c2a57a1d754eebb5f5de620bf010c2eae1c8de))
 - :sparkles: initial commit
   ([3dec3d5](https://github.com/vivaxy/vscode-conventional-commits/commit/3dec3d5c86a304e5f354d7d464d3633bbc92250f))
-
-# Change Log
-
-All notable changes to the "vivaxy-vscode-conventional-commits" extension will
-be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how
-to structure this file.
-
-## [Unreleased]
-
-- Initial release
