@@ -19,6 +19,16 @@
     "commitizen",
     "cz"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivaxy/vscode-conventional-commits.git"
+  },
+  "author": "vivaxy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vivaxy/vscode-conventional-commits/issues"
+  },
+  "homepage": "https://github.com/vivaxy/vscode-conventional-commits#readme",
   "activationEvents": [
     "onCommand:extension.conventionalCommits"
   ],

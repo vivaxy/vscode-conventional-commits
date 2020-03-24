@@ -21,3 +21,4 @@ You can access VSCode Conventional Commits in two ways:
 
 - [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [gacp](https://github.com/vivaxy/gacp)
+- [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)
