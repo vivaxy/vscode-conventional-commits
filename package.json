@@ -10,16 +10,26 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.helloWorld"
+    "onCommand:extension.conventionalCommits"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
+        "command": "extension.conventionalCommits",
+        "title": "Conventional Commits",
+        "icon": "assets/menu-icon.svg"
       }
-    ]
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "when": "scmProvider == git",
+          "command": "extension.conventionalCommits",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
@@ -56,5 +66,8 @@
     "*.{js,ts,css,less,json,md,html,yml,yaml,pcss,jsx,tsx}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "conventional-commit-types": "^3.0.0"
   }
 }
