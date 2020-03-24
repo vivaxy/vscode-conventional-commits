@@ -55,7 +55,7 @@
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -p ./",
-    "release": "standard-version && vsce publish"
+    "release": "standard-version && vsce publish && git push --follow-tags"
   },
   "devDependencies": {
     "@types/node": "^12.11.7",
