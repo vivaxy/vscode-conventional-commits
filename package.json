@@ -2,14 +2,15 @@
   "name": "vscode-conventional-commits",
   "displayName": "VSCode Conventional Commits",
   "description": "Conventional commits(https://www.conventionalcommits.org/) for VSCode.",
-  "icon": "assets/icon.png",
+  "icon": "./assets/icon.png",
   "publisher": "vivaxy",
   "version": "0.0.4",
   "engines": {
     "vscode": "^1.43.0"
   },
   "categories": [
-    "Other"
+    "Snippets",
+    "SCM Providers"
   ],
   "keywords": [
     "git",
@@ -22,14 +23,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vivaxy/vscode-conventional-commits.git"
+    "url": "https://github.com/vivaxy/vscode-conventional-commits.git"
   },
   "author": "vivaxy",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vivaxy/vscode-conventional-commits/issues"
   },
-  "homepage": "https://github.com/vivaxy/vscode-conventional-commits#readme",
+  "homepage": "https://github.com/vivaxy/vscode-conventional-commits",
   "activationEvents": [
     "onCommand:extension.conventionalCommits"
   ],
@@ -39,7 +40,7 @@
       {
         "command": "extension.conventionalCommits",
         "title": "Conventional Commits",
-        "icon": "assets/menu-icon.svg"
+        "icon": "./assets/menu-icon.svg"
       }
     ],
     "menus": {
