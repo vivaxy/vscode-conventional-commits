@@ -2,7 +2,7 @@
   "name": "vscode-conventional-commits",
   "displayName": "VSCode Conventional Commits",
   "description": "Conventional commits(https://www.conventionalcommits.org/) for VSCode.",
-  "icon": "./assets/icon.png",
+  "icon": "assets/icon.png",
   "publisher": "vivaxy",
   "version": "0.0.5",
   "engines": {
