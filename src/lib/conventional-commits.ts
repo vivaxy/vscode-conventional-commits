@@ -42,11 +42,10 @@ export default async function conventionalCommits() {
     if (!git) {
       throw new Error('vscode.git is not enabled');
     }
-    const answers = await prompts();
-    const commitMessage = formatAnswers(answers);
     const configuration = getConfiguration();
+    const answers = await prompts({ gitmoji: configuration.gitmoji });
+    const commitMessage = formatAnswers(answers);
     vscode.commands.executeCommand('workbench.view.scm');
-    // TODO: find current working directory
     const repo = git.repositories.find(function (repo) {
       return repo.rootUri.fsPath === vscode.workspace.rootPath;
     });

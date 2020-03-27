@@ -17,8 +17,8 @@ You can access VSCode Conventional Commits in two ways:
 
 ![Icon on the Source Control menu](./assets/docs/icon-on-the-source-control-menu.png)
 
-# Prior Art
+# Related Projects
 
-- [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [gacp](https://github.com/vivaxy/gacp)
+- [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)

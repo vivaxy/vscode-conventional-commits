@@ -7,6 +7,7 @@ import * as names from '../configs/names';
 
 export type Configuration = {
   autoCommit: boolean;
+  gitmoji: boolean;
 };
 
 export default function getConfiguration(): Configuration {

@@ -16,7 +16,11 @@ export type Answers = {
   footer: string;
 };
 
-export default async function prompts(): Promise<Answers> {
+export default async function prompts({
+  gitmoji,
+}: {
+  gitmoji: boolean;
+}): Promise<Answers> {
   const questions: Prompt[] = [
     {
       type: PROMPT_TYPES.QUICK_PICK,
@@ -54,7 +58,7 @@ export default async function prompts(): Promise<Answers> {
           };
         }),
       ],
-      format(input) {
+      format(input: string) {
         if (input === 'none') {
           return '';
         }
@@ -76,7 +80,12 @@ export default async function prompts(): Promise<Answers> {
       name: 'footer',
       placeholder: 'List any breaking changes or issues closed by this change',
     },
-  ];
+  ].filter(function (question) {
+    if (gitmoji) {
+      return true;
+    }
+    return question.name !== 'gitmoji';
+  });
 
   const answers: Answers = {
     type: '',
