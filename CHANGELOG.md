@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.0.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v0.0.7...v1.0.0) (2020-03-27)
+
+### Features
+
+- :sparkles: support disable gitmoji
+  ([d55b16e](https://github.com/vivaxy/vscode-conventional-commits/commit/d55b16ec121c130d48315599be663b02d43c5a5b)),
+  closes [#4](https://github.com/vivaxy/vscode-conventional-commits/issues/4)
+
 ### [0.0.7](https://github.com/vivaxy/vscode-conventional-commits/compare/v0.0.6...v0.0.7) (2020-03-27)
 
 ### Features
