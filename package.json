@@ -53,7 +53,7 @@
       ]
     },
     "configuration": {
-      "title": "VSCode Conventional Commits configuration",
+      "title": "Conventional Commits",
       "properties": {
         "conventionalCommits.autoCommit": {
           "type": "boolean",
