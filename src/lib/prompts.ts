@@ -7,7 +7,16 @@ const conventionalCommitsTypes = require('conventional-commit-types');
 import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 
-export default async function prompts() {
+export type Answers = {
+  type: string;
+  scope: string;
+  gitmoji: string;
+  subject: string;
+  body: string;
+  footer: string;
+};
+
+export default async function prompts(): Promise<Answers> {
   const questions: Prompt[] = [
     {
       type: PROMPT_TYPES.QUICK_PICK,
@@ -69,10 +78,19 @@ export default async function prompts() {
     },
   ];
 
-  let answers: Record<string, string> = {};
+  const answers: Answers = {
+    type: '',
+    scope: '',
+    gitmoji: '',
+    subject: '',
+    body: '',
+    footer: '',
+  };
 
   for (const question of questions) {
-    answers[question.name] = await promptTypes[question.type](question);
+    answers[question.name as keyof Answers] = await promptTypes[question.type](
+      question,
+    );
   }
   return answers;
 }

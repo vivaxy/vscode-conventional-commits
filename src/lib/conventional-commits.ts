@@ -4,7 +4,10 @@
  */
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
-import prompts from './prompts';
+import prompts, { Answers } from './prompts';
+import getConfiguration from './configuration';
+import * as names from '../configs/names';
+import * as output from './output';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -15,29 +18,49 @@ function getGitAPI(): VSCodeGit.API | void {
   }
 }
 
-export default async function conventionalCommits() {
-  const git = getGitAPI();
-  if (!git) {
-    vscode.window.showErrorMessage('vscode.git is not enabled');
-    return;
+function formatAnswers(answers: Answers) {
+  let message = '';
+  message += answers.type.trim();
+  if (answers.scope) {
+    message += `(${answers.scope})`;
   }
-  const answers = await prompts();
-  vscode.commands.executeCommand('workbench.view.scm');
-  git.repositories.forEach(function (repo) {
-    let message = '';
-    message += answers.type.trim();
-    if (answers.scope) {
-      message += `(${answers.scope})`;
+  message += ': ';
+  if (answers.gitmoji) {
+    message += `${answers.gitmoji} `;
+  }
+  message += answers.subject.trim();
+  message += '\n\n';
+  message += answers.body.trim();
+  message += '\n\n';
+  message += answers.footer.trim();
+  return message;
+}
+
+export default async function conventionalCommits() {
+  try {
+    const git = getGitAPI();
+    if (!git) {
+      throw new Error('vscode.git is not enabled');
     }
-    message += ': ';
-    if (answers.gitmoji) {
-      message += `${answers.gitmoji} `;
+    const answers = await prompts();
+    const commitMessage = formatAnswers(answers);
+    const configuration = getConfiguration();
+    vscode.commands.executeCommand('workbench.view.scm');
+    // TODO: find current working directory
+    const repo = git.repositories.find(function (repo) {
+      return repo.rootUri.fsPath === vscode.workspace.rootPath;
+    });
+    if (!repo) {
+      throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
     }
-    message += answers.subject.trim();
-    message += '\n\n';
-    message += answers.body.trim();
-    message += '\n\n';
-    message += answers.footer.trim();
-    repo.inputBox.value = message;
-  });
+    repo.inputBox.value = commitMessage;
+    output.appendLine(`autoCommit: ${configuration.autoCommit}`);
+    if (configuration.autoCommit) {
+      await vscode.commands.executeCommand('git.commit');
+    }
+  } catch (e) {
+    vscode.window.showErrorMessage(
+      `${names.Conventional_Commits}: ${e.message}`,
+    );
+  }
 }

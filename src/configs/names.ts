@@ -3,3 +3,4 @@
  * @author vivaxy
  */
 export const conventionalCommits = 'conventionalCommits';
+export const Conventional_Commits = 'Conventional Commits';

@@ -55,20 +55,10 @@
     "configuration": {
       "title": "VSCode Conventional Commits configuration",
       "properties": {
-        "conventionalCommits.automaticOperations": {
-          "type": "string",
-          "enum": [
-            "none",
-            "addAndCommit",
-            "addCommitAndSync"
-          ],
-          "default": "addCommitAndSync",
-          "description": "Custom automatic operations after finishing a commit message.",
-          "enumDescriptions": [
-            "Only put commit message in the Source Control Message input",
-            "Perform `git add` and `git commit`",
-            "Perform `git add`, `git commit` and git sync (`git pull` or `git push`)"
-          ]
+        "conventionalCommits.autoCommit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically commit files. Enable `git.smartCommit` to commit all changes when there are no staged changes. Set `git.postCommitCommand` to `sync` to run `git.sync` after commit."
         }
       }
     }
@@ -76,6 +66,7 @@
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
     "release": "standard-version && vsce publish && git push --follow-tags"
   },
   "devDependencies": {

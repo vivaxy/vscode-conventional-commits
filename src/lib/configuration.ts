@@ -6,10 +6,10 @@ import * as vscode from 'vscode';
 import * as names from '../configs/names';
 
 export type Configuration = {
-  automaticOperations: 'none' | 'addAndCommit' | 'addCommitAndSync';
+  autoCommit: boolean;
 };
 
-export function getConfiguration(): Configuration {
+export default function getConfiguration(): Configuration {
   const config = vscode.workspace
     .getConfiguration()
     .get<Configuration>(names.conventionalCommits);
