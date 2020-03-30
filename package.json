@@ -6,7 +6,7 @@
   "publisher": "vivaxy",
   "version": "1.0.0",
   "engines": {
-    "vscode": "^1.43.0"
+    "vscode": "^1.0.0"
   },
   "categories": [
     "Snippets",
