@@ -44,30 +44,37 @@ function formatAnswers(answers: Answers) {
   return message;
 }
 
-export default async function conventionalCommits() {
-  try {
-    const git = getGitAPI();
-    if (!git) {
-      throw new Error('vscode.git is not enabled');
+export default function createConventionalCommits(
+  context: vscode.ExtensionContext,
+) {
+  return async function conventionalCommits() {
+    try {
+      const git = getGitAPI();
+      if (!git) {
+        throw new Error('vscode.git is not enabled');
+      }
+      const configuration = getConfiguration();
+      const answers = await prompts({
+        gitmoji: configuration.gitmoji,
+        context,
+      });
+      const commitMessage = formatAnswers(answers);
+      vscode.commands.executeCommand('workbench.view.scm');
+      const repo = git.repositories.find(function (repo) {
+        return repo.rootUri.fsPath === vscode.workspace.rootPath;
+      });
+      if (!repo) {
+        throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
+      }
+      repo.inputBox.value = commitMessage;
+      output.appendLine(`autoCommit: ${configuration.autoCommit}`);
+      if (configuration.autoCommit) {
+        await vscode.commands.executeCommand('git.commit');
+      }
+    } catch (e) {
+      vscode.window.showErrorMessage(
+        `${names.Conventional_Commits}: ${e.message}`,
+      );
     }
-    const configuration = getConfiguration();
-    const answers = await prompts({ gitmoji: configuration.gitmoji });
-    const commitMessage = formatAnswers(answers);
-    vscode.commands.executeCommand('workbench.view.scm');
-    const repo = git.repositories.find(function (repo) {
-      return repo.rootUri.fsPath === vscode.workspace.rootPath;
-    });
-    if (!repo) {
-      throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
-    }
-    repo.inputBox.value = commitMessage;
-    output.appendLine(`autoCommit: ${configuration.autoCommit}`);
-    if (configuration.autoCommit) {
-      await vscode.commands.executeCommand('git.commit');
-    }
-  } catch (e) {
-    vscode.window.showErrorMessage(
-      `${names.Conventional_Commits}: ${e.message}`,
-    );
-  }
+  };
 }

@@ -2,10 +2,12 @@
  * @since 2020-03-25 09:09
  * @author vivaxy
  */
+import * as vscode from 'vscode';
 const conventionalCommitsTypes = require('conventional-commit-types');
 
 import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
+import * as names from '../configs/names';
 
 export type Answers = {
   type: string;
@@ -18,8 +20,10 @@ export type Answers = {
 
 export default async function prompts({
   gitmoji,
+  context,
 }: {
   gitmoji: boolean;
+  context: vscode.ExtensionContext;
 }): Promise<Answers> {
   const questions: Prompt[] = [
     {
@@ -36,9 +40,16 @@ export default async function prompts({
       }),
     },
     {
-      type: PROMPT_TYPES.INPUT_BOX,
+      type: PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK,
       name: 'scope',
       placeholder: 'Denote the scope of this change',
+      workspaceStateKey: names.SCOPES,
+      context,
+      newItem: {
+        label: 'New scope',
+        description: 'Add a workspace scope',
+      },
+      newPlaceholder: 'Create a new scope',
     },
     {
       type: PROMPT_TYPES.QUICK_PICK,
@@ -106,6 +117,7 @@ export default async function prompts({
 
   for (const question of questions) {
     answers[question.name as keyof Answers] = await promptTypes[question.type](
+      // @ts-ignore
       question,
     );
   }

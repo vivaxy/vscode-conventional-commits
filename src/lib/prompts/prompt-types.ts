@@ -7,17 +7,24 @@ import * as vscode from 'vscode';
 export enum PROMPT_TYPES {
   QUICK_PICK,
   INPUT_BOX,
+  CONFIGURIABLE_QUICK_PICK,
 }
 
-export type Prompt = {
-  type: PROMPT_TYPES;
-  name: string;
+export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
+  Partial<QuickPickOptions> &
+  Partial<InputBoxOptions> &
+  Partial<ConfiguriableQuickPickOptions>;
+
+type Options = {
   placeholder: string;
-  items?: { label: string; detail: string; description: string }[];
   format?: (input: string) => string;
   step: number;
   totalSteps: number;
 };
+
+type QuickPickOptions = {
+  items: { label: string; detail?: string; description?: string }[];
+} & Options;
 
 function createQuickPick({
   placeholder,
@@ -25,8 +32,8 @@ function createQuickPick({
   format = (i) => i,
   step,
   totalSteps,
-}: Prompt): Promise<string> {
-  return new Promise(function (resolve, reject) {
+}: QuickPickOptions): Promise<string> {
+  return new Promise(function (resolve) {
     const picker = vscode.window.createQuickPick();
     picker.placeholder = placeholder;
     picker.matchOnDescription = true;
@@ -44,13 +51,15 @@ function createQuickPick({
   });
 }
 
+type InputBoxOptions = Options;
+
 function createInputBox({
   placeholder,
   format = (i) => i,
   step,
   totalSteps,
-}: Prompt): Promise<string> {
-  return new Promise(function (resolve, reject) {
+}: InputBoxOptions): Promise<string> {
+  return new Promise(function (resolve) {
     const input = vscode.window.createInputBox();
     input.step = step;
     input.totalSteps = totalSteps;
@@ -66,7 +75,66 @@ function createInputBox({
   });
 }
 
+type ConfiguriableQuickPickOptions = {
+  context: vscode.ExtensionContext;
+  workspaceStateKey: string;
+  newItem: {
+    label: string;
+    description: string;
+    detail?: string;
+  };
+  newItemPlaceholder: string;
+} & QuickPickOptions;
+
+async function createConfiguriableQuickPick({
+  placeholder,
+  format = (i) => i,
+  items,
+  step,
+  totalSteps,
+  workspaceStateKey,
+  context,
+  newItem,
+  newItemPlaceholder,
+}: ConfiguriableQuickPickOptions): Promise<string> {
+  let currentValus: string[] = [];
+  if (!items) {
+    currentValus = context.workspaceState.get(workspaceStateKey, []);
+    items = [
+      ...currentValus.map(function (value) {
+        return {
+          label: value,
+        };
+      }),
+      {
+        label: newItem.label,
+        description: newItem.description,
+        detail: newItem.detail,
+      },
+    ];
+  }
+  let selectedValue = await createQuickPick({
+    placeholder,
+    items,
+    step,
+    totalSteps,
+  });
+  if (selectedValue === newItem.label) {
+    selectedValue = await createInputBox({
+      placeholder: newItemPlaceholder,
+      step,
+      totalSteps,
+    });
+    context.workspaceState.update(workspaceStateKey, [
+      ...currentValus,
+      selectedValue,
+    ]);
+  }
+  return format(selectedValue);
+}
+
 export default {
   [PROMPT_TYPES.QUICK_PICK]: createQuickPick,
   [PROMPT_TYPES.INPUT_BOX]: createInputBox,
+  [PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK]: createConfiguriableQuickPick,
 };
