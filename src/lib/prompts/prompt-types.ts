@@ -15,19 +15,26 @@ export type Prompt = {
   placeholder: string;
   items?: { label: string; detail: string; description: string }[];
   format?: (input: string) => string;
+  step: number;
+  totalSteps: number;
 };
 
 function createQuickPick({
   placeholder,
   items = [],
   format = (i) => i,
+  step,
+  totalSteps,
 }: Prompt): Promise<string> {
   return new Promise(function (resolve, reject) {
     const picker = vscode.window.createQuickPick();
     picker.placeholder = placeholder;
     picker.matchOnDescription = true;
     picker.matchOnDetail = true;
+    picker.ignoreFocusOut = false;
     picker.items = items;
+    picker.step = step;
+    picker.totalSteps = totalSteps;
     picker.show();
     picker.onDidAccept(function () {
       const result = format(picker.selectedItems[0].label);
@@ -40,9 +47,14 @@ function createQuickPick({
 function createInputBox({
   placeholder,
   format = (i) => i,
+  step,
+  totalSteps,
 }: Prompt): Promise<string> {
   return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
+    input.step = step;
+    input.totalSteps = totalSteps;
+    input.ignoreFocusOut = false;
     input.placeholder = placeholder;
     input.onDidAccept(function () {
       const result = format(input.value);

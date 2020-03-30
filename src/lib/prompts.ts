@@ -80,12 +80,20 @@ export default async function prompts({
       name: 'footer',
       placeholder: 'List any breaking changes or issues closed by this change',
     },
-  ].filter(function (question) {
-    if (gitmoji) {
-      return true;
-    }
-    return question.name !== 'gitmoji';
-  });
+  ]
+    .filter(function (question) {
+      if (gitmoji) {
+        return true;
+      }
+      return question.name !== 'gitmoji';
+    })
+    .map(function (question, index, array) {
+      return {
+        ...question,
+        step: index + 1,
+        totalSteps: array.length,
+      };
+    });
 
   const answers: Answers = {
     type: '',

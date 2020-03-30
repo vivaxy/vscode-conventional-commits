@@ -4,3 +4,4 @@
  */
 export const conventionalCommits = 'conventionalCommits';
 export const Conventional_Commits = 'Conventional Commits';
+export const SCOPES = 'scopes';
