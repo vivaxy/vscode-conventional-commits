@@ -21,18 +21,26 @@ function getGitAPI(): VSCodeGit.API | void {
 function formatAnswers(answers: Answers) {
   let message = '';
   message += answers.type.trim();
-  if (answers.scope) {
-    message += `(${answers.scope})`;
+  const scope = answers.scope.trim();
+  if (scope) {
+    message += `(${scope})`;
   }
   message += ': ';
   if (answers.gitmoji) {
     message += `${answers.gitmoji} `;
   }
-  message += answers.subject.trim();
-  message += '\n\n';
-  message += answers.body.trim();
-  message += '\n\n';
-  message += answers.footer.trim();
+  const subject = answers.subject.trim();
+  if (subject) {
+    message += subject;
+  }
+  const body = answers.body.trim();
+  if (body) {
+    message += `\n\n${body}`;
+  }
+  const footer = answers.footer.trim();
+  if (footer) {
+    message += `\n\n${footer}`;
+  }
   return message;
 }
 
