@@ -58,7 +58,7 @@
         "conventionalCommits.autoCommit": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Controls whether the extension should automatically commit files.\n\n*Enable `git.smartCommit` to commit all changes when there are no staged changes.*\n\n*Set `git.postCommitCommand` to `sync` to run `git.sync` after commit.*"
+          "markdownDescription": "Controls whether the extension should automatically commit files.\n\n*Enable `Settings > git.smartCommit` to commit all changes when there are no staged changes.*\n\n*Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after commit.*"
         },
         "conventionalCommits.gitmoji": {
           "type": "boolean",
