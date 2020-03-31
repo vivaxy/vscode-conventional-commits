@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.1.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.0.0...v1.1.0) (2020-03-31)
+
+### Features
+
+- :sparkles: supports remember previous scopes
+  ([9f91e30](https://github.com/vivaxy/vscode-conventional-commits/commit/9f91e303d1bb37a20c3950544175f457ced0f9a1)),
+  closes [#2](https://github.com/vivaxy/vscode-conventional-commits/issues/2)
+- **scope:** :sparkles: limit scope to existing scopes with the ability to add
+  new scopes
+  ([643f689](https://github.com/vivaxy/vscode-conventional-commits/commit/643f68973b75daaca4ce0a01979cc328d61ee583))
+- :sparkles: add step indicators
+  ([6a98690](https://github.com/vivaxy/vscode-conventional-commits/commit/6a9869027110917d1d1545483d47b4f5443a4254))
+
+### Bug Fixes
+
+- :bug: fix commit message with extra space words
+  ([b4d2802](https://github.com/vivaxy/vscode-conventional-commits/commit/b4d2802d8be374aa7e75127c51fe3f38f4e92279))
+
 ## [1.0.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v0.0.7...v1.0.0) (2020-03-27)
 
 ### Features
