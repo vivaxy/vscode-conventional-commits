@@ -8,11 +8,17 @@ import * as names from '../configs/names';
 export type Configuration = {
   autoCommit: boolean;
   gitmoji: boolean;
+  scopes: string[];
 };
 
-export default function getConfiguration(): Configuration {
-  const config = vscode.workspace
+export function get<T>(key: keyof Configuration): T {
+  return (vscode.workspace
     .getConfiguration()
-    .get<Configuration>(names.conventionalCommits);
-  return config!;
+    .get<Configuration>(`${names.conventionalCommits}.${key}`) as unknown) as T;
+}
+
+export async function update(key: keyof Configuration, value: any) {
+  return await vscode.workspace
+    .getConfiguration()
+    .update(`${names.conventionalCommits}.${key}`, value);
 }

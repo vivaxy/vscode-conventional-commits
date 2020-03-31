@@ -3,12 +3,15 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
+import * as configuration from '../configuration';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
   INPUT_BOX,
   CONFIGURIABLE_QUICK_PICK,
 }
+
+type Item = { label: string; detail?: string; description?: string };
 
 export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
   Partial<QuickPickOptions> &
@@ -23,7 +26,7 @@ type Options = {
 };
 
 type QuickPickOptions = {
-  items: { label: string; detail?: string; description?: string }[];
+  items: Item[];
 } & Options;
 
 function createQuickPick({
@@ -76,43 +79,36 @@ function createInputBox({
 }
 
 type ConfiguriableQuickPickOptions = {
-  context: vscode.ExtensionContext;
-  workspaceStateKey: string;
-  newItem: {
-    label: string;
-    description: string;
-    detail?: string;
-  };
+  configurationKey: keyof configuration.Configuration;
+  newItem: Item;
+  noneItem?: Item;
   newItemPlaceholder: string;
+  addNoneOption: boolean;
 } & QuickPickOptions;
 
 async function createConfiguriableQuickPick({
   placeholder,
   format = (i) => i,
-  items,
   step,
   totalSteps,
-  workspaceStateKey,
-  context,
+  configurationKey,
   newItem,
+  noneItem,
   newItemPlaceholder,
 }: ConfiguriableQuickPickOptions): Promise<string> {
-  let currentValus: string[] = [];
-  if (!items) {
-    currentValus = context.workspaceState.get(workspaceStateKey, []);
-    items = [
-      ...currentValus.map(function (value) {
-        return {
-          label: value,
-        };
-      }),
-      {
-        label: newItem.label,
-        description: newItem.description,
-        detail: newItem.detail,
-      },
-    ];
+  const currentValus: string[] = configuration.get<string[]>(configurationKey);
+  const items: Item[] = [];
+  if (noneItem) {
+    items.push(noneItem);
   }
+  items.push(
+    ...currentValus.map(function (value) {
+      return {
+        label: value,
+      };
+    }),
+  );
+  items.push(newItem);
   let selectedValue = await createQuickPick({
     placeholder,
     items,
@@ -125,10 +121,9 @@ async function createConfiguriableQuickPick({
       step,
       totalSteps,
     });
-    context.workspaceState.update(workspaceStateKey, [
-      ...currentValus,
-      selectedValue,
-    ]);
+    configuration.update(configurationKey, [...currentValus, selectedValue]);
+  } else if (noneItem && selectedValue === noneItem.label) {
+    selectedValue = '';
   }
   return format(selectedValue);
 }

@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
   output.appendLine(`${names.conventionalCommits} started`);
   const disposable = vscode.commands.registerCommand(
     'extension.conventionalCommits',
-    createConventionalCommits(context),
+    createConventionalCommits(),
   );
 
   context.subscriptions.push(disposable);

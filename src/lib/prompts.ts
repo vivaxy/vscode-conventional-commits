@@ -2,9 +2,9 @@
  * @since 2020-03-25 09:09
  * @author vivaxy
  */
-import * as vscode from 'vscode';
 const conventionalCommitsTypes = require('conventional-commit-types');
 
+import * as configuration from './configuration';
 import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as names from '../configs/names';
@@ -20,16 +20,14 @@ export type Answers = {
 
 export default async function prompts({
   gitmoji,
-  context,
 }: {
   gitmoji: boolean;
-  context: vscode.ExtensionContext;
 }): Promise<Answers> {
   const questions: Prompt[] = [
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'type',
-      placeholder: "Select the type of change that you're committing",
+      placeholder: "Select the type of change that you're committing.",
       items: Object.keys(conventionalCommitsTypes.types).map(function (type) {
         const { title, description } = conventionalCommitsTypes.types[type];
         return {
@@ -42,24 +40,30 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK,
       name: 'scope',
-      placeholder: 'Denote the scope of this change',
-      workspaceStateKey: names.SCOPES,
-      context,
+      placeholder: 'Denote the scope of this change.',
+      configurationKey: names.SCOPES as keyof configuration.Configuration,
       newItem: {
         label: 'New scope',
-        description: 'Add a workspace scope',
+        description: '',
+        detail:
+          'Add a workspace scope. (You can manage scopes in workspace `settings.json`.)',
       },
-      newPlaceholder: 'Create a new scope',
+      noneItem: {
+        label: 'None',
+        description: '',
+        detail: 'No scope.',
+      },
+      newItemPlaceholder: 'Create a new scope.',
     },
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
-      placeholder: 'Choose a gitmoji',
+      placeholder: 'Choose a gitmoji.',
       items: [
         {
           label: 'none',
           description: '',
-          detail: 'No gitmoji',
+          detail: 'No gitmoji.',
         },
         ...gitmojis.gitmojis.map(function ({ emoji, code, description }) {
           return {
@@ -79,17 +83,17 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
-      placeholder: 'Write a short, imperative tense description of the change',
+      placeholder: 'Write a short, imperative tense description of the change.',
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
-      placeholder: 'Provide a longer description of the change',
+      placeholder: 'Provide a longer description of the change.',
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
-      placeholder: 'List any breaking changes or issues closed by this change',
+      placeholder: 'List any breaking changes or issues closed by this change.',
     },
   ]
     .filter(function (question) {

@@ -64,6 +64,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Controls whether the extension should prompt for an gitmoji."
+        },
+        "conventionalCommits.scopes": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "Available scopes."
         }
       }
     }

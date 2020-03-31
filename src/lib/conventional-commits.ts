@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
 import prompts, { Answers } from './prompts';
-import getConfiguration from './configuration';
+import * as configuration from './configuration';
 import * as names from '../configs/names';
 import * as output from './output';
 
@@ -44,19 +44,15 @@ function formatAnswers(answers: Answers) {
   return message;
 }
 
-export default function createConventionalCommits(
-  context: vscode.ExtensionContext,
-) {
+export default function createConventionalCommits() {
   return async function conventionalCommits() {
     try {
       const git = getGitAPI();
       if (!git) {
         throw new Error('vscode.git is not enabled');
       }
-      const configuration = getConfiguration();
       const answers = await prompts({
-        gitmoji: configuration.gitmoji,
-        context,
+        gitmoji: configuration.get<boolean>('gitmoji'),
       });
       const commitMessage = formatAnswers(answers);
       vscode.commands.executeCommand('workbench.view.scm');
@@ -67,8 +63,9 @@ export default function createConventionalCommits(
         throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
       }
       repo.inputBox.value = commitMessage;
-      output.appendLine(`autoCommit: ${configuration.autoCommit}`);
-      if (configuration.autoCommit) {
+      const autoCommit = configuration.get<boolean>('autoCommit');
+      output.appendLine(`autoCommit: ${autoCommit}`);
+      if (autoCommit) {
         await vscode.commands.executeCommand('git.commit');
       }
     } catch (e) {
