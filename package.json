@@ -6,7 +6,7 @@
   "publisher": "vivaxy",
   "version": "1.1.0",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.14.0"
   },
   "categories": [
     "Snippets",
@@ -74,14 +74,14 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "release": "standard-version && vsce publish && git push --follow-tags"
   },
   "devDependencies": {
     "@types/node": "^12.11.7",
-    "@types/vscode": "^1.43.0",
+    "@types/vscode": "^1.14.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.9",
     "prettier": "^2.0.2",
