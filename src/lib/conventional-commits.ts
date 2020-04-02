@@ -49,16 +49,24 @@ export default function createConventionalCommits() {
     try {
       const git = getGitAPI();
       if (!git) {
-        throw new Error('vscode.git is not enabled');
+        throw new Error('vscode.git is not enabled.');
+      }
+      const { rootPath } = vscode.workspace;
+      if (!rootPath) {
+        throw new Error('Please open a folder.');
       }
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
       });
       const commitMessage = formatAnswers(answers);
       vscode.commands.executeCommand('workbench.view.scm');
-      const repo = git.repositories.find(function (repo) {
-        return repo.rootUri.fsPath === vscode.workspace.rootPath;
-      });
+      const [repo] = git.repositories
+        .filter(function (repo) {
+          return rootPath.startsWith(repo.rootUri.fsPath);
+        })
+        .sort(function (prev, next) {
+          return next.rootUri.fsPath.length - prev.rootUri.fsPath.length;
+        });
       if (!repo) {
         throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
       }
