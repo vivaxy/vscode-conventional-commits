@@ -68,7 +68,7 @@ export default function createConventionalCommits() {
           return next.rootUri.fsPath.length - prev.rootUri.fsPath.length;
         });
       if (!repo) {
-        throw new Error(`repo not found in path: ${vscode.workspace.rootPath}`);
+        throw new Error(`repo not found in path: ${rootPath}`);
       }
       repo.inputBox.value = commitMessage;
       const autoCommit = configuration.get<boolean>('autoCommit');
