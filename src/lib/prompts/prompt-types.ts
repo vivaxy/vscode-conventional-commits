@@ -41,7 +41,7 @@ function createQuickPick({
     picker.placeholder = placeholder;
     picker.matchOnDescription = true;
     picker.matchOnDetail = true;
-    picker.ignoreFocusOut = false;
+    picker.ignoreFocusOut = true;
     picker.items = items;
     picker.step = step;
     picker.totalSteps = totalSteps;
@@ -66,7 +66,7 @@ function createInputBox({
     const input = vscode.window.createInputBox();
     input.step = step;
     input.totalSteps = totalSteps;
-    input.ignoreFocusOut = false;
+    input.ignoreFocusOut = true;
     input.placeholder = placeholder;
     input.onDidAccept(function () {
       const result = format(input.value);
