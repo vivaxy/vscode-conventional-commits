@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.3.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.2.0...v1.3.0) (2020-04-21)
+
+### Features
+
+- :sparkles: Persist prompts on focus out
+  ([80ef1d8](https://github.com/vivaxy/vscode-conventional-commits/commit/80ef1d8bfecba103977d5885c691ce2a4af3fc97)),
+  closes [#5](https://github.com/vivaxy/vscode-conventional-commits/issues/5)
+
 ## [1.2.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.1.1...v1.2.0) (2020-04-02)
 
 ### Features
