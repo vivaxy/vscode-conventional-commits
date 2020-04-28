@@ -8,6 +8,7 @@ import prompts, { Answers } from './prompts';
 import * as configuration from './configuration';
 import * as names from '../configs/names';
 import * as output from './output';
+import * as commitlint from './commitlint';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -55,8 +56,10 @@ export default function createConventionalCommits() {
       if (!rootPath) {
         throw new Error('Please open a folder.');
       }
+      const commlintRules = await commitlint.getRules({ cwd: rootPath });
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
+        commlintRules,
       });
       const commitMessage = formatAnswers(answers);
       vscode.commands.executeCommand('workbench.view.scm');

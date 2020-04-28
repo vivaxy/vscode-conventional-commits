@@ -11,7 +11,12 @@ export enum PROMPT_TYPES {
   CONFIGURIABLE_QUICK_PICK,
 }
 
-type Item = { label: string; detail?: string; description?: string };
+type Item = {
+  label: string;
+  detail?: string;
+  description?: string;
+  alwaysShow?: boolean;
+};
 
 export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
   Partial<QuickPickOptions> &
@@ -54,13 +59,16 @@ function createQuickPick({
   });
 }
 
-type InputBoxOptions = Options;
+type InputBoxOptions = {
+  validate?: (value: string) => string | undefined;
+} & Options;
 
 function createInputBox({
   placeholder,
   format = (i) => i,
   step,
   totalSteps,
+  validate = () => undefined,
 }: InputBoxOptions): Promise<string> {
   return new Promise(function (resolve) {
     const input = vscode.window.createInputBox();
@@ -68,7 +76,13 @@ function createInputBox({
     input.totalSteps = totalSteps;
     input.ignoreFocusOut = true;
     input.placeholder = placeholder;
+    input.onDidChangeValue(function () {
+      input.validationMessage = validate(input.value);
+    });
     input.onDidAccept(function () {
+      if (input.validationMessage) {
+        return;
+      }
       const result = format(input.value);
       input.dispose();
       resolve(result);
@@ -84,6 +98,7 @@ type ConfiguriableQuickPickOptions = {
   noneItem?: Item;
   newItemPlaceholder: string;
   addNoneOption: boolean;
+  validate?: (value: string) => string | undefined;
 } & QuickPickOptions;
 
 async function createConfiguriableQuickPick({
@@ -95,6 +110,7 @@ async function createConfiguriableQuickPick({
   newItem,
   noneItem,
   newItemPlaceholder,
+  validate = () => undefined,
 }: ConfiguriableQuickPickOptions): Promise<string> {
   const currentValus: string[] = configuration.get<string[]>(configurationKey);
   const items: Item[] = [];
@@ -120,6 +136,7 @@ async function createConfiguriableQuickPick({
       placeholder: newItemPlaceholder,
       step,
       totalSteps,
+      validate,
     });
     configuration.update(configurationKey, [...currentValus, selectedValue]);
   } else if (noneItem && selectedValue === noneItem.label) {

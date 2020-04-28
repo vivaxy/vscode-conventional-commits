@@ -20,8 +20,14 @@ export type Answers = {
 
 export default async function prompts({
   gitmoji,
+  commlintRules,
 }: {
   gitmoji: boolean;
+  commlintRules: {
+    subjectMaxLength: number;
+    bodyMaxLength: number;
+    footerMaxLength: number;
+  };
 }): Promise<Answers> {
   const questions: Prompt[] = [
     {
@@ -47,11 +53,13 @@ export default async function prompts({
         description: '',
         detail:
           'Add a workspace scope. (You can manage scopes in workspace `settings.json`.)',
+        alwaysShow: true,
       },
       noneItem: {
         label: 'None',
         description: '',
         detail: 'No scope.',
+        alwaysShow: true,
       },
       newItemPlaceholder: 'Create a new scope.',
     },
@@ -64,6 +72,7 @@ export default async function prompts({
           label: 'none',
           description: '',
           detail: 'No gitmoji.',
+          alwaysShow: true,
         },
         ...gitmojis.gitmojis.map(function ({ emoji, code, description }) {
           return {
@@ -84,16 +93,31 @@ export default async function prompts({
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
       placeholder: 'Write a short, imperative tense description of the change.',
+      validate(input: string) {
+        if (input.length > commlintRules.subjectMaxLength) {
+          return `Subject has more than ${commlintRules.subjectMaxLength} characters.`;
+        }
+      },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
       placeholder: 'Provide a longer description of the change.',
+      validate(input: string) {
+        if (input.length > commlintRules.bodyMaxLength) {
+          return `Body has more than ${commlintRules.bodyMaxLength} characters.`;
+        }
+      },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
       placeholder: 'List any breaking changes or issues closed by this change.',
+      validate(input: string) {
+        if (input.length > commlintRules.footerMaxLength) {
+          return `Footer has more than ${commlintRules.footerMaxLength} characters.`;
+        }
+      },
     },
   ]
     .filter(function (question) {
