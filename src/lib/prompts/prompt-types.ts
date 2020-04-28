@@ -11,7 +11,12 @@ export enum PROMPT_TYPES {
   CONFIGURIABLE_QUICK_PICK,
 }
 
-type Item = { label: string; detail?: string; description?: string };
+type Item = {
+  label: string;
+  detail?: string;
+  description?: string;
+  alwaysShow?: boolean;
+};
 
 export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
   Partial<QuickPickOptions> &
@@ -23,6 +28,7 @@ type Options = {
   format?: (input: string) => string;
   step: number;
   totalSteps: number;
+  validate?: (value: string) => string | undefined;
 };
 
 type QuickPickOptions = {
@@ -35,6 +41,7 @@ function createQuickPick({
   format = (i) => i,
   step,
   totalSteps,
+  validate = () => undefined,
 }: QuickPickOptions): Promise<string> {
   return new Promise(function (resolve) {
     const picker = vscode.window.createQuickPick();
@@ -61,6 +68,7 @@ function createInputBox({
   format = (i) => i,
   step,
   totalSteps,
+  validate = () => undefined,
 }: InputBoxOptions): Promise<string> {
   return new Promise(function (resolve) {
     const input = vscode.window.createInputBox();
@@ -68,6 +76,9 @@ function createInputBox({
     input.totalSteps = totalSteps;
     input.ignoreFocusOut = true;
     input.placeholder = placeholder;
+    input.onDidChangeValue(function () {
+      input.validationMessage = validate(input.value);
+    });
     input.onDidAccept(function () {
       const result = format(input.value);
       input.dispose();

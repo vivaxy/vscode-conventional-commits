@@ -47,11 +47,13 @@ export default async function prompts({
         description: '',
         detail:
           'Add a workspace scope. (You can manage scopes in workspace `settings.json`.)',
+        alwaysShow: true,
       },
       noneItem: {
         label: 'None',
         description: '',
         detail: 'No scope.',
+        alwaysShow: true,
       },
       newItemPlaceholder: 'Create a new scope.',
     },
@@ -64,6 +66,7 @@ export default async function prompts({
           label: 'none',
           description: '',
           detail: 'No gitmoji.',
+          alwaysShow: true,
         },
         ...gitmojis.gitmojis.map(function ({ emoji, code, description }) {
           return {
