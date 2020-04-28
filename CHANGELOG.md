@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.4.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.3.0...v1.4.0) (2020-04-28)
+
+### Features
+
+- :sparkles: always show none value and new scope item
+  ([2e2952f](https://github.com/vivaxy/vscode-conventional-commits/commit/2e2952f64498614c747f311a31f12269598710b9))
+- :sparkles: supports commitlint max length rules
+  ([6b93fc9](https://github.com/vivaxy/vscode-conventional-commits/commit/6b93fc9af76c38e5f55a60bd53a68685c3720a1a))
+
 ## [1.3.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.2.0...v1.3.0) (2020-04-21)
 
 ### Features
