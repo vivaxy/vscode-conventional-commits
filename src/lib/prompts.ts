@@ -20,8 +20,14 @@ export type Answers = {
 
 export default async function prompts({
   gitmoji,
+  commlintRules,
 }: {
   gitmoji: boolean;
+  commlintRules: {
+    subjectMaxLength: number;
+    bodyMaxLength: number;
+    footerMaxLength: number;
+  };
 }): Promise<Answers> {
   const questions: Prompt[] = [
     {
@@ -87,16 +93,31 @@ export default async function prompts({
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
       placeholder: 'Write a short, imperative tense description of the change.',
+      validate(input: string) {
+        if (input.length > commlintRules.subjectMaxLength) {
+          return `Subject has more than ${commlintRules.subjectMaxLength} characters.`;
+        }
+      },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
       placeholder: 'Provide a longer description of the change.',
+      validate(input: string) {
+        if (input.length > commlintRules.bodyMaxLength) {
+          return `Body has more than ${commlintRules.bodyMaxLength} characters.`;
+        }
+      },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
       placeholder: 'List any breaking changes or issues closed by this change.',
+      validate(input: string) {
+        if (input.length > commlintRules.footerMaxLength) {
+          return `Footer has more than ${commlintRules.footerMaxLength} characters.`;
+        }
+      },
     },
   ]
     .filter(function (question) {
