@@ -7,6 +7,11 @@
 This extension helps you to fill in commit message according to
 [Conventional Commits](https://www.conventionalcommits.org/).
 
+- Respect commitlint configs.
+- Support project level scope management.
+
+## Usage
+
 ![Demo](./assets/docs/demo.gif)
 
 You can access VSCode Conventional Commits in two ways:
@@ -15,7 +20,7 @@ You can access VSCode Conventional Commits in two ways:
    and press `Enter`.
 2. Click the icon on the Source Control menu. See the image below.
 
-![Icon on the Source Control menu](./assets/docs/icon-on-the-source-control-menu.png)
+<img src="./assets/docs/icon-on-the-source-control-menu.png" alt="Icon on the Source Control menu" width="300">
 
 # Related Projects
 
