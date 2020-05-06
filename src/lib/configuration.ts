@@ -11,10 +11,14 @@ export type Configuration = {
   scopes: string[];
 };
 
+export function getConfiguration() {
+  return vscode.workspace.getConfiguration();
+}
+
 export function get<T>(key: keyof Configuration): T {
-  return (vscode.workspace
-    .getConfiguration()
-    .get<Configuration>(`${names.conventionalCommits}.${key}`) as unknown) as T;
+  return (getConfiguration().get<Configuration>(
+    `${names.conventionalCommits}.${key}`,
+  ) as unknown) as T;
 }
 
 export async function update(key: keyof Configuration, value: any) {

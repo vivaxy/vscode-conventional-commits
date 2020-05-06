@@ -53,6 +53,7 @@ export default function createConventionalCommits() {
         throw new Error('vscode.git is not enabled.');
       }
       const { rootPath } = vscode.workspace;
+      output.appendLine(`rootPath: ${rootPath}`);
       if (!rootPath) {
         throw new Error('Please open a folder.');
       }
@@ -100,7 +101,7 @@ export default function createConventionalCommits() {
               refs: repo.state.refs,
               remotes: repo.state.remotes,
               submodules: repo.state.submodules,
-              workingTreeChanges: repo.state.workingTreeChanges,
+              workingTreeChangesLength: `(${repo.state.workingTreeChanges.length})...`,
             },
           },
           null,
@@ -110,6 +111,21 @@ export default function createConventionalCommits() {
       repo.inputBox.value = commitMessage;
       const autoCommit = configuration.get<boolean>('autoCommit');
       output.appendLine(`autoCommit: ${autoCommit}`);
+      output.appendLine(
+        `git.enableSmartCommit: ${configuration
+          .getConfiguration()
+          .get('git.enableSmartCommit')}`,
+      );
+      output.appendLine(
+        `git.smartCommitChanges: ${configuration
+          .getConfiguration()
+          .get('git.smartCommitChanges')}`,
+      );
+      output.appendLine(
+        `git.postCommitCommand: ${configuration
+          .getConfiguration()
+          .get('git.postCommitCommand')}`,
+      );
       if (autoCommit) {
         await vscode.commands.executeCommand('git.commit');
       }

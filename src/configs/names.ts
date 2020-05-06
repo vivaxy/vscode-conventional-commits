@@ -3,5 +3,5 @@
  * @author vivaxy
  */
 export const conventionalCommits = 'conventionalCommits';
-export const Conventional_Commits = 'VSCode Conventional Commits';
+export const Conventional_Commits = 'Conventional Commits';
 export const SCOPES = 'scopes';
