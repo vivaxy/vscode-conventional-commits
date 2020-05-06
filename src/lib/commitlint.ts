@@ -4,9 +4,19 @@
  */
 import * as load from '@commitlint/load';
 
+async function loadRules(cwd: string) {
+  try {
+    // @ts-ignore
+    const { rules } = await load({}, { cwd });
+    return rules;
+  } catch (e) {
+    // catch if `Cannot find module "@commitlint/config-conventional"` happens.
+    return {};
+  }
+}
+
 export async function getRules({ cwd }: { cwd: string }) {
-  // @ts-ignore
-  const rules: load.Rules = (await load({}, { cwd })).rules;
+  const rules: load.Rules = await loadRules(cwd);
   return {
     subjectMaxLength: getRuleValue(rules['subject-max-length'], Infinity),
     bodyMaxLength: getRuleValue(rules['body-max-length'], Infinity),

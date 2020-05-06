@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.4.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.4.0...v1.4.1) (2020-05-01)
+
+### Bug Fixes
+
+- :bug: fix `cannot find module`
+  ([3cce3c8](https://github.com/vivaxy/vscode-conventional-commits/commit/3cce3c822bdd6f41eb982fe2a00b78caad3660b5))
+
 ## [1.4.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.3.0...v1.4.0) (2020-04-28)
 
 ### Features
