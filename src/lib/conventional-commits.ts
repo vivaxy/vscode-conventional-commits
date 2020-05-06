@@ -57,11 +57,14 @@ export default function createConventionalCommits() {
         throw new Error('Please open a folder.');
       }
       const commlintRules = await commitlint.getRules({ cwd: rootPath });
+      output.appendLine(
+        `commlintRules: ${JSON.stringify(commlintRules, null, 2)}`,
+      );
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         commlintRules,
       });
-      output.appendLine(`answers: ${(JSON.stringify(answers), null, 2)}`);
+      output.appendLine(`answers: ${JSON.stringify(answers, null, 2)}`);
       const commitMessage = formatAnswers(answers);
       output.appendLine(`commitMessage: ${commitMessage}`);
       vscode.commands.executeCommand('workbench.view.scm');
@@ -75,7 +78,35 @@ export default function createConventionalCommits() {
       if (!repo) {
         throw new Error(`repo not found in path: ${rootPath}`);
       }
-      output.appendLine(`repo: ${JSON.stringify(repo)}`);
+      output.appendLine(
+        `repo: ${JSON.stringify(
+          {
+            inputBox: {
+              value: repo.inputBox.value,
+            },
+            rootUri: {
+              authority: repo.rootUri.authority,
+              fragment: repo.rootUri.fragment,
+              fsPath: repo.rootUri.fsPath,
+              path: repo.rootUri.path,
+              query: repo.rootUri.query,
+              scheme: repo.rootUri.scheme,
+            },
+            state: {
+              HEAD: repo.state.HEAD,
+              indexChanges: repo.state.indexChanges,
+              mergeChanges: repo.state.mergeChanges,
+              rebaseCommit: repo.state.rebaseCommit,
+              refs: repo.state.refs,
+              remotes: repo.state.remotes,
+              submodules: repo.state.submodules,
+              workingTreeChanges: repo.state.workingTreeChanges,
+            },
+          },
+          null,
+          2,
+        )}`,
+      );
       repo.inputBox.value = commitMessage;
       const autoCommit = configuration.get<boolean>('autoCommit');
       output.appendLine(`autoCommit: ${autoCommit}`);
