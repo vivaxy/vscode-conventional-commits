@@ -61,7 +61,9 @@ export default function createConventionalCommits() {
         gitmoji: configuration.get<boolean>('gitmoji'),
         commlintRules,
       });
+      output.appendLine(`answers: ${(JSON.stringify(answers), null, 2)}`);
       const commitMessage = formatAnswers(answers);
+      output.appendLine(`commitMessage: ${commitMessage}`);
       vscode.commands.executeCommand('workbench.view.scm');
       const [repo] = git.repositories
         .filter(function (repo) {
@@ -73,6 +75,7 @@ export default function createConventionalCommits() {
       if (!repo) {
         throw new Error(`repo not found in path: ${rootPath}`);
       }
+      output.appendLine(`repo: ${JSON.stringify(repo)}`);
       repo.inputBox.value = commitMessage;
       const autoCommit = configuration.get<boolean>('autoCommit');
       output.appendLine(`autoCommit: ${autoCommit}`);
@@ -80,6 +83,7 @@ export default function createConventionalCommits() {
         await vscode.commands.executeCommand('git.commit');
       }
     } catch (e) {
+      output.appendLine(`error: ${e.stack}`);
       vscode.window.showErrorMessage(
         `${names.Conventional_Commits}: ${e.message}`,
       );
