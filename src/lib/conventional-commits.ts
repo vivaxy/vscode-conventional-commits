@@ -101,7 +101,7 @@ export default function createConventionalCommits() {
               refs: repo.state.refs,
               remotes: repo.state.remotes,
               submodules: repo.state.submodules,
-              workingTreeChangesLength: `(${repo.state.workingTreeChanges.length})...`,
+              workingTreeChangesLength: `[...(${repo.state.workingTreeChanges.length})]`,
             },
           },
           null,
@@ -109,6 +109,7 @@ export default function createConventionalCommits() {
         )}`,
       );
       repo.inputBox.value = commitMessage;
+      output.appendLine(`repo.inputBox.value: ${repo.inputBox.value}`);
       const autoCommit = configuration.get<boolean>('autoCommit');
       output.appendLine(`autoCommit: ${autoCommit}`);
       output.appendLine(
