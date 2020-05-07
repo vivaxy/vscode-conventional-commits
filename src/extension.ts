@@ -4,6 +4,7 @@ import * as output from './lib/output';
 
 export function activate(context: vscode.ExtensionContext) {
   output.initialize();
+  output.appendLine('activate');
   const disposable = vscode.commands.registerCommand(
     'extension.conventionalCommits',
     createConventionalCommits(),

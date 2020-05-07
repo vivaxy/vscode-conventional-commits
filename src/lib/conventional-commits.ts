@@ -95,6 +95,7 @@ function outputRepo(repo: VSCodeGit.Repository) {
 
 export default function createConventionalCommits() {
   return async function conventionalCommits() {
+    output.appendLine('VSCode Conventional Commits started.');
     try {
       // 1. output basic information
       output.appendLine(`VSCode version: ${vscode.version}`);
@@ -164,8 +165,11 @@ export default function createConventionalCommits() {
       if (autoCommit) {
         await vscode.commands.executeCommand('git.commit');
       }
+      output.appendLine('VSCode Conventional Commits finished.');
     } catch (e) {
-      output.appendLine(`error: ${e.stack}`);
+      output.appendLine(
+        `VSCode Conventional Commits finished with an error: ${e.stack}`,
+      );
       vscode.window.showErrorMessage(
         `${names.Conventional_Commits}: ${e.message}`,
       );
