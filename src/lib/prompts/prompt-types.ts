@@ -32,6 +32,7 @@ type Options = {
 
 type QuickPickOptions = {
   items: Item[];
+  noneItem?: Item;
 } & Options;
 
 function createQuickPick({
@@ -40,8 +41,13 @@ function createQuickPick({
   format = (i) => i,
   step,
   totalSteps,
+  noneItem,
 }: QuickPickOptions): Promise<string> {
   return new Promise(function (resolve) {
+    const pickerItems = items;
+    if (noneItem) {
+      pickerItems.unshift(noneItem);
+    }
     const picker = vscode.window.createQuickPick();
     picker.placeholder = placeholder;
     picker.matchOnDescription = true;
@@ -52,7 +58,11 @@ function createQuickPick({
     picker.totalSteps = totalSteps;
     picker.show();
     picker.onDidAccept(function () {
-      const result = format(picker.selectedItems[0].label);
+      let selectedValue = picker.selectedItems[0].label;
+      if (noneItem && selectedValue === noneItem.label) {
+        selectedValue = '';
+      }
+      const result = format(selectedValue);
       picker.dispose();
       resolve(result);
     });
@@ -95,7 +105,6 @@ function createInputBox({
 type ConfiguriableQuickPickOptions = {
   configurationKey: keyof configuration.Configuration;
   newItem: Item;
-  noneItem?: Item;
   newItemPlaceholder: string;
   addNoneOption: boolean;
   validate?: (value: string) => string | undefined;
@@ -113,23 +122,20 @@ async function createConfiguriableQuickPick({
   validate = () => undefined,
 }: ConfiguriableQuickPickOptions): Promise<string> {
   const currentValus: string[] = configuration.get<string[]>(configurationKey);
-  const items: Item[] = [];
-  if (noneItem) {
-    items.push(noneItem);
-  }
-  items.push(
-    ...currentValus.map(function (value) {
-      return {
-        label: value,
-      };
-    }),
-  );
+  const items: Item[] = currentValus.map(function (value) {
+    return {
+      label: value,
+      description: '',
+      detail: 'From workspace configuration.',
+    };
+  });
   items.push(newItem);
   let selectedValue = await createQuickPick({
     placeholder,
     items,
     step,
     totalSteps,
+    noneItem,
   });
   if (selectedValue === newItem.label) {
     selectedValue = await createInputBox({
@@ -139,8 +145,6 @@ async function createConfiguriableQuickPick({
       validate,
     });
     configuration.update(configurationKey, [...currentValus, selectedValue]);
-  } else if (noneItem && selectedValue === noneItem.label) {
-    selectedValue = '';
   }
   return format(selectedValue);
 }

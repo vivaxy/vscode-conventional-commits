@@ -95,7 +95,7 @@ function outputRepo(repo: VSCodeGit.Repository) {
 
 export default function createConventionalCommits() {
   return async function conventionalCommits() {
-    output.appendLine('VSCode Conventional Commits started.');
+    output.appendLine('Started');
     try {
       // 1. output basic information
       output.appendLine(`VSCode version: ${vscode.version}`);

@@ -8,6 +8,7 @@ import * as configuration from './configuration';
 import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as names from '../configs/names';
+import { CommitlintRules } from './commitlint';
 
 export type Answers = {
   type: string;
@@ -23,30 +24,36 @@ export default async function prompts({
   commlintRules,
 }: {
   gitmoji: boolean;
-  commlintRules: {
-    subjectMaxLength: number;
-    bodyMaxLength: number;
-    footerMaxLength: number;
-  };
+  commlintRules: CommitlintRules;
 }): Promise<Answers> {
-  const questions: Prompt[] = [
-    {
-      type: PROMPT_TYPES.QUICK_PICK,
-      name: 'type',
-      placeholder: "Select the type of change that you're committing.",
-      items: Object.keys(conventionalCommitsTypes.types).map(function (type) {
-        const { title, description } = conventionalCommitsTypes.types[type];
-        return {
-          label: type,
-          description: title,
-          detail: description,
-        };
-      }),
-    },
-    {
+  function getScopePrompt() {
+    const name = 'scope';
+    const placeholder = 'Select the scope of this change.';
+    if (commlintRules.scopeEnum.length) {
+      return {
+        type: PROMPT_TYPES.QUICK_PICK,
+        name,
+        placeholder,
+        items: commlintRules.scopeEnum.map(function (scope) {
+          return {
+            label: scope,
+            description: '',
+            detail: 'From commitlint config.',
+          };
+        }),
+        noneItem: {
+          label: 'None',
+          description: '',
+          detail: 'No scope.',
+          alwaysShow: true,
+        },
+      };
+    }
+
+    return {
       type: PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK,
-      name: 'scope',
-      placeholder: 'Denote the scope of this change.',
+      name,
+      placeholder,
       configurationKey: names.SCOPES as keyof configuration.Configuration,
       newItem: {
         label: 'New scope',
@@ -62,31 +69,40 @@ export default async function prompts({
         alwaysShow: true,
       },
       newItemPlaceholder: 'Create a new scope.',
+    };
+  }
+
+  const questions: Prompt[] = [
+    {
+      type: PROMPT_TYPES.QUICK_PICK,
+      name: 'type',
+      placeholder: "Select the type of change that you're committing.",
+      items: Object.keys(conventionalCommitsTypes.types).map(function (type) {
+        const { title, description } = conventionalCommitsTypes.types[type];
+        return {
+          label: type,
+          description: title,
+          detail: description,
+        };
+      }),
     },
+    getScopePrompt(),
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
       placeholder: 'Choose a gitmoji.',
-      items: [
-        {
-          label: 'none',
-          description: '',
-          detail: 'No gitmoji.',
-          alwaysShow: true,
-        },
-        ...gitmojis.gitmojis.map(function ({ emoji, code, description }) {
-          return {
-            label: code,
-            description: emoji,
-            detail: description,
-          };
-        }),
-      ],
-      format(input: string) {
-        if (input === 'none') {
-          return '';
-        }
-        return input;
+      items: gitmojis.gitmojis.map(function ({ emoji, code, description }) {
+        return {
+          label: code,
+          description: emoji,
+          detail: description,
+        };
+      }),
+      noneItem: {
+        label: 'None',
+        description: '',
+        detail: 'No gitmoji.',
+        alwaysShow: true,
       },
     },
     {

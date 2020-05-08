@@ -15,18 +15,32 @@ async function loadRules(cwd: string) {
   }
 }
 
-export async function getRules({ cwd }: { cwd: string }) {
-  const rules: load.Rules = await loadRules(cwd);
-  return {
-    subjectMaxLength: getRuleValue(rules['subject-max-length'], Infinity),
-    bodyMaxLength: getRuleValue(rules['body-max-length'], Infinity),
-    footerMaxLength: getRuleValue(rules['footer-max-length'], Infinity),
-  };
-}
+export type CommitlintRules = {
+  scopeEnum: string[];
+  subjectMaxLength: number;
+  bodyMaxLength: number;
+  footerMaxLength: number;
+};
 
-export function getRuleValue(
-  [level, applicable, value]: load.Rule<number> = [0, 'never', 0],
-  defaultValue: number,
-) {
-  return level === 2 && applicable === 'always' ? value : defaultValue;
+export async function getRules({
+  cwd,
+}: {
+  cwd: string;
+}): Promise<CommitlintRules> {
+  const rules: load.Rules = await loadRules(cwd);
+
+  function getRuleValue<T>(key: keyof load.Rules, defaultValue: T) {
+    const [level, applicable, value] = rules[key] || [0, 'never', defaultValue];
+    if (level === 2 && applicable === 'always') {
+      return (value as T) || defaultValue;
+    }
+    return defaultValue;
+  }
+
+  return {
+    scopeEnum: getRuleValue<string[]>('scope-enum', []), // [] means everything is ok
+    subjectMaxLength: getRuleValue<number>('subject-max-length', Infinity),
+    bodyMaxLength: getRuleValue<number>('body-max-length', Infinity),
+    footerMaxLength: getRuleValue<number>('footer-max-length', Infinity),
+  };
 }
