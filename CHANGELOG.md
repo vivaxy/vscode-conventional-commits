@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.5.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.4.4...v1.5.0) (2020-05-08)
+
+### Features
+
+- :sparkles: read scopes from commitlint config
+  ([1b77af0](https://github.com/vivaxy/vscode-conventional-commits/commit/1b77af05d84e9bd9ac67b9e554d519046577293e)),
+  closes [#11](https://github.com/vivaxy/vscode-conventional-commits/issues/11)
+
 ### [1.4.4](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.4.3...v1.4.4) (2020-05-07)
 
 ### [1.4.3](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.4.2...v1.4.3) (2020-05-07)
