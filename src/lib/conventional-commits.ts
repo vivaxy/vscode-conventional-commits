@@ -165,11 +165,9 @@ export default function createConventionalCommits() {
       if (autoCommit) {
         await vscode.commands.executeCommand('git.commit');
       }
-      output.appendLine('VSCode Conventional Commits finished.');
+      output.appendLine('Finished successfully.');
     } catch (e) {
-      output.appendLine(
-        `VSCode Conventional Commits finished with an error: ${e.stack}`,
-      );
+      output.appendLine(`Finished with an error: ${e.stack}`);
       vscode.window.showErrorMessage(
         `${names.Conventional_Commits}: ${e.message}`,
       );
