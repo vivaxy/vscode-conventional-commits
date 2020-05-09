@@ -80,14 +80,14 @@
     "release": "standard-version && vsce publish && git push --follow-tags"
   },
   "devDependencies": {
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.14.0",
-    "husky": "^4.2.3",
-    "lint-staged": "^10.0.9",
-    "prettier": "^2.0.2",
-    "standard-version": "^7.1.0",
-    "typescript": "^3.7.5",
-    "vsce": "^1.74.0"
+    "@types/node": "12.12.30",
+    "@types/vscode": "1.44.0",
+    "husky": "4.2.3",
+    "lint-staged": "10.0.9",
+    "prettier": "2.0.2",
+    "standard-version": "7.1.0",
+    "typescript": "3.8.3",
+    "vsce": "1.74.0"
   },
   "husky": {
     "hooks": {
