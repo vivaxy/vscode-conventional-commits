@@ -1,5 +1,8 @@
 # VSCode Conventional Commits
 
+[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+
 [Conventional Commits](https://www.conventionalcommits.org/) for VSCode.
 
 ## Features
