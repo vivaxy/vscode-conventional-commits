@@ -30,9 +30,9 @@ You can access VSCode Conventional Commits in two ways:
 
 ## Commit Workflow
 
-The recommended workflow, automatically add, commit and push files by default.
+The recommended workflow automatically add, commit and push files by default.
 
-If you only want the extension to fill in the message, just disable `autoCommit`
+If you only want the extension to fill in the message, disable `autoCommit`
 configuration.
 
 ### The Recommended Workflow
