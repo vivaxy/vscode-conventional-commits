@@ -11,7 +11,10 @@ This extension helps you to fill in commit message according to
 [Conventional Commits](https://www.conventionalcommits.org/).
 
 - Respect commitlint configs.
+- Support auto commit and push after typing messages. See
+  [Commit Workflow](#commit-workflow) for details.
 - Support project level scope management.
+- Support gitmojis.
 
 ## Usage
 
@@ -24,6 +27,30 @@ You can access VSCode Conventional Commits in two ways:
 2. Click the icon on the Source Control menu. See the image below.
 
 <img src="./assets/docs/icon-on-the-source-control-menu.png" alt="Icon on the Source Control menu" width="300">
+
+## Commit Workflow
+
+The recommended workflow, automatically add, commit and push files by default.
+
+If you only want the extension to fill in the message, just disable `autoCommit`
+configuration.
+
+### The Recommended Workflow
+
+1. Active the extension.
+2. Type messages.
+
+The extension will automatically add the changed files, perform the commit and
+push the commit to remote.
+
+### How To Configure
+
+1. Enable `autoCommit` configuration of the extension. _The extension enables
+   `autoCommit` by default._
+2. Enable `git.enableSmartCommit` and set `git.smartCommitChanges` to `all` to
+   commit all changes when there are no staged changes.
+3. Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after
+   commit.
 
 # Related Projects
 
