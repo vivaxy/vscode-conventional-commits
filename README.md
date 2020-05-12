@@ -52,8 +52,16 @@ push the commit to remote.
 3. Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after
    commit.
 
-# Related Projects
+## Related Projects
 
 - [gacp](https://github.com/vivaxy/gacp)
 - [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)
+
+## Gather Logs
+
+1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
+2. Copy all the output. Before sharing it, make sure you have omitted some
+   private date.
+
+![Debug instruction](./assets/docs/debug-instruction.png)
