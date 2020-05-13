@@ -58,7 +58,7 @@ push the commit to remote.
 - [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)
 
-## Gather Logs
+## Troubleshooting
 
 1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
 2. Copy all the output. Before sharing it, make sure you have omitted some
