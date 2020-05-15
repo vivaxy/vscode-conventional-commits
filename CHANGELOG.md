@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.6.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.6.0...v1.6.1) (2020-05-15)
+
+### Bug Fixes
+
+- :bug: fix `\\` treated as `\`
+  ([f7bf9a5](https://github.com/vivaxy/vscode-conventional-commits/commit/f7bf9a5fcdf0cd66f18a6f644c19af66a38202df))
+
 ## [1.6.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.5.0...v1.6.0) (2020-05-15)
 
 ### Features
