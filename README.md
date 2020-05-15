@@ -65,3 +65,10 @@ push the commit to remote.
    private date.
 
 ![Debug instruction](./assets/docs/debug-instruction.png)
+
+## FAQ
+
+1. How to add a line break in messages?
+
+Set `lineBreak` configuration to `\n`. When you're typing, enter `\n` as a line
+break.
