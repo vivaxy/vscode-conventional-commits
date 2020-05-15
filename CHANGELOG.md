@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.6.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.5.0...v1.6.0) (2020-05-15)
+
+### Features
+
+- :sparkles: add `lineBreak` option
+  ([3f5a18e](https://github.com/vivaxy/vscode-conventional-commits/commit/3f5a18e7d373854acecb453cde84c76253c74fbe)),
+  closes [#10](https://github.com/vivaxy/vscode-conventional-commits/issues/10)
+
 ## [1.5.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.4.4...v1.5.0) (2020-05-08)
 
 ### Features
