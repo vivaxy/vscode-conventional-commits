@@ -93,7 +93,7 @@ function createInputBox({
       if (input.validationMessage) {
         return;
       }
-      const result = format(input.value);
+      const result = format(input.value.replace(/\\\\/g, '\\'));
       input.dispose();
       resolve(result);
     });

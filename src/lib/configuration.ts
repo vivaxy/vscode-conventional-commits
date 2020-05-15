@@ -9,6 +9,7 @@ export type Configuration = {
   autoCommit: boolean;
   gitmoji: boolean;
   scopes: string[];
+  lineBreak: string;
 };
 
 export function getConfiguration() {

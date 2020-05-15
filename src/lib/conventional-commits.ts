@@ -109,6 +109,7 @@ export default function createConventionalCommits() {
       outputConfiguration('autoCommit');
       outputConfiguration('gitmoji');
       outputConfiguration('scopes');
+      outputConfiguration('lineBreak');
 
       outputRelatedExtensionConfigutation('git.enableSmartCommit');
       outputRelatedExtensionConfigutation('git.smartCommitChanges');
@@ -150,6 +151,7 @@ export default function createConventionalCommits() {
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         commlintRules,
+        lineBreak: configuration.get<string>('lineBreak'),
       });
       output.appendLine(`answers: ${JSON.stringify(answers, null, 2)}`);
       const commitMessage = formatAnswers(answers);

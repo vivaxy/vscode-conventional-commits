@@ -69,6 +69,11 @@
           "type": "array",
           "default": [],
           "markdownDescription": "Available scopes."
+        },
+        "conventionalCommits.lineBreak": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Treat words as line breaks.\n\nBlank means no line breaks."
         }
       }
     }

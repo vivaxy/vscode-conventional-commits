@@ -22,10 +22,22 @@ export type Answers = {
 export default async function prompts({
   gitmoji,
   commlintRules,
+  lineBreak,
 }: {
   gitmoji: boolean;
   commlintRules: CommitlintRules;
+  lineBreak: string;
 }): Promise<Answers> {
+  function lineBreakFormatter(input: string): string {
+    if (lineBreak) {
+      return input.replace(
+        new RegExp(lineBreak.replace(/\\/g, '\\\\'), 'g'),
+        '\n',
+      );
+    }
+    return input;
+  }
+
   function getScopePrompt() {
     const name = 'scope';
     const placeholder = 'Select the scope of this change.';
@@ -114,6 +126,7 @@ export default async function prompts({
           return `Subject has more than ${commlintRules.subjectMaxLength} characters.`;
         }
       },
+      format: lineBreakFormatter,
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
@@ -124,6 +137,7 @@ export default async function prompts({
           return `Body has more than ${commlintRules.bodyMaxLength} characters.`;
         }
       },
+      format: lineBreakFormatter,
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
@@ -134,6 +148,7 @@ export default async function prompts({
           return `Footer has more than ${commlintRules.footerMaxLength} characters.`;
         }
       },
+      format: lineBreakFormatter,
     },
   ]
     .filter(function (question) {
