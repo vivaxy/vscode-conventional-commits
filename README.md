@@ -57,6 +57,8 @@ push the commit to remote.
 - [gacp](https://github.com/vivaxy/gacp)
 - [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
 - [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)
+- [Commit Message Editor](https://github.com/bendera/vscode-commit-message-editor)
+- [commitji](https://github.com/jmaicaaan/commitji)
 
 ## Troubleshooting
 
