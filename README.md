@@ -77,5 +77,5 @@ a line break.
 
 **Q:** How do I resolve `repo not found` error?
 
-**A** See issue discussion
+**A:** See issue discussion
 [#15](https://github.com/vivaxy/vscode-conventional-commits/issues/15#issuecomment-633161627).
