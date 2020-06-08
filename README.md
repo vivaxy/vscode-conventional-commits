@@ -74,3 +74,8 @@ push the commit to remote.
 
 **A:** Set `lineBreak` configuration to `\n`. When you're typing, enter `\n` as
 a line break.
+
+**Q:** How do I resolve `repo not found` error?
+
+**A** See issue discussion
+[#15](https://github.com/vivaxy/vscode-conventional-commits/issues/15#issuecomment-633161627).
