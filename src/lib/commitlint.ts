@@ -16,6 +16,7 @@ async function loadRules(cwd: string) {
 }
 
 export type CommitlintRules = {
+  typeEnum: string[];
   scopeEnum: string[];
   subjectMaxLength: number;
   bodyMaxLength: number;
@@ -38,6 +39,7 @@ export async function getRules({
   }
 
   return {
+    typeEnum: getRuleValue<string[]>('type-enum', []), // [] means use the default types
     scopeEnum: getRuleValue<string[]>('scope-enum', []), // [] means everything is ok
     subjectMaxLength: getRuleValue<number>('subject-max-length', Infinity),
     bodyMaxLength: getRuleValue<number>('body-max-length', Infinity),

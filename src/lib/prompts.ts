@@ -38,6 +38,34 @@ export default async function prompts({
     return input;
   }
 
+  function getTypeItems() {
+    if (commlintRules.typeEnum.length === 0) {
+      return Object.keys(conventionalCommitsTypes.types).map(function (type) {
+        const { title, description } = conventionalCommitsTypes.types[type];
+        return {
+          label: type,
+          description: title,
+          detail: description,
+        };
+      });
+    }
+    return commlintRules.typeEnum.map(function (type) {
+      if (type in conventionalCommitsTypes.types) {
+        const { description, title } = conventionalCommitsTypes.types[type];
+        return {
+          label: type,
+          description: title,
+          detail: description,
+        };
+      }
+      return {
+        label: type,
+        description: names.DESCRIPTION_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
+        detail: names.DETAIL_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
+      };
+    });
+  }
+
   function getScopePrompt() {
     const name = 'scope';
     const placeholder = 'Select the scope of this change.';
@@ -49,8 +77,8 @@ export default async function prompts({
         items: commlintRules.scopeEnum.map(function (scope) {
           return {
             label: scope,
-            description: '',
-            detail: 'From commitlint config.',
+            description: names.DESCRIPTION_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
+            detail: names.DETAIL_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
           };
         }),
         noneItem: {
@@ -89,14 +117,7 @@ export default async function prompts({
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'type',
       placeholder: "Select the type of change that you're committing.",
-      items: Object.keys(conventionalCommitsTypes.types).map(function (type) {
-        const { title, description } = conventionalCommitsTypes.types[type];
-        return {
-          label: type,
-          description: title,
-          detail: description,
-        };
-      }),
+      items: getTypeItems(),
     },
     getScopePrompt(),
     {
