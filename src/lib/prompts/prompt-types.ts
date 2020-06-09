@@ -144,7 +144,9 @@ async function createConfiguriableQuickPick({
       totalSteps,
       validate,
     });
-    configuration.update(configurationKey, [...currentValus, selectedValue]);
+    if (selectedValue) {
+      configuration.update(configurationKey, [...currentValus, selectedValue]);
+    }
   }
   return format(selectedValue);
 }
