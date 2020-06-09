@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.7.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.6.2...v1.7.0) (2020-06-09)
+
+### Features
+
+- :sparkles: support custom commit types
+  ([c4810d9](https://github.com/vivaxy/vscode-conventional-commits/commit/c4810d961776cf6396e673013f61ec1ddd88d205)),
+  closes [#16](https://github.com/vivaxy/vscode-conventional-commits/issues/16)
+
 ### [1.6.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.6.1...v1.6.2) (2020-06-09)
 
 ### Bug Fixes
