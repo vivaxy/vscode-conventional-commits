@@ -121,12 +121,19 @@ export default function createConventionalCommits() {
         throw new Error('vscode.git is not enabled.');
       }
 
-      // 3. get root path
-      const { rootPath } = vscode.workspace;
+      // 3. get workspace path
+      const { workspaceFolders, rootPath } = vscode.workspace;
+      output.appendLine(`rootPath: ${rootPath}`);
+      output.appendLine(
+        `workspaceFolders: ${workspaceFolders
+          ?.map(function ({ uri }) {
+            return uri.fsPath;
+          })
+          .join('')}`,
+      );
       if (!rootPath) {
         throw new Error('Please open a folder.');
       }
-      output.appendLine(`rootPath: ${rootPath}`);
 
       // 4. get current repo
       const [repo] = git.repositories
