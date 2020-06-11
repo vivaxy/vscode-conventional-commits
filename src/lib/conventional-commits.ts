@@ -61,43 +61,41 @@ function outputRelatedExtensionConfigutation(key: string) {
   output.appendLine(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
 
-function outputRepo(repo: VSCodeGit.Repository) {
-  output.appendLine(
-    `repo: ${JSON.stringify(
-      {
-        inputBox: {
-          value: repo.inputBox.value,
-        },
-        rootUri: {
-          authority: repo.rootUri.authority,
-          fragment: repo.rootUri.fragment,
-          fsPath: repo.rootUri.fsPath,
-          path: repo.rootUri.path,
-          query: repo.rootUri.query,
-          scheme: repo.rootUri.scheme,
-        },
-        state: {
-          HEAD: repo.state.HEAD,
-          indexChanges: repo.state.indexChanges,
-          mergeChanges: repo.state.mergeChanges,
-          rebaseCommit: repo.state.rebaseCommit,
-          refs: repo.state.refs,
-          remotes: repo.state.remotes,
-          submodules: repo.state.submodules,
-          workingTreeChangesLength: `[...(${repo.state.workingTreeChanges.length})]`,
-        },
-      },
-      null,
-      2,
-    )}`,
-  );
+type Arg = {
+  _rootUri: vscode.Uri;
+  _inputBox: VSCodeGit.InputBox;
+};
+
+function getInputBox(arg: Arg, git: VSCodeGit.API) {
+  if (arg && arg._inputBox) {
+    return arg._inputBox;
+  }
+
+  if (git.repositories.length === 1) {
+    return git.repositories[0].inputBox;
+  }
+
+  git.repositories
+    // .filter(function (repo) {
+    //   return repo.ui.selected && repo.state.workingTreeChanges.length;
+    // })
+    .map(function (repo) {
+      return {
+        path: repo.rootUri.path,
+        branch: repo.state.HEAD?.name,
+      };
+    });
+
+  // Choose a repository
 }
 
 export default function createConventionalCommits() {
-  return async function conventionalCommits() {
-    output.appendLine('Started');
+  return async function conventionalCommits(arg?: Arg) {
     try {
+      output.appendLine('Started');
+
       // 1. output basic information
+      output.appendLine('arg: ' + arg?._rootUri.fsPath);
       output.appendLine(`VSCode version: ${vscode.version}`);
 
       outputExtensionVersion(
@@ -121,7 +119,7 @@ export default function createConventionalCommits() {
         throw new Error('vscode.git is not enabled.');
       }
 
-      // 3. get workspace path
+      // 3. get repository
       const { workspaceFolders, rootPath } = vscode.workspace;
       output.appendLine(`rootPath: ${rootPath}`);
       output.appendLine(
@@ -135,26 +133,13 @@ export default function createConventionalCommits() {
         throw new Error('Please open a folder.');
       }
 
-      // 4. get current repo
-      const [repo] = git.repositories
-        .filter(function (repo) {
-          return rootPath.startsWith(repo.rootUri.fsPath);
-        })
-        .sort(function (prev, next) {
-          return next.rootUri.fsPath.length - prev.rootUri.fsPath.length;
-        });
-      if (!repo) {
-        throw new Error(`repo not found in path: ${rootPath}`);
-      }
-      outputRepo(repo);
-
-      // 5. get commitlint rules
+      // 4. get commitlint rules
       const commlintRules = await commitlint.getRules({ cwd: rootPath });
       output.appendLine(
         `commlintRules: ${JSON.stringify(commlintRules, null, 2)}`,
       );
 
-      // 6. get message
+      // 5. get message
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         commlintRules,
@@ -164,10 +149,13 @@ export default function createConventionalCommits() {
       const commitMessage = formatAnswers(answers);
       output.appendLine(`commitMessage: ${commitMessage}`);
 
+      // 6. get current repo inputBox
+      const inputBox = getInputBox(arg, git);
+
       // 7. switch to scm and put message into message box
       vscode.commands.executeCommand('workbench.view.scm');
-      repo.inputBox.value = commitMessage;
-      output.appendLine(`repo.inputBox.value: ${repo.inputBox.value}`);
+      inputBox && (inputBox.value = commitMessage);
+      output.appendLine(`inputBox.value: ${inputBox?.value}`);
 
       // 8. auto commit
       const autoCommit = configuration.get<boolean>('autoCommit');
