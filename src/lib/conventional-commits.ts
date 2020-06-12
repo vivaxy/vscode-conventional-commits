@@ -2,6 +2,7 @@
  * @since 2020-03-25 09:08
  * @author vivaxy
  */
+import * as path from 'path';
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
 import prompts, { Answers } from './prompts';
@@ -9,6 +10,7 @@ import * as configuration from './configuration';
 import * as names from '../configs/names';
 import * as output from './output';
 import * as commitlint from './commitlint';
+import createSimpleQuickPick from './prompts/quick-pick';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -63,30 +65,81 @@ function outputRelatedExtensionConfigutation(key: string) {
 
 type Arg = {
   _rootUri: vscode.Uri;
-  _inputBox: VSCodeGit.InputBox;
 };
 
-function getInputBox(arg: Arg, git: VSCodeGit.API) {
-  if (arg && arg._inputBox) {
-    return arg._inputBox;
+function hasChanges(repo: VSCodeGit.Repository) {
+  return (
+    repo.state.workingTreeChanges.length ||
+    repo.state.mergeChanges.length ||
+    repo.state.indexChanges.length
+  );
+}
+
+function isSelected(repo: VSCodeGit.Repository) {
+  return repo.ui.selected;
+}
+
+async function getRepository({
+  git,
+  arg,
+  workspaceFolders,
+}: {
+  git: VSCodeGit.API;
+  arg?: Arg;
+  workspaceFolders?: readonly vscode.WorkspaceFolder[];
+}) {
+  output.appendLine(`arg: ${arg?._rootUri.fsPath}`);
+  output.appendLine(
+    `git.repositories: ${git.repositories
+      .map(function (repo) {
+        return repo.rootUri.fsPath;
+      })
+      .join(', ')}`,
+  );
+  output.appendLine(
+    `workspacceFolders: ${workspaceFolders
+      ?.map(function (folder) {
+        return folder.uri.fsPath;
+      })
+      .join(', ')}`,
+  );
+
+  if (arg && arg._rootUri.fsPath) {
+    const repo = git.repositories.find(function (r) {
+      return r.rootUri.fsPath === arg._rootUri.fsPath;
+    });
+    if (repo) {
+      return repo;
+    }
+    throw new Error('Repository not found in path: ' + arg._rootUri.fsPath);
+  }
+
+  if (git.repositories.length === 0) {
+    throw new Error('Please open a repository.');
   }
 
   if (git.repositories.length === 1) {
-    return git.repositories[0].inputBox;
+    return git.repositories[0];
   }
 
-  git.repositories
-    // .filter(function (repo) {
-    //   return repo.ui.selected && repo.state.workingTreeChanges.length;
-    // })
-    .map(function (repo) {
-      return {
-        path: repo.rootUri.path,
-        branch: repo.state.HEAD?.name,
-      };
+  const items = git.repositories.map(function (repo, index) {
+    const folder = workspaceFolders?.find(function (f) {
+      return f.uri.fsPath === repo.rootUri.fsPath;
     });
+    return {
+      index,
+      label: folder?.name || path.basename(repo.rootUri.fsPath),
+      description:
+        `${repo.state.HEAD?.name}${hasChanges(repo) ? '*' : ''}` || '',
+    };
+  });
 
-  // Choose a repository
+  const [{ index }] = await createSimpleQuickPick({
+    placeholder: 'Choose a repository',
+    items,
+  });
+
+  return git.repositories[index];
 }
 
 export default function createConventionalCommits() {
@@ -95,7 +148,6 @@ export default function createConventionalCommits() {
       output.appendLine('Started');
 
       // 1. output basic information
-      output.appendLine('arg: ' + arg?._rootUri.fsPath);
       output.appendLine(`VSCode version: ${vscode.version}`);
 
       outputExtensionVersion(
@@ -120,21 +172,16 @@ export default function createConventionalCommits() {
       }
 
       // 3. get repository
-      const { workspaceFolders, rootPath } = vscode.workspace;
-      output.appendLine(`rootPath: ${rootPath}`);
-      output.appendLine(
-        `workspaceFolders: ${workspaceFolders
-          ?.map(function ({ uri }) {
-            return uri.fsPath;
-          })
-          .join('')}`,
-      );
-      if (!rootPath) {
-        throw new Error('Please open a folder.');
-      }
+      const repository = await getRepository({
+        arg,
+        git,
+        workspaceFolders: vscode.workspace.workspaceFolders,
+      });
 
       // 4. get commitlint rules
-      const commlintRules = await commitlint.getRules({ cwd: rootPath });
+      const commlintRules = await commitlint.getRules({
+        cwd: repository.rootUri.fsPath,
+      });
       output.appendLine(
         `commlintRules: ${JSON.stringify(commlintRules, null, 2)}`,
       );
@@ -149,18 +196,15 @@ export default function createConventionalCommits() {
       const commitMessage = formatAnswers(answers);
       output.appendLine(`commitMessage: ${commitMessage}`);
 
-      // 6. get current repo inputBox
-      const inputBox = getInputBox(arg, git);
-
-      // 7. switch to scm and put message into message box
+      // 6. switch to scm and put message into message box
       vscode.commands.executeCommand('workbench.view.scm');
-      inputBox && (inputBox.value = commitMessage);
-      output.appendLine(`inputBox.value: ${inputBox?.value}`);
+      repository.inputBox.value = commitMessage;
+      output.appendLine(`inputBox.value: ${repository.inputBox.value}`);
 
-      // 8. auto commit
+      // 7. auto commit
       const autoCommit = configuration.get<boolean>('autoCommit');
       if (autoCommit) {
-        await vscode.commands.executeCommand('git.commit');
+        await vscode.commands.executeCommand('git.commit', repository);
       }
       output.appendLine('Finished successfully.');
     } catch (e) {

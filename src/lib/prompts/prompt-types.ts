@@ -4,6 +4,7 @@
  */
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
+import createSimpleQuickPick from './quick-pick';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -35,38 +36,34 @@ type QuickPickOptions = {
   noneItem?: Item;
 } & Options;
 
-function createQuickPick({
+async function createQuickPick({
   placeholder,
   items = [],
-  format = (i) => i,
+  format = (i: string) => i,
   step,
   totalSteps,
   noneItem,
 }: QuickPickOptions): Promise<string> {
-  return new Promise(function (resolve) {
-    const pickerItems = items;
-    if (noneItem) {
-      pickerItems.unshift(noneItem);
-    }
-    const picker = vscode.window.createQuickPick();
-    picker.placeholder = placeholder;
-    picker.matchOnDescription = true;
-    picker.matchOnDetail = true;
-    picker.ignoreFocusOut = true;
-    picker.items = items;
-    picker.step = step;
-    picker.totalSteps = totalSteps;
-    picker.show();
-    picker.onDidAccept(function () {
-      let selectedValue = picker.selectedItems[0].label;
-      if (noneItem && selectedValue === noneItem.label) {
-        selectedValue = '';
-      }
-      const result = format(selectedValue);
-      picker.dispose();
-      resolve(result);
-    });
+  const pickerItems = items;
+  if (noneItem) {
+    pickerItems.unshift(noneItem);
+  }
+
+  const selectedItems = await createSimpleQuickPick<Item>({
+    placeholder,
+    matchOnDescription: true,
+    matchOnDetail: true,
+    ignoreFocusOut: true,
+    items,
+    step,
+    totalSteps,
   });
+
+  let selectedValue = selectedItems[0].label;
+  if (noneItem && selectedValue === noneItem.label) {
+    selectedValue = '';
+  }
+  return format(selectedValue);
 }
 
 type InputBoxOptions = {
