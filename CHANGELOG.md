@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.8.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.7.0...v1.8.0) (2020-06-12)
+
+### Features
+
+- :sparkles: support workspace
+  ([70fbb83](https://github.com/vivaxy/vscode-conventional-commits/commit/70fbb83cd85574566fe5a9e670e2e441c7b01dd3))
+
 ## [1.7.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.6.2...v1.7.0) (2020-06-09)
 
 ### Features
