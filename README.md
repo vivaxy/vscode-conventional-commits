@@ -15,6 +15,7 @@ This extension helps you to fill in commit message according to
   [Commit Workflow](#commit-workflow) for details.
 - Support project level scope management.
 - Support gitmojis.
+- Support VSCode workspaces.
 
 ## Usage
 
