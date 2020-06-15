@@ -130,7 +130,9 @@ async function getRepository({
       index,
       label: folder?.name || path.basename(repo.rootUri.fsPath),
       description:
-        `${repo.state.HEAD?.name}${hasChanges(repo) ? '*' : ''}` || '',
+        `${
+          repo.state.HEAD?.name || repo.state.HEAD?.commit?.slice(0, 8) || ''
+        }${hasChanges(repo) ? '*' : ''}` || '',
     };
   });
 
