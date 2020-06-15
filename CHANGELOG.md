@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.8.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.8.0...v1.8.1) (2020-06-15)
+
+### Bug Fixes
+
+- :bug: fix branch name is undefined when repo is detached
+  ([e9c6945](https://github.com/vivaxy/vscode-conventional-commits/commit/e9c6945b1031883603c9482dc7a6875bed9cc317))
+
 ## [1.8.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.7.0...v1.8.0) (2020-06-12)
 
 ### Features
