@@ -105,7 +105,7 @@
     ]
   },
   "dependencies": {
-    "@commitlint/load": "^8.3.5",
+    "@commitlint/load": "^9.0.0",
     "@types/commitlint__load": "^8.3.0",
     "conventional-commit-types": "^3.0.0"
   }
