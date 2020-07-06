@@ -145,7 +145,11 @@ export default async function prompts({
       name: 'subject',
       placeholder: 'Write a short, imperative tense description of the change.',
       validate(input: string) {
-        if (input.length > commlintRules.subjectMaxLength) {
+        if (input.length === 0) {
+          return `Subject is required.`;
+        } else if (input.length < commlintRules.subjectMinLength) {
+          return `Subject has less than ${commlintRules.subjectMinLength} characters.`;
+        } else if (input.length > commlintRules.subjectMaxLength) {
           return `Subject has more than ${commlintRules.subjectMaxLength} characters.`;
         }
       },
