@@ -72,7 +72,6 @@
             "code",
             "emoji"
           ],
-          "markdownDeprecation": "Emoji format.",
           "markdownEnumDescriptions": [
             "Display as `:bug:`",
             "Display as `🐛`"
