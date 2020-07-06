@@ -2,11 +2,11 @@
  * @since 2020-04-28 14:37
  * @author vivaxy
  */
-import * as load from '@commitlint/load';
+import load from '@commitlint/load';
+import { RulesConfig } from '@commitlint/types/lib/load';
 
 async function loadRules(cwd: string) {
   try {
-    // @ts-ignore
     const { rules } = await load({}, { cwd });
     return rules;
   } catch (e) {
@@ -28,12 +28,13 @@ export async function getRules({
 }: {
   cwd: string;
 }): Promise<CommitlintRules> {
-  const rules: load.Rules = await loadRules(cwd);
+  const rules: Partial<RulesConfig> = await loadRules(cwd);
 
-  function getRuleValue<T>(key: keyof load.Rules, defaultValue: T) {
+  function getRuleValue<T>(key: keyof RulesConfig, defaultValue: T) {
+    // @ts-ignore
     const [level, applicable, value] = rules[key] || [0, 'never', defaultValue];
     if (level === 2 && applicable === 'always') {
-      return (value as T) || defaultValue;
+      return ((value as unknown) as T) || defaultValue;
     }
     return defaultValue;
   }
