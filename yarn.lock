@@ -30,6 +30,14 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@commitlint/ensure@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/ensure/-/ensure-9.0.1.tgz#3ad2bb93a90893393e781a0e578532d4d07ef997"
+  integrity sha512-z8SEkfbn0lMnAtt7Hp3A8hE3CRCDsg+Eu3Xj1UJakOyCPJgHE1/vEyM2DO2dxTXVKuttiHeLDnUSHCxklm78Ng==
+  dependencies:
+    "@commitlint/types" "^9.0.1"
+    lodash "^4.17.15"
+
 "@commitlint/execute-rule@^9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@commitlint/execute-rule/-/execute-rule-9.0.1.tgz#59993cf87103d75b56c6ae790cd4240c1863b3c2"
@@ -48,6 +56,11 @@
     lodash "^4.17.15"
     resolve-from "^5.0.0"
 
+"@commitlint/message@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/message/-/message-9.0.1.tgz#c5da6fc081203cc1b41d0f217954bbaa865cac7e"
+  integrity sha512-9rKnOeBV5s5hnV895aE3aMgciC27kAjkV9BYVQOWRjZdXHFZxa+OZ94mkMp+Hcr61W++fox1JJpPiTuCTDX3TQ==
+
 "@commitlint/resolve-extends@^9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@commitlint/resolve-extends/-/resolve-extends-9.0.1.tgz#1b8b03c2b91602cb1c6b0feac41c6636b2c517ba"
@@ -57,6 +70,21 @@
     lodash "^4.17.15"
     resolve-from "^5.0.0"
     resolve-global "^1.0.0"
+
+"@commitlint/rules@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/rules/-/rules-9.0.1.tgz#38c73119a4a5048c709b58465267b6405a422ef0"
+  integrity sha512-K9IiQzF/C2tP/0mQUPSkOtmAEUleRQhZK1NFLVbsd6r4uobaczjPSYvEH+cuSHlD9b3Ori7PRiTgVBAZTH5ORQ==
+  dependencies:
+    "@commitlint/ensure" "^9.0.1"
+    "@commitlint/message" "^9.0.1"
+    "@commitlint/to-lines" "^9.0.1"
+    "@commitlint/types" "^9.0.1"
+
+"@commitlint/to-lines@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/to-lines/-/to-lines-9.0.1.tgz#18bb2aadd3d5094f12ad29a03c086947c2e5f3d1"
+  integrity sha512-FHiXPhFgGnvekF4rhyl1daHimEHkr81pxbHAmWG/0SOCehFr5THsWGoUYNNBMF7rdwUuVq4tXJpEOFiWBGKigg==
 
 "@commitlint/types@^9.0.1":
   version "9.0.1"

@@ -5,12 +5,13 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
-import prompts, { Answers } from './prompts';
+import prompts from './prompts';
 import * as configuration from './configuration';
 import * as names from '../configs/names';
 import * as output from './output';
-import * as commitlint from './commitlint';
+import commitlint, { Commitlint } from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
+import CommitMessage from './commit-message';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -21,26 +22,26 @@ function getGitAPI(): VSCodeGit.API | void {
   }
 }
 
-function formatAnswers(answers: Answers) {
+function formatAnswers(commitMessage: CommitMessage) {
   let message = '';
-  message += answers.type.trim();
-  const scope = answers.scope.trim();
+  message += commitMessage.type.trim();
+  const scope = commitMessage.scope.trim();
   if (scope) {
     message += `(${scope})`;
   }
   message += ': ';
-  if (answers.gitmoji) {
-    message += `${answers.gitmoji} `;
+  if (commitMessage.gitmoji) {
+    message += `${commitMessage.gitmoji} `;
   }
-  const subject = answers.subject.trim();
+  const subject = commitMessage.subject.trim();
   if (subject) {
     message += subject;
   }
-  const body = answers.body.trim();
+  const body = commitMessage.body.trim();
   if (body) {
     message += `\n\n${body}`;
   }
-  const footer = answers.footer.trim();
+  const footer = commitMessage.footer.trim();
   if (footer) {
     message += `\n\n${footer}`;
   }
@@ -178,11 +179,15 @@ export default function createConventionalCommits() {
       });
 
       // 4. get commitlint rules
-      const commlintRules = await commitlint.getRules({
-        cwd: repository.rootUri.fsPath,
-      });
+      const commitlintRuleConfigs = await commitlint.loadRuleConfigs(
+        repository.rootUri.fsPath,
+      );
       output.appendLine(
-        `commlintRules: ${JSON.stringify(commlintRules, null, 2)}`,
+        `commitlintRuleConfigs: ${JSON.stringify(
+          commitlintRuleConfigs,
+          null,
+          2,
+        )}`,
       );
 
       // 5. get message
@@ -191,7 +196,6 @@ export default function createConventionalCommits() {
         emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
           'emojiFormat',
         ),
-        commlintRules,
         lineBreak: configuration.get<string>('lineBreak'),
       });
       output.appendLine(`answers: ${JSON.stringify(answers, null, 2)}`);

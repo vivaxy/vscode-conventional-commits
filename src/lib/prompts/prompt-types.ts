@@ -5,6 +5,8 @@
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
 import createSimpleQuickPick from './quick-pick';
+import * as output from '../output';
+import * as names from '../../configs/names';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -77,22 +79,31 @@ function createInputBox({
   totalSteps,
   validate = () => undefined,
 }: InputBoxOptions): Promise<string> {
-  return new Promise(function (resolve) {
+  return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
     input.step = step;
     input.totalSteps = totalSteps;
     input.ignoreFocusOut = true;
     input.placeholder = placeholder;
     input.onDidChangeValue(function () {
-      input.validationMessage = validate(input.value);
+      try {
+        input.validationMessage = validate(input.value);
+      } catch (e) {
+        reject(e);
+      }
     });
     input.onDidAccept(function () {
-      if (input.validationMessage) {
-        return;
+      try {
+        input.validationMessage = validate(input.value);
+        if (input.validationMessage) {
+          return;
+        }
+        const result = format(input.value);
+        input.dispose();
+        resolve(result);
+      } catch (e) {
+        reject(e);
       }
-      const result = format(input.value);
-      input.dispose();
-      resolve(result);
     });
     input.prompt = placeholder;
     input.show();
