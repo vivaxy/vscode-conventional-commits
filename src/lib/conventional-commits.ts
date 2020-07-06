@@ -75,10 +75,6 @@ function hasChanges(repo: VSCodeGit.Repository) {
   );
 }
 
-function isSelected(repo: VSCodeGit.Repository) {
-  return repo.ui.selected;
-}
-
 async function getRepository({
   git,
   arg,
@@ -160,6 +156,7 @@ export default function createConventionalCommits() {
 
       outputConfiguration('autoCommit');
       outputConfiguration('gitmoji');
+      outputConfiguration('emojiFormat');
       outputConfiguration('scopes');
       outputConfiguration('lineBreak');
 
@@ -191,6 +188,9 @@ export default function createConventionalCommits() {
       // 5. get message
       const answers = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
+        emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
+          'emojiFormat',
+        ),
         commlintRules,
         lineBreak: configuration.get<string>('lineBreak'),
       });

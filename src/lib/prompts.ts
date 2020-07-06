@@ -21,10 +21,12 @@ export type Answers = {
 
 export default async function prompts({
   gitmoji,
+  emojiFormat,
   commlintRules,
   lineBreak,
 }: {
   gitmoji: boolean;
+  emojiFormat: configuration.EMOJI_FORMAT;
   commlintRules: CommitlintRules;
   lineBreak: string;
 }): Promise<Answers> {
@@ -126,8 +128,8 @@ export default async function prompts({
       placeholder: 'Choose a gitmoji.',
       items: gitmojis.gitmojis.map(function ({ emoji, code, description }) {
         return {
-          label: code,
-          description: emoji,
+          label: emojiFormat === 'code' ? code : emoji,
+          description: emojiFormat === 'code' ? emoji : '',
           detail: description,
         };
       }),

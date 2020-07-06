@@ -5,9 +5,15 @@
 import * as vscode from 'vscode';
 import * as names from '../configs/names';
 
+export enum EMOJI_FORMAT {
+  code = 'code',
+  emoji = 'emoji',
+}
+
 export type Configuration = {
   autoCommit: boolean;
   gitmoji: boolean;
+  emojiFormat: EMOJI_FORMAT;
   scopes: string[];
   lineBreak: string;
 };

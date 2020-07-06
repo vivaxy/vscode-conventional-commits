@@ -65,6 +65,19 @@
           "default": true,
           "markdownDescription": "Controls whether the extension should prompt for an gitmoji."
         },
+        "conventionalCommits.emojiFormat": {
+          "type": "string",
+          "default": "code",
+          "enum": [
+            "code",
+            "emoji"
+          ],
+          "markdownDeprecation": "Emoji format.",
+          "markdownEnumDescriptions": [
+            "Display as `:bug:`",
+            "Display as `🐛`"
+          ]
+        },
         "conventionalCommits.scopes": {
           "type": "array",
           "default": [],
