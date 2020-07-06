@@ -181,7 +181,7 @@ export default async function prompts({
       };
     });
 
-  const answers: CommitMessage = {
+  const commitMessage: CommitMessage = {
     type: '',
     scope: '',
     gitmoji: '',
@@ -191,12 +191,12 @@ export default async function prompts({
   };
 
   for (const question of questions) {
-    answers[question.name as keyof CommitMessage] = await promptTypes[
+    commitMessage[question.name as keyof CommitMessage] = await promptTypes[
       question.type
     ](
       // @ts-ignore
       question,
     );
   }
-  return answers;
+  return commitMessage;
 }

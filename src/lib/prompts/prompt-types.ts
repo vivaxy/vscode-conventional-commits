@@ -5,8 +5,6 @@
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
 import createSimpleQuickPick from './quick-pick';
-import * as output from '../output';
-import * as names from '../../configs/names';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,

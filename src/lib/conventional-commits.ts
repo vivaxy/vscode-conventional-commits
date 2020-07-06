@@ -9,7 +9,7 @@ import prompts from './prompts';
 import * as configuration from './configuration';
 import * as names from '../configs/names';
 import * as output from './output';
-import commitlint, { Commitlint } from './commitlint';
+import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
 import CommitMessage from './commit-message';
 
@@ -22,7 +22,7 @@ function getGitAPI(): VSCodeGit.API | void {
   }
 }
 
-function formatAnswers(commitMessage: CommitMessage) {
+function formatCommitMessage(commitMessage: CommitMessage) {
   let message = '';
   message += commitMessage.type.trim();
   const scope = commitMessage.scope.trim();
@@ -191,20 +191,22 @@ export default function createConventionalCommits() {
       );
 
       // 5. get message
-      const answers = await prompts({
+      const commitMessage = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
           'emojiFormat',
         ),
         lineBreak: configuration.get<string>('lineBreak'),
       });
-      output.appendLine(`answers: ${JSON.stringify(answers, null, 2)}`);
-      const commitMessage = formatAnswers(answers);
-      output.appendLine(`commitMessage: ${commitMessage}`);
+      output.appendLine(
+        `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,
+      );
+      const message = formatCommitMessage(commitMessage);
+      output.appendLine(`message: ${message}`);
 
       // 6. switch to scm and put message into message box
       vscode.commands.executeCommand('workbench.view.scm');
-      repository.inputBox.value = commitMessage;
+      repository.inputBox.value = message;
       output.appendLine(`inputBox.value: ${repository.inputBox.value}`);
 
       // 7. auto commit
