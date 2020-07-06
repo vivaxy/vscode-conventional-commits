@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.9.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.8.1...v1.9.0) (2020-07-06)
+
+### Features
+
+- :sparkles: support config emoji format
+  ([bf54e57](https://github.com/vivaxy/vscode-conventional-commits/commit/bf54e57f286cae8cf7500b96afe1c1dff0510bf9)),
+  closes [#19](https://github.com/vivaxy/vscode-conventional-commits/issues/19)
+
+### Bug Fixes
+
+- **deps:** update dependency @commitlint/load to v9
+  ([2829c97](https://github.com/vivaxy/vscode-conventional-commits/commit/2829c97d699a3d1f85a0627619ef0f9e7cee0c1e))
+
 ### [1.8.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.8.0...v1.8.1) (2020-06-15)
 
 ### Bug Fixes
