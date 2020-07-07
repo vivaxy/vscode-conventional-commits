@@ -8,28 +8,19 @@ import * as configuration from './configuration';
 import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as names from '../configs/names';
-import { CommitlintRules } from './commitlint';
-
-export type Answers = {
-  type: string;
-  scope: string;
-  gitmoji: string;
-  subject: string;
-  body: string;
-  footer: string;
-};
+import CommitMessage from './commit-message';
+import commitlint from './commitlint';
+import * as output from './output';
 
 export default async function prompts({
   gitmoji,
   emojiFormat,
-  commlintRules,
   lineBreak,
 }: {
   gitmoji: boolean;
   emojiFormat: configuration.EMOJI_FORMAT;
-  commlintRules: CommitlintRules;
   lineBreak: string;
-}): Promise<Answers> {
+}): Promise<CommitMessage> {
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {
       return input.replace(
@@ -41,7 +32,8 @@ export default async function prompts({
   }
 
   function getTypeItems() {
-    if (commlintRules.typeEnum.length === 0) {
+    const typeEnum = commitlint.getTypeEnum();
+    if (typeEnum.length === 0) {
       return Object.keys(conventionalCommitsTypes.types).map(function (type) {
         const { title, description } = conventionalCommitsTypes.types[type];
         return {
@@ -51,7 +43,7 @@ export default async function prompts({
         };
       });
     }
-    return commlintRules.typeEnum.map(function (type) {
+    return typeEnum.map(function (type) {
       if (type in conventionalCommitsTypes.types) {
         const { description, title } = conventionalCommitsTypes.types[type];
         return {
@@ -71,12 +63,13 @@ export default async function prompts({
   function getScopePrompt() {
     const name = 'scope';
     const placeholder = 'Select the scope of this change.';
-    if (commlintRules.scopeEnum.length) {
+    const scopeEnum = commitlint.getScopeEnum();
+    if (scopeEnum.length) {
       return {
         type: PROMPT_TYPES.QUICK_PICK,
         name,
         placeholder,
-        items: commlintRules.scopeEnum.map(function (scope) {
+        items: scopeEnum.map(function (scope) {
           return {
             label: scope,
             description: names.DESCRIPTION_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
@@ -111,6 +104,9 @@ export default async function prompts({
         alwaysShow: true,
       },
       newItemPlaceholder: 'Create a new scope.',
+      validate(input: string) {
+        return commitlint.lintScope(input);
+      },
     };
   }
 
@@ -120,6 +116,9 @@ export default async function prompts({
       name: 'type',
       placeholder: "Select the type of change that you're committing.",
       items: getTypeItems(),
+      validate(input: string) {
+        return commitlint.lintType(input);
+      },
     },
     getScopePrompt(),
     {
@@ -145,13 +144,7 @@ export default async function prompts({
       name: 'subject',
       placeholder: 'Write a short, imperative tense description of the change.',
       validate(input: string) {
-        if (commlintRules.subjectEmpty === 'never' && input.length === 0) {
-          return 'Subject may not be empty.';
-        } else if (input.length < commlintRules.subjectMinLength) {
-          return `Subject must not be shorter than ${commlintRules.subjectMinLength} characters.`;
-        } else if (input.length > commlintRules.subjectMaxLength) {
-          return `Subject has more than ${commlintRules.subjectMaxLength} characters.`;
-        }
+        return commitlint.lintSubject(input);
       },
       format: lineBreakFormatter,
     },
@@ -160,9 +153,7 @@ export default async function prompts({
       name: 'body',
       placeholder: 'Provide a longer description of the change.',
       validate(input: string) {
-        if (input.length > commlintRules.bodyMaxLength) {
-          return `Body has more than ${commlintRules.bodyMaxLength} characters.`;
-        }
+        return commitlint.lintBody(input);
       },
       format: lineBreakFormatter,
     },
@@ -171,9 +162,7 @@ export default async function prompts({
       name: 'footer',
       placeholder: 'List any breaking changes or issues closed by this change.',
       validate(input: string) {
-        if (input.length > commlintRules.footerMaxLength) {
-          return `Footer has more than ${commlintRules.footerMaxLength} characters.`;
-        }
+        return commitlint.lintFooter(input);
       },
       format: lineBreakFormatter,
     },
@@ -192,7 +181,7 @@ export default async function prompts({
       };
     });
 
-  const answers: Answers = {
+  const commitMessage: CommitMessage = {
     type: '',
     scope: '',
     gitmoji: '',
@@ -202,10 +191,12 @@ export default async function prompts({
   };
 
   for (const question of questions) {
-    answers[question.name as keyof Answers] = await promptTypes[question.type](
+    commitMessage[question.name as keyof CommitMessage] = await promptTypes[
+      question.type
+    ](
       // @ts-ignore
       question,
     );
   }
-  return answers;
+  return commitMessage;
 }

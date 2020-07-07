@@ -3,51 +3,103 @@
  * @author vivaxy
  */
 import load from '@commitlint/load';
-import { RulesConfig } from '@commitlint/types/lib/load';
+import rules from '@commitlint/rules';
+import { RulesConfig, RuleSeverity } from '@commitlint/types/lib/load';
+import { Commit } from '@commitlint/types/lib/parse';
 
-async function loadRules(cwd: string) {
-  try {
-    const { rules } = await load({}, { cwd });
-    return rules;
-  } catch (e) {
-    // catch if `Cannot find module "@commitlint/config-conventional"` happens.
-    return {};
-  }
-}
+class Commitlint {
+  private ruleConfigs: Partial<RulesConfig> = {};
 
-export type CommitlintRules = {
-  typeEnum: string[];
-  scopeEnum: string[];
-  subjectEmpty: string;
-  subjectMaxLength: number;
-  subjectMinLength: number;
-  bodyMaxLength: number;
-  footerMaxLength: number;
-};
-
-export async function getRules({
-  cwd,
-}: {
-  cwd: string;
-}): Promise<CommitlintRules> {
-  const rules: Partial<RulesConfig> = await loadRules(cwd);
-
-  function getRuleValue<T>(key: keyof RulesConfig, defaultValue: T) {
-    // @ts-ignore
-    const [level, applicable, value] = rules[key] || [0, 'never', defaultValue];
-    if (level === 2 && applicable === 'always') {
-      return ((value as unknown) as T) || defaultValue;
+  async loadRuleConfigs(cwd: string): Promise<Partial<RulesConfig>> {
+    async function getRuleConfigs() {
+      try {
+        const { rules } = await load({}, { cwd });
+        return rules;
+      } catch (e) {
+        // catch if `Cannot find module "@commitlint/config-conventional"` happens.
+        return {};
+      }
     }
-    return defaultValue;
+    this.ruleConfigs = await getRuleConfigs();
+    return this.ruleConfigs;
   }
 
-  return {
-    typeEnum: getRuleValue<string[]>('type-enum', []), // [] means use the default types
-    scopeEnum: getRuleValue<string[]>('scope-enum', []), // [] means everything is ok
-    subjectEmpty: getRuleValue<string>('subject-empty', 'never'),
-    subjectMaxLength: getRuleValue<number>('subject-max-length', Infinity),
-    subjectMinLength: getRuleValue<number>('subject-min-length', 0),
-    bodyMaxLength: getRuleValue<number>('body-max-length', Infinity),
-    footerMaxLength: getRuleValue<number>('footer-max-length', Infinity),
-  };
+  private getEnum(key: keyof RulesConfig) {
+    const config = this.ruleConfigs[key];
+    if (!config) {
+      return [];
+    }
+    // @ts-ignore
+    const [level, condition, value] = config;
+    if (level !== RuleSeverity.Error) {
+      return [];
+    }
+    if (condition === 'never') {
+      return [];
+    }
+    if (!Array.isArray(value)) {
+      return [];
+    }
+    return value.map(function (item) {
+      return String(item);
+    });
+  }
+
+  private lintRule(commit: Commit, key: keyof RulesConfig) {
+    if (!this.ruleConfigs[key]) {
+      return '';
+    }
+    // @ts-ignore
+    const [level, condition, value] = this.ruleConfigs[key];
+    if (level !== RuleSeverity.Error) {
+      return '';
+    }
+    // @ts-ignore
+    const [valid, error] = rules[key](commit, condition, value);
+    return valid ? '' : error;
+  }
+
+  private lintRules(commit: Commit, keys: (keyof RulesConfig)[]) {
+    for (const key of keys) {
+      const error = this.lintRule(commit, key);
+      if (error) {
+        return error;
+      }
+    }
+    return '';
+  }
+
+  getTypeEnum() {
+    return this.getEnum('type-enum');
+  }
+
+  getScopeEnum() {
+    return this.getEnum('scope-enum');
+  }
+
+  lintType(type: string) {
+    return this.lintRules({ type } as Commit, ['type-enum']);
+  }
+
+  lintScope(scope: string) {
+    return this.lintRules({ scope } as Commit, ['scope-enum']);
+  }
+
+  lintSubject(subject: string) {
+    return this.lintRules({ subject } as Commit, [
+      'subject-empty',
+      'subject-min-length',
+      'subject-max-length',
+    ]);
+  }
+
+  lintBody(body: string) {
+    return this.lintRules({ body } as Commit, ['body-max-length']);
+  }
+
+  lintFooter(footer: string) {
+    return this.lintRules({ footer } as Commit, ['footer-max-length']);
+  }
 }
+
+export default new Commitlint();
