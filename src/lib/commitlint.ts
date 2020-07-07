@@ -78,27 +78,47 @@ class Commitlint {
   }
 
   lintType(type: string) {
-    return this.lintRules({ type } as Commit, ['type-enum']);
+    return this.lintRules({ type } as Commit, [
+      'type-enum',
+      'type-case',
+      'type-empty',
+      'type-min-length',
+      'type-max-length',
+    ]);
   }
 
   lintScope(scope: string) {
-    return this.lintRules({ scope } as Commit, ['scope-enum']);
+    return this.lintRules({ scope } as Commit, [
+      'scope-enum',
+      'scope-case',
+      'scope-empty',
+      'scope-max-length',
+      'scope-min-length',
+    ]);
   }
 
   lintSubject(subject: string) {
     return this.lintRules({ subject } as Commit, [
+      'subject-case',
       'subject-empty',
+      'subject-full-stop',
       'subject-min-length',
       'subject-max-length',
     ]);
   }
 
   lintBody(body: string) {
-    return this.lintRules({ body } as Commit, ['body-max-length']);
+    return this.lintRules({ body } as Commit, [
+      'body-min-length',
+      'body-max-length',
+    ]);
   }
 
   lintFooter(footer: string) {
-    return this.lintRules({ footer } as Commit, ['footer-max-length']);
+    return this.lintRules({ footer } as Commit, [
+      'footer-min-length',
+      'footer-max-length',
+    ]);
   }
 }
 
