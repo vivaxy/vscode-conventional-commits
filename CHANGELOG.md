@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.10.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.9.0...v1.10.0) (2020-07-07)
+
+### Features
+
+- :sparkles: add subject-empty && modify subject-min-length message
+  ([c7b1e8f](https://github.com/vivaxy/vscode-conventional-commits/commit/c7b1e8f510158ba544d6e22a0ddb1ae84d47e07f))
+- :sparkles: subject is required && add subjectMinLength
+  ([0e0f2df](https://github.com/vivaxy/vscode-conventional-commits/commit/0e0f2df132dd063b92311a55dc51766853f5af6f))
+- :sparkles: support more commitlint rules
+  ([89d7440](https://github.com/vivaxy/vscode-conventional-commits/commit/89d7440ae7d083310600b98cb98dc6d65758bb5e))
+
 ## [1.9.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.8.1...v1.9.0) (2020-07-06)
 
 ### Features
