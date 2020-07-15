@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.10.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.10.0...v1.10.1) (2020-07-15)
+
+### Bug Fixes
+
+- :bug: fix icon not displayed on SVM title when workspace is enabled
+  ([0507aa9](https://github.com/vivaxy/vscode-conventional-commits/commit/0507aa96bfd4d9836955a1884dd5cf275e06c6c6))
+
 ## [1.10.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.9.0...v1.10.0) (2020-07-07)
 
 ### Features
