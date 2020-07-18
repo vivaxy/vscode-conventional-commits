@@ -10,7 +10,8 @@
 This extension helps you to fill in commit message according to
 [Conventional Commits](https://www.conventionalcommits.org/).
 
-- Respect commitlint configs.
+- Respect
+  [commitlint configs](https://commitlint.js.org/#/reference-configuration).
 - Support auto commit and push after typing messages. See
   [Commit Workflow](#commit-workflow) for details.
 - Support project level scope management.
