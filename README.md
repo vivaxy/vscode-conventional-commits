@@ -62,6 +62,7 @@ push the commit to remote.
 - [Commit Message Editor](https://github.com/bendera/vscode-commit-message-editor)
 - [commitji](https://github.com/jmaicaaan/commitji)
 - [idea-conventional-commit](https://github.com/lppedd/idea-conventional-commit)
+- [Git-commit-plugin For Vscode](https://github.com/RedJue/git-commit-plugin)
 
 ## Troubleshooting
 
