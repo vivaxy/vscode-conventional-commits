@@ -70,7 +70,7 @@ push the commit to remote.
 
 1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
 2. Copy all the output. Before sharing it, make sure you have removed all
-   private date.
+   private information.
 
 ![Debug instruction](./assets/docs/debug-instruction.png)
 
