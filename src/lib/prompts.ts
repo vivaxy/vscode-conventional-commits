@@ -3,9 +3,17 @@
  * @author vivaxy
  */
 const conventionalCommitsTypes = require('conventional-commit-types');
+const gitmojis: {
+  gitmojis: {
+    emoji: string;
+    entity: string;
+    code: string;
+    description: string;
+    name: string;
+  }[];
+} = require('gitmojis');
 
 import * as configuration from './configuration';
-import gitmojis from '../vendors/gitmojis';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as names from '../configs/names';
 import CommitMessage from './commit-message';
