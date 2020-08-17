@@ -40,7 +40,10 @@
       {
         "command": "extension.conventionalCommits",
         "title": "Conventional Commits",
-        "icon": "./assets/menu-icon.svg"
+        "icon": {
+          "dark": "./assets/menu-icon-dark.svg",
+          "light": "./assets/menu-icon-light.svg"
+        }
       }
     ],
     "menus": {
