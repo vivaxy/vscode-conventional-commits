@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.11.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.10.1...v1.11.0) (2020-08-18)
+
+### Features
+
+- :arrow_up: upgrade to the latest gitmoji
+  ([607a5b0](https://github.com/vivaxy/vscode-conventional-commits/commit/607a5b0964861b83fbf069a05c91de9a7eec279d))
+
 ### [1.10.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.10.0...v1.10.1) (2020-07-15)
 
 ### Bug Fixes
