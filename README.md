@@ -49,7 +49,7 @@ push the commit to remote.
 
 1. Enable `Settings > conventionalCommits.autoCommit` configuration of the
    extension. _The extension enables `Settings > conventionalCommits.autoCommit`
-   by default_.
+   by default._
 2. Enable `Settings > git.enableSmartCommit` and set
    `Settings > git.smartCommitChanges` to `all` to commit all changes when there
    are no staged changes.
