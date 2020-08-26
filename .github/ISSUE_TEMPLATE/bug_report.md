@@ -24,4 +24,4 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Application logs**
-Follow the [gather logs](https://github.com/vivaxy/vscode-conventional-commits#gather-logs) section and paste the logs here.
+Follow the [troubleshooting](https://github.com/vivaxy/vscode-conventional-commits#troubleshooting) section and paste the logs here.
