@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.11.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.11.0...v1.11.1) (2020-08-26)
+
+### Bug Fixes
+
+- :bug: fix an error when nothing selected in quick picker
+  ([cf15aa4](https://github.com/vivaxy/vscode-conventional-commits/commit/cf15aa4285864992e6d41d3b55b91fa4bc81b818))
+- :bug: fix subject length lint not matching commitlint
+  ([93922b2](https://github.com/vivaxy/vscode-conventional-commits/commit/93922b20be5bfaf2c30ec38cbe1af1a3c2ad9830)),
+  closes [#30](https://github.com/vivaxy/vscode-conventional-commits/issues/30)
+
 ## [1.11.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.10.1...v1.11.0) (2020-08-18)
 
 ### Features
