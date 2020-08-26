@@ -16,9 +16,11 @@ const gitmojis: {
 import * as configuration from './configuration';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as names from '../configs/names';
-import CommitMessage from './commit-message';
+import commitMessage, {
+  CommitMessage,
+  serializeSubject,
+} from './commit-message';
 import commitlint from './commitlint';
-import * as output from './output';
 
 export default async function prompts({
   gitmoji,
@@ -152,7 +154,16 @@ export default async function prompts({
       name: 'subject',
       placeholder: 'Write a short, imperative tense description of the change.',
       validate(input: string) {
-        return commitlint.lintSubject(input);
+        const error = commitlint.lintSubject(
+          serializeSubject({
+            gitmoji: commitMessage.gitmoji,
+            subject: input,
+          } as CommitMessage),
+        );
+        if (error && commitMessage.gitmoji) {
+          return `${error} (including gitmoji: ${commitMessage.gitmoji})`;
+        }
+        return error;
       },
       format: lineBreakFormatter,
     },
@@ -188,15 +199,6 @@ export default async function prompts({
         totalSteps: array.length,
       };
     });
-
-  const commitMessage: CommitMessage = {
-    type: '',
-    scope: '',
-    gitmoji: '',
-    subject: '',
-    body: '',
-    footer: '',
-  };
 
   for (const question of questions) {
     commitMessage[question.name as keyof CommitMessage] = await promptTypes[

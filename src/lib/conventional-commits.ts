@@ -11,7 +11,7 @@ import * as names from '../configs/names';
 import * as output from './output';
 import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
-import CommitMessage from './commit-message';
+import { serialize } from './commit-message';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -20,32 +20,6 @@ function getGitAPI(): VSCodeGit.API | void {
   if (vscodeGit) {
     return vscodeGit.exports.getAPI(1);
   }
-}
-
-function formatCommitMessage(commitMessage: CommitMessage) {
-  let message = '';
-  message += commitMessage.type.trim();
-  const scope = commitMessage.scope.trim();
-  if (scope) {
-    message += `(${scope})`;
-  }
-  message += ': ';
-  if (commitMessage.gitmoji) {
-    message += `${commitMessage.gitmoji} `;
-  }
-  const subject = commitMessage.subject.trim();
-  if (subject) {
-    message += subject;
-  }
-  const body = commitMessage.body.trim();
-  if (body) {
-    message += `\n\n${body}`;
-  }
-  const footer = commitMessage.footer.trim();
-  if (footer) {
-    message += `\n\n${footer}`;
-  }
-  return message;
 }
 
 function outputExtensionVersion(name: string, key: string) {
@@ -201,7 +175,7 @@ export default function createConventionalCommits() {
       output.appendLine(
         `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,
       );
-      const message = formatCommitMessage(commitMessage);
+      const message = serialize(commitMessage);
       output.appendLine(`message: ${message}`);
 
       // 6. switch to scm and put message into message box
