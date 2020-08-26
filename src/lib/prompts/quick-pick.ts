@@ -26,9 +26,11 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.totalSteps = totalSteps;
     picker.show();
     picker.onDidAccept(function () {
-      const result = format(picker.selectedItems as T[]);
-      picker.dispose();
-      resolve(result);
+      if (picker.selectedItems.length) {
+        const result = format(picker.selectedItems as T[]);
+        picker.dispose();
+        resolve(result);
+      }
     });
   });
 }
