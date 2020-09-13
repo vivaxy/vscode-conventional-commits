@@ -120,8 +120,8 @@
     ]
   },
   "dependencies": {
-    "@commitlint/load": "^9.0.0",
-    "@commitlint/rules": "^9.0.1",
+    "@commitlint/load": "^11.0.0",
+    "@commitlint/rules": "^11.0.0",
     "conventional-commit-types": "^3.0.0",
     "gitmojis": "^3.0.0"
   }
