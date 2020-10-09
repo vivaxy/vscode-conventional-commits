@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.12.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.12.0...v1.12.1) (2020-10-09)
+
+### Bug Fixes
+
+- :bug: fix ts type
+  ([117cf92](https://github.com/vivaxy/vscode-conventional-commits/commit/117cf92a1101792d66c9ae20a396f531ecab72fd))
+
 ## [1.12.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.11.1...v1.12.0) (2020-10-09)
 
 ### Features
