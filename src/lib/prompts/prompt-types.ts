@@ -5,6 +5,7 @@
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
 import createSimpleQuickPick from './quick-pick';
+import localize from '../localize';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -132,7 +133,7 @@ async function createConfiguriableQuickPick({
     return {
       label: value,
       description: '',
-      detail: 'From workspace configuration.',
+      detail: localize('extension.sources.prompt.fromWorkspaceConfiguration'),
     };
   });
   items.push(newItem);

@@ -3,7 +3,7 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
-import * as names from '../configs/names';
+import * as keys from '../configs/keys';
 
 export enum EMOJI_FORMAT {
   code = 'code',
@@ -24,12 +24,12 @@ export function getConfiguration() {
 
 export function get<T>(key: keyof Configuration): T {
   return (getConfiguration().get<Configuration>(
-    `${names.conventionalCommits}.${key}`,
+    `${keys.PREFIX}.${key}`,
   ) as unknown) as T;
 }
 
 export async function update(key: keyof Configuration, value: any) {
   return await vscode.workspace
     .getConfiguration()
-    .update(`${names.conventionalCommits}.${key}`, value);
+    .update(`${keys.PREFIX}.${key}`, value);
 }

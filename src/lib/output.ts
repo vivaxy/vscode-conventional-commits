@@ -3,12 +3,11 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
-import * as names from '../configs/names';
 
 let output: vscode.OutputChannel;
 
 export function initialize() {
-  output = vscode.window.createOutputChannel(names.Conventional_Commits);
+  output = vscode.window.createOutputChannel('Conventional Commits');
 }
 
 export function appendLine(message: string) {

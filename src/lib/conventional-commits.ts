@@ -7,11 +7,11 @@ import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
 import prompts from './prompts';
 import * as configuration from './configuration';
-import * as names from '../configs/names';
 import * as output from './output';
 import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
 import { serialize } from './commit-message';
+import localize from './localize';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -82,11 +82,14 @@ async function getRepository({
     if (repo) {
       return repo;
     }
-    throw new Error('Repository not found in path: ' + arg._rootUri.fsPath);
+    throw new Error(
+      localize('extension.sources.repositoryNotFoundInPath') +
+        arg._rootUri.fsPath,
+    );
   }
 
   if (git.repositories.length === 0) {
-    throw new Error('Please open a repository.');
+    throw new Error(localize('extension.sources.repositoriesEmpty'));
   }
 
   if (git.repositories.length === 1) {
@@ -108,7 +111,7 @@ async function getRepository({
   });
 
   const [{ index }] = await createSimpleQuickPick({
-    placeholder: 'Choose a repository',
+    placeholder: localize('extension.sources.promptRepositoryPlaceholder'),
     items,
   });
 
@@ -142,7 +145,7 @@ export default function createConventionalCommits() {
       // 2. check git
       const git = getGitAPI();
       if (!git) {
-        throw new Error('vscode.git is not enabled.');
+        throw new Error(localize('extension.sources.vscodeGitNotFound'));
       }
 
       // 3. get repository
@@ -192,7 +195,7 @@ export default function createConventionalCommits() {
     } catch (e) {
       output.appendLine(`Finished with an error: ${e.stack}`);
       vscode.window.showErrorMessage(
-        `${names.Conventional_Commits}: ${e.message}`,
+        `${localize('extension.name')}: ${e.message}`,
       );
     }
   };

@@ -15,12 +15,13 @@ const gitmojis: {
 
 import * as configuration from './configuration';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
-import * as names from '../configs/names';
+import * as keys from '../configs/keys';
 import commitMessage, {
   CommitMessage,
   serializeSubject,
 } from './commit-message';
 import commitlint from './commitlint';
+import localize from './localize';
 
 export default async function prompts({
   gitmoji,
@@ -64,16 +65,22 @@ export default async function prompts({
       }
       return {
         label: type,
-        description: names.DESCRIPTION_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
-        detail: names.DETAIL_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
+        description: '',
+        detail: localize('extension.sources.prompt.type.fromCommitlintConfig'),
       };
     });
   }
 
   function getScopePrompt() {
     const name = 'scope';
-    const placeholder = 'Select the scope of this change.';
+    const placeholder = localize('extension.sources.prompt.scope.placeholder');
     const scopeEnum = commitlint.getScopeEnum();
+    const noneItem = {
+      label: localize('extension.sources.prompt.scope.noneItem.label'),
+      description: '',
+      detail: localize('extension.sources.prompt.scope.noneItem.detail'),
+      alwaysShow: true,
+    };
     if (scopeEnum.length) {
       return {
         type: PROMPT_TYPES.QUICK_PICK,
@@ -82,16 +89,13 @@ export default async function prompts({
         items: scopeEnum.map(function (scope) {
           return {
             label: scope,
-            description: names.DESCRIPTION_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
-            detail: names.DETAIL_OF_AN_ITEM_FROM_COMMITLINT_CONFIG,
+            description: '',
+            detail: localize(
+              'extension.sources.prompt.type.fromCommitlintConfig',
+            ),
           };
         }),
-        noneItem: {
-          label: 'None',
-          description: '',
-          detail: 'No scope.',
-          alwaysShow: true,
-        },
+        noneItem,
       };
     }
 
@@ -99,21 +103,17 @@ export default async function prompts({
       type: PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK,
       name,
       placeholder,
-      configurationKey: names.SCOPES as keyof configuration.Configuration,
+      configurationKey: keys.SCOPES as keyof configuration.Configuration,
       newItem: {
-        label: 'New scope',
+        label: localize('extension.sources.prompt.scope.newItem.label'),
         description: '',
-        detail:
-          'Add a workspace scope. (You can manage scopes in workspace `settings.json`.)',
+        detail: localize('extension.sources.prompt.scope.newItem.detail'),
         alwaysShow: true,
       },
-      noneItem: {
-        label: 'None',
-        description: '',
-        detail: 'No scope.',
-        alwaysShow: true,
-      },
-      newItemPlaceholder: 'Create a new scope.',
+      noneItem,
+      newItemPlaceholder: localize(
+        'extension.sources.prompt.scope.newItem.placeholder',
+      ),
       validate(input: string) {
         return commitlint.lintScope(input);
       },
@@ -124,7 +124,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'type',
-      placeholder: "Select the type of change that you're committing.",
+      placeholder: localize('extension.sources.prompt.type.placeholder'),
       items: getTypeItems(),
       validate(input: string) {
         return commitlint.lintType(input);
@@ -134,7 +134,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
-      placeholder: 'Choose a gitmoji.',
+      placeholder: localize('extension.sources.prompt.gitmoji.placeholder'),
       items: gitmojis.gitmojis.map(function ({ emoji, code, description }) {
         return {
           label: emojiFormat === 'code' ? code : emoji,
@@ -143,16 +143,16 @@ export default async function prompts({
         };
       }),
       noneItem: {
-        label: 'None',
+        label: localize('extension.sources.prompt.gitmoji.noneItem.label'),
         description: '',
-        detail: 'No gitmoji.',
+        detail: localize('extension.sources.prompt.gitmoji.noneItem.detail'),
         alwaysShow: true,
       },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
-      placeholder: 'Write a short, imperative tense description of the change.',
+      placeholder: localize('extension.sources.prompt.subject.placeholder'),
       validate(input: string) {
         const error = commitlint.lintSubject(
           serializeSubject({
@@ -161,7 +161,9 @@ export default async function prompts({
           } as CommitMessage),
         );
         if (error && commitMessage.gitmoji) {
-          return `${error} (including gitmoji: ${commitMessage.gitmoji})`;
+          return `${error} (${localize(
+            'extension.sources.prompt.subject.error.includingGitmoji',
+          )}${commitMessage.gitmoji})`;
         }
         return error;
       },
@@ -170,7 +172,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
-      placeholder: 'Provide a longer description of the change.',
+      placeholder: localize('extension.sources.prompt.body.placeholder'),
       validate(input: string) {
         return commitlint.lintBody(input);
       },
@@ -179,7 +181,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
-      placeholder: 'List any breaking changes or issues closed by this change.',
+      placeholder: localize('extension.sources.prompt.footer.placeholder'),
       validate(input: string) {
         return commitlint.lintFooter(input);
       },

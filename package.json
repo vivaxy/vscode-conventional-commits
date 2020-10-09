@@ -1,6 +1,6 @@
 {
   "name": "vscode-conventional-commits",
-  "displayName": "VSCode Conventional Commits",
+  "displayName": "%extension.name%",
   "description": "💬Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
@@ -39,7 +39,7 @@
     "commands": [
       {
         "command": "extension.conventionalCommits",
-        "title": "Conventional Commits",
+        "title": "%extension.name%",
         "icon": {
           "dark": "./assets/menu-icon-dark.svg",
           "light": "./assets/menu-icon-light.svg"
@@ -56,17 +56,17 @@
       ]
     },
     "configuration": {
-      "title": "Conventional Commits",
+      "title": "%extension.name%",
       "properties": {
         "conventionalCommits.autoCommit": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Controls whether the extension should automatically commit files.\n\n*Enable `Settings > git.enableSmartCommit` and set `Settings > git.smartCommitChanges` to `all` to commit all changes when there are no staged changes.*\n\n*Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after commit.*"
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.autoCommit.markdownDescription%"
         },
         "conventionalCommits.gitmoji": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Controls whether the extension should prompt for an gitmoji."
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription%"
         },
         "conventionalCommits.emojiFormat": {
           "type": "string",
@@ -76,19 +76,19 @@
             "emoji"
           ],
           "markdownEnumDescriptions": [
-            "Display as `:bug:`",
-            "Display as `🐛`"
+            "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.code%",
+            "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.emoji%"
           ]
         },
         "conventionalCommits.scopes": {
           "type": "array",
           "default": [],
-          "markdownDescription": "Available scopes."
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.scopes.markdownDescription%"
         },
         "conventionalCommits.lineBreak": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Treat words as line breaks.\n\nBlank means no line breaks."
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription%"
         }
       }
     }
