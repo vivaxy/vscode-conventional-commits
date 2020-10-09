@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.12.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.11.1...v1.12.0) (2020-10-09)
+
+### Features
+
+- :globe_with_meridians: support chinese language
+  ([cfabbc2](https://github.com/vivaxy/vscode-conventional-commits/commit/cfabbc2f6e5e8f064545fde1c9434c3b3bc36457))
+
+### Bug Fixes
+
+- **deps:** update commitlint monorepo to v11
+  ([1ec93cf](https://github.com/vivaxy/vscode-conventional-commits/commit/1ec93cfd594a3cb8170e9e3a5c2ddb3661ff3f37))
+- **deps:** update dependency gitmojis to v3
+  ([4ccad4e](https://github.com/vivaxy/vscode-conventional-commits/commit/4ccad4e1ebbc9ea1c2def63579207b83e4288e86))
+
 ### [1.11.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.11.0...v1.11.1) (2020-08-26)
 
 ### Bug Fixes
