@@ -4,7 +4,7 @@
  */
 import load from '@commitlint/load';
 import rules from '@commitlint/rules';
-import { RulesConfig, RuleSeverity } from '@commitlint/types/lib/load';
+import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { Commit } from '@commitlint/types/lib/parse';
 
 class Commitlint {
@@ -31,7 +31,7 @@ class Commitlint {
     }
     // @ts-ignore
     const [level, condition, value] = config;
-    if (level !== RuleSeverity.Error) {
+    if (level !== RuleConfigSeverity.Error) {
       return [];
     }
     if (condition === 'never') {
@@ -51,7 +51,7 @@ class Commitlint {
     }
     // @ts-ignore
     const [level, condition, value] = this.ruleConfigs[key];
-    if (level !== RuleSeverity.Error) {
+    if (level !== RuleConfigSeverity.Error) {
       return '';
     }
     // @ts-ignore
