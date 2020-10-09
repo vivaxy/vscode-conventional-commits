@@ -1,3 +1,7 @@
+/**
+ * @since 2020-10-09 16:59
+ * @author vivaxy
+ */
 import * as vscode from 'vscode';
 import createConventionalCommits from './lib/conventional-commits';
 import * as output from './lib/output';
