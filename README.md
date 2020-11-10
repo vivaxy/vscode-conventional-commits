@@ -59,15 +59,36 @@ push the commit to remote.
 
 ### Supported [Commitlint Rules](https://commitlint.js.org/#/reference-rules)
 
-[x] `body-full-stop` [ ] `body-leading-blank` [x] `body-max-length` [x]
-`body-max-line-length` [ ] `body-min-length` [ ] `footer-leading-blank` [x]
-`footer-max-length` [ ] `footer-max-line-length` [x] `footer-min-length` [x]
-`header-case` [x] `header-full-stop` [x] `header-max-length` [x]
-`header-min-length` [ ] `references-empty` [x] `scope-enum` [x] `scope-case` [x]
-`scope-empty` [x] `scope-max-length` [x] `scope-min-length` [x] `subject-case`
-[x] `subject-empty` [x] `subject-full-stop` [x] `subject-max-length` [x]
-`subject-min-length` [x] `type-enum` [x] `type-case` [x] `type-empty` [x]
-`type-max-length` [x] `type-min-length` [ ] `signed-off-by`
+- [x] `body-full-stop`
+- [ ] `body-leading-blank`
+- [x] `body-max-length`
+- [x] `body-max-line-length`
+- [ ] `body-min-length`
+- [ ] `footer-leading-blank`
+- [x] `footer-max-length`
+- [ ] `footer-max-line-length`
+- [x] `footer-min-length`
+- [x] `header-case`
+- [x] `header-full-stop`
+- [x] `header-max-length`
+- [x] `header-min-length`
+- [ ] `references-empty`
+- [x] `scope-enum`
+- [x] `scope-case`
+- [x] `scope-empty`
+- [x] `scope-max-length`
+- [x] `scope-min-length`
+- [x] `subject-case`
+- [x] `subject-empty`
+- [x] `subject-full-stop`
+- [x] `subject-max-length`
+- [x] `subject-min-length`
+- [x] `type-enum`
+- [x] `type-case`
+- [x] `type-empty`
+- [x] `type-max-length`
+- [x] `type-min-length`
+- [ ] `signed-off-by`
 
 ## Related Projects
 
