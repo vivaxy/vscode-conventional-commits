@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.13.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.12.1...v1.13.0) (2020-11-10)
+
+### Features
+
+- :sparkles: support more commitlint rules
+  ([c3168e0](https://github.com/vivaxy/vscode-conventional-commits/commit/c3168e07bbeac6d2ce65f52d59c914e6a529f9d1))
+
 ### [1.12.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.12.0...v1.12.1) (2020-10-09)
 
 ### Bug Fixes
