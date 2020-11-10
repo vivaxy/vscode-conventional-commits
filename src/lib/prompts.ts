@@ -19,6 +19,7 @@ import * as keys from '../configs/keys';
 import commitMessage, {
   CommitMessage,
   serializeSubject,
+  serializeHeader,
 } from './commit-message';
 import commitlint from './commitlint';
 import localize from './localize';
@@ -154,18 +155,63 @@ export default async function prompts({
       name: 'subject',
       placeholder: localize('extension.sources.prompt.subject.placeholder'),
       validate(input: string) {
-        const error = commitlint.lintSubject(
-          serializeSubject({
-            gitmoji: commitMessage.gitmoji,
-            subject: input,
-          } as CommitMessage),
-        );
-        if (error && commitMessage.gitmoji) {
-          return `${error} (${localize(
-            'extension.sources.prompt.subject.error.includingGitmoji',
-          )}${commitMessage.gitmoji})`;
+        const { type, scope, gitmoji } = commitMessage;
+        const serializedSubject = serializeSubject({
+          gitmoji,
+          subject: input,
+        });
+        let subjectError = commitlint.lintSubject(serializedSubject);
+        if (subjectError) {
+          if (gitmoji) {
+            subjectError += ' (';
+            subjectError += localize(
+              'extension.sources.prompt.subject.error.including',
+            );
+            subjectError += localize(
+              'extension.sources.prompt.subject.error.gitmoji',
+            );
+            subjectError += gitmoji;
+            subjectError += ')';
+          }
+          return subjectError;
         }
-        return error;
+
+        let headerError = commitlint.lintHeader(
+          serializeHeader({
+            type,
+            scope,
+            gitmoji,
+            subject: input,
+          }),
+        );
+        if (headerError) {
+          headerError += ' (';
+          headerError += localize(
+            'extension.sources.prompt.subject.error.including',
+          );
+          headerError += localize(
+            'extension.sources.prompt.subject.error.type',
+          );
+          headerError += type;
+          if (scope) {
+            headerError += ', ';
+            headerError += localize(
+              'extension.sources.prompt.subject.error.scope',
+            );
+            headerError += scope;
+          }
+          if (gitmoji) {
+            headerError += ', ';
+            headerError += localize(
+              'extension.sources.prompt.subject.error.gitmoji',
+            );
+            headerError += gitmoji;
+          }
+          headerError += ')';
+          return headerError;
+        }
+
+        return '';
       },
       format: lineBreakFormatter,
     },
