@@ -23,7 +23,10 @@
   "extension.sources.prompt.gitmoji.noneItem.label": "无",
   "extension.sources.prompt.gitmoji.noneItem.detail": "无 gitmoji。",
   "extension.sources.prompt.subject.placeholder": "请填写描述。",
-  "extension.sources.prompt.subject.error.includingGitmoji": "包括 gitmoji：",
+  "extension.sources.prompt.subject.error.including": "包括",
+  "extension.sources.prompt.subject.error.type": "类型：",
+  "extension.sources.prompt.subject.error.scope": "包括作用域：",
+  "extension.sources.prompt.subject.error.gitmoji": "包括 gitmoji：",
   "extension.sources.prompt.body.placeholder": "请填写正文。",
   "extension.sources.prompt.footer.placeholder": "请填写脚注。"
 }

@@ -107,8 +107,8 @@ class Commitlint {
     ]);
   }
 
-  lintHeader(type: string, scope: string, subject: string) {
-    return this.lintRules({ type, scope, subject } as Commit, [
+  lintHeader(header: string) {
+    return this.lintRules({ header } as Commit, [
       'header-case',
       'header-full-stop',
       'header-max-length',
@@ -118,6 +118,7 @@ class Commitlint {
 
   lintBody(body: string) {
     return this.lintRules({ body } as Commit, [
+      'body-full-stop',
       'body-min-length',
       'body-max-length',
     ]);

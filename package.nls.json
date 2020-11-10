@@ -23,7 +23,10 @@
   "extension.sources.prompt.gitmoji.noneItem.label": "None",
   "extension.sources.prompt.gitmoji.noneItem.detail": "No gitmoji.",
   "extension.sources.prompt.subject.placeholder": "Write a short, imperative tense description of the change.",
-  "extension.sources.prompt.subject.error.includingGitmoji": "including gitmoji: ",
+  "extension.sources.prompt.subject.error.including": "including ",
+  "extension.sources.prompt.subject.error.type": "type: ",
+  "extension.sources.prompt.subject.error.scope": "scope: ",
+  "extension.sources.prompt.subject.error.gitmoji": "gitmoji: ",
   "extension.sources.prompt.body.placeholder": "Provide a longer description of the change.",
   "extension.sources.prompt.footer.placeholder": "List any breaking changes or issues closed by this change."
 }

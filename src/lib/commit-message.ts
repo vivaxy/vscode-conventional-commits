@@ -66,35 +66,45 @@ export function serializeSubject(partialCommitMessage: {
   subject: string;
 }) {
   let result = '';
-  if (partialCommitMessage.gitmoji) {
-    result += `${partialCommitMessage.gitmoji}`;
+  const { gitmoji, subject } = partialCommitMessage;
+  if (gitmoji) {
+    result += `${gitmoji}`;
   }
-  if (partialCommitMessage.gitmoji && partialCommitMessage.subject) {
+  if (gitmoji && subject) {
     result += ' ';
   }
-  if (partialCommitMessage.subject) {
-    result += partialCommitMessage.subject;
+  if (subject) {
+    result += subject;
+  }
+  return result;
+}
+
+export function serializeHeader(partialCommitMessage: {
+  type: string;
+  scope: string;
+  gitmoji: string;
+  subject: string;
+}) {
+  let result = '';
+  result += partialCommitMessage.type;
+  const { scope } = partialCommitMessage;
+  if (scope) {
+    result += `(${scope})`;
+  }
+  result += ': ';
+  const subject = serializeSubject(partialCommitMessage);
+  if (subject) {
+    result += subject;
   }
   return result;
 }
 
 export function serialize(commitMessage: CommitMessage) {
-  let message = '';
-  message += commitMessage.type;
-  const scope = commitMessage.scope;
-  if (scope) {
-    message += `(${scope})`;
-  }
-  message += ': ';
-  const subject = serializeSubject(commitMessage);
-  if (subject) {
-    message += subject;
-  }
-  const body = commitMessage.body;
+  let message = serializeHeader(commitMessage);
+  const { body, footer } = commitMessage;
   if (body) {
     message += `\n\n${body}`;
   }
-  const footer = commitMessage.footer;
   if (footer) {
     message += `\n\n${footer}`;
   }
