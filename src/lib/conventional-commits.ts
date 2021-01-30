@@ -68,7 +68,7 @@ async function getRepository({
       .join(', ')}`,
   );
   output.appendLine(
-    `workspacceFolders: ${workspaceFolders
+    `workspaceFolders: ${workspaceFolders
       ?.map(function (folder) {
         return folder.uri.fsPath;
       })
