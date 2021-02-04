@@ -89,6 +89,11 @@
           "type": "string",
           "default": "",
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription%"
+        },
+        "conventionalCommits.showEditor": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
         }
       }
     }

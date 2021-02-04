@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import createConventionalCommits from './lib/conventional-commits';
 import * as output from './lib/output';
 import * as localize from './lib/localize';
+import CommitProvider from './lib/editor/provider';
 
 export function activate(context: vscode.ExtensionContext) {
   output.initialize();
@@ -20,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+  vscode.workspace.registerFileSystemProvider('commit-message', CommitProvider);
 }
 
 export function deactivate() {}
