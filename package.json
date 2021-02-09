@@ -119,9 +119,16 @@
     ]
   },
   "dependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/load": "^11.0.0",
     "@commitlint/rules": "^11.0.0",
     "conventional-commit-types": "^3.0.0",
     "gitmojis": "^3.0.0"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }
