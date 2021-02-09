@@ -6,6 +6,7 @@
   "extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.emoji": "显示为 `🐛`",
   "extension.configuration.properties.conventionalCommits.scopes.markdownDescription": "可选作用域。",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "换行标识符。\n\n留空表示不换行。",
+  "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "在新标签页用文本编辑器展示提交信息",
   "extension.sources.repositoryNotFoundInPath": "以下路径中未找到仓库：",
   "extension.sources.repositoriesEmpty": "请打开一个仓库",
   "extension.sources.promptRepositoryPlaceholder": "请选择一个仓库",
