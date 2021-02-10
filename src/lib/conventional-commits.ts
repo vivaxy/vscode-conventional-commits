@@ -12,6 +12,7 @@ import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
 import { serialize } from './commit-message';
 import localize from './localize';
+import openMessageInTab from './editor';
 
 function getGitAPI(): VSCodeGit.API | void {
   const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
@@ -170,6 +171,7 @@ export default function createConventionalCommits() {
       // 5. get message
       const commitMessage = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
+        showEditor: configuration.get<boolean>('showEditor'),
         emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
           'emojiFormat',
         ),
@@ -181,17 +183,25 @@ export default function createConventionalCommits() {
       const message = serialize(commitMessage);
       output.appendLine(`message: ${message}`);
 
-      // 6. switch to scm and put message into message box
-      vscode.commands.executeCommand('workbench.view.scm');
-      repository.inputBox.value = message;
-      output.appendLine(`inputBox.value: ${repository.inputBox.value}`);
+      // 6. switch to scm and put message into message box or show the entire commit message in a separate tab
+      const showEditor = configuration.get<boolean>('showEditor');
+
+      if (showEditor) {
+        repository.inputBox.value = message;
+        openMessageInTab(repository);
+        output.appendLine(`show full commit message in a separate tab`);
+      } else {
+        vscode.commands.executeCommand('workbench.view.scm');
+        repository.inputBox.value = message;
+        output.appendLine(`inputBox.value: ${repository.inputBox.value}`);
+      }
 
       // 7. auto commit
       const autoCommit = configuration.get<boolean>('autoCommit');
-      if (autoCommit) {
+      if (autoCommit && !showEditor) {
         await vscode.commands.executeCommand('git.commit', repository);
+        output.appendLine('Finished successfully.');
       }
-      output.appendLine('Finished successfully.');
     } catch (e) {
       output.appendLine(`Finished with an error: ${e.stack}`);
       vscode.window.showErrorMessage(
