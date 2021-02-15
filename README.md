@@ -115,6 +115,12 @@ push the commit to remote.
 **A:** Set `lineBreak` configuration to `\n`. When you're typing, enter `\n` as
 a line break.
 
+![image](https://user-images.githubusercontent.com/4216856/107896171-81d25e80-6f70-11eb-926e-2a8ba33e435e.png)
+
+Or `\\n` in JSON format.
+
+![image](https://user-images.githubusercontent.com/4216856/107896204-9c0c3c80-6f70-11eb-8245-6a1357172c6b.png)
+
 **Q:** How do I resolve `repo not found` error?
 
 **A:** See issue discussion
