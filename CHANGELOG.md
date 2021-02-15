@@ -1,8 +1,18 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See
-[standard-version](https://github.com/conventional-changelog/standard-version)
-for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.14.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.13.0...v1.14.0) (2021-02-15)
+
+
+### Features
+
+* add option to open the full commit message in a separate tab ([e519d11](https://github.com/vivaxy/vscode-conventional-commits/commit/e519d11306e3165ba880eb4709f6951592bd2929))
+
+
+### Bug Fixes
+
+* **typo:** workspacceFolders -> workspaceFolders ([7055a58](https://github.com/vivaxy/vscode-conventional-commits/commit/7055a58f25837200fe37366e4e152027ea77dbd7))
 
 ## [1.13.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.12.1...v1.13.0) (2020-11-10)
 
