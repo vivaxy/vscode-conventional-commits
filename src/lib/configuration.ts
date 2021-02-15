@@ -14,6 +14,7 @@ export type Configuration = {
   autoCommit: boolean;
   gitmoji: boolean;
   emojiFormat: EMOJI_FORMAT;
+  showEditor: boolean;
   scopes: string[];
   lineBreak: string;
 };

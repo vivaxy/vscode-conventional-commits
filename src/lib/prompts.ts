@@ -26,10 +26,12 @@ import localize from './localize';
 
 export default async function prompts({
   gitmoji,
+  showEditor,
   emojiFormat,
   lineBreak,
 }: {
   gitmoji: boolean;
+  showEditor: boolean;
   emojiFormat: configuration.EMOJI_FORMAT;
   lineBreak: string;
 }): Promise<CommitMessage> {
@@ -235,10 +237,16 @@ export default async function prompts({
     },
   ]
     .filter(function (question) {
-      if (gitmoji) {
+      if (!gitmoji && question.name === 'gitmoji') {
+        return false;
+      } else if (
+        showEditor &&
+        (question.name === 'body' || question.name === 'footer')
+      ) {
+        return false;
+      } else {
         return true;
       }
-      return question.name !== 'gitmoji';
     })
     .map(function (question, index, array) {
       return {
