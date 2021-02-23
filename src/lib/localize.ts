@@ -3,14 +3,22 @@
  * @author vivaxy
  */
 import * as path from 'path';
+// import * as vscode from 'vscode';
 
+export let locale: string = '';
 let defaultNLS: Record<string, string> = {};
 let localeNLS: Record<string, string> = {};
 
+function getLocale() {
+  const config = JSON.parse(process.env.VSCODE_NLS_CONFIG!);
+  return config.locale;
+  // return vscode.env.language;
+}
+
 export function initialize() {
   defaultNLS = getNLS();
-  const config = JSON.parse(process.env.VSCODE_NLS_CONFIG!);
-  localeNLS = getNLS(config.locale);
+  locale = getLocale();
+  localeNLS = getNLS(locale);
 }
 
 export default function localize(key: string) {

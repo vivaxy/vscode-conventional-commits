@@ -15,6 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
   output.appendLine(
     'process.env.VSCODE_NLS_CONFIG: ' + process.env.VSCODE_NLS_CONFIG,
   );
+  output.appendLine('vscode.env.language: ' + vscode.env.language);
   const disposable = vscode.commands.registerCommand(
     'extension.conventionalCommits',
     createConventionalCommits(),

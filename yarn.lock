@@ -210,6 +210,11 @@
   resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.44.0.tgz#62ecfe3d0e38942fce556574da54ee1013c775b7"
   integrity sha512-WJZtZlinE3meRdH+I7wTsIhpz/GLhqEQwmPGeh4s1irWLwMzCeTV8WZ+pgPTwrDXoafVUWwo1LiZ9HJVHFlJSQ==
 
+"@yi-xu-0100/conventional-commit-types-i18n@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@yi-xu-0100/conventional-commit-types-i18n/-/conventional-commit-types-i18n-1.3.0.tgz#703ad2d1ca916392589306fac0d58210c65251c0"
+  integrity sha512-c3b2+JzCN+nac0o1r14aY8ERG3VMahO1HUDJvXu0TMA0bN2dPHAv9DXM1Q5LIUJF8VssoD/wavYQORTOlW2JmA==
+
 JSONStream@^1.0.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
@@ -678,11 +683,6 @@ conventional-changelog@3.1.23:
     conventional-changelog-jquery "^3.0.10"
     conventional-changelog-jshint "^2.0.8"
     conventional-changelog-preset-loader "^2.3.4"
-
-conventional-commit-types@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-commit-types/-/conventional-commit-types-3.0.0.tgz#7c9214e58eae93e85dd66dbfbafe7e4fffa2365b"
-  integrity sha512-SmmCYnOniSsAa9GqWOeLqc179lfr5TRu5b4QFDkbsrJ5TZjPJx85wtOr3zn+1dbeNiXDKGPbZ72IKbPhLXh/Lg==
 
 conventional-commits-filter@^2.0.6:
   version "2.0.6"
