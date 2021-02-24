@@ -210,10 +210,10 @@
   resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.44.0.tgz#62ecfe3d0e38942fce556574da54ee1013c775b7"
   integrity sha512-WJZtZlinE3meRdH+I7wTsIhpz/GLhqEQwmPGeh4s1irWLwMzCeTV8WZ+pgPTwrDXoafVUWwo1LiZ9HJVHFlJSQ==
 
-"@yi-xu-0100/conventional-commit-types-i18n@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@yi-xu-0100/conventional-commit-types-i18n/-/conventional-commit-types-i18n-1.3.0.tgz#703ad2d1ca916392589306fac0d58210c65251c0"
-  integrity sha512-c3b2+JzCN+nac0o1r14aY8ERG3VMahO1HUDJvXu0TMA0bN2dPHAv9DXM1Q5LIUJF8VssoD/wavYQORTOlW2JmA==
+"@yi-xu-0100/conventional-commit-types-i18n@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@yi-xu-0100/conventional-commit-types-i18n/-/conventional-commit-types-i18n-1.4.0.tgz#ccb3761b5984aaec9b24dee7df4b5bcb9c080abc"
+  integrity sha512-qKXnvw6ZfNlEaiBq825YNXo3lSlFP9XXjyhfcAQMHysps3xQTYaHbf01XQn+EEENAdH49DCL559MeZzIHMA1kQ==
 
 JSONStream@^1.0.4:
   version "1.3.5"
