@@ -18,6 +18,7 @@ type Item = {
   detail?: string;
   description?: string;
   alwaysShow?: boolean;
+  placeholder?: string;
 };
 
 export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
@@ -112,7 +113,7 @@ function createInputBox({
 type ConfiguriableQuickPickOptions = {
   configurationKey: keyof configuration.Configuration;
   newItem: Item;
-  newItemPlaceholder: string;
+  newItemWithoutSetting: Item;
   addNoneOption: boolean;
   validate?: (value: string) => string | undefined;
 } & QuickPickOptions;
@@ -125,7 +126,7 @@ async function createConfiguriableQuickPick({
   configurationKey,
   newItem,
   noneItem,
-  newItemPlaceholder,
+  newItemWithoutSetting,
   validate = () => undefined,
 }: ConfiguriableQuickPickOptions): Promise<string> {
   const currentValus: string[] = configuration.get<string[]>(configurationKey);
@@ -137,6 +138,7 @@ async function createConfiguriableQuickPick({
     };
   });
   items.push(newItem);
+  items.push(newItemWithoutSetting);
   let selectedValue = await createQuickPick({
     placeholder,
     items,
@@ -146,7 +148,7 @@ async function createConfiguriableQuickPick({
   });
   if (selectedValue === newItem.label) {
     selectedValue = await createInputBox({
-      placeholder: newItemPlaceholder,
+      placeholder: newItem.placeholder!,
       step,
       totalSteps,
       validate,
@@ -154,6 +156,14 @@ async function createConfiguriableQuickPick({
     if (selectedValue) {
       configuration.update(configurationKey, [...currentValus, selectedValue]);
     }
+  }
+  if (selectedValue === newItemWithoutSetting.label) {
+    selectedValue = await createInputBox({
+      placeholder: newItemWithoutSetting.placeholder!,
+      step,
+      totalSteps,
+      validate,
+    });
   }
   return format(selectedValue);
 }

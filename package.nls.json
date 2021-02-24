@@ -19,6 +19,8 @@
   "extension.sources.prompt.scope.noneItem.detail": "No scope.",
   "extension.sources.prompt.scope.newItem.label": "New scope",
   "extension.sources.prompt.scope.newItem.detail": "Add a workspace scope. (You can manage scopes in workspace `settings.json`.)",
+  "extension.sources.prompt.scope.newItemWithoutSetting.label": "New scope (only use once)",
+  "extension.sources.prompt.scope.newItemWithoutSetting.detail": "Add a workspace scope. (The scope will not be added in workspace `settings.json`.)",
   "extension.sources.prompt.scope.newItem.placeholder": "Create a new scope.",
   "extension.sources.prompt.gitmoji.placeholder": "Choose a gitmoji.",
   "extension.sources.prompt.gitmoji.noneItem.label": "None",
