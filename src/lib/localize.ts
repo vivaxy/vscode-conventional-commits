@@ -7,7 +7,9 @@ import * as vscode from 'vscode';
 
 import * as output from './output';
 
-export let locale: string = '';
+const DEFAULT_LOCALE = 'en';
+
+export let locale: string = DEFAULT_LOCALE;
 let defaultNLS: Record<string, string> = {};
 let localeNLS: Record<string, string> = {};
 
@@ -16,7 +18,7 @@ function getLocale() {
   // return config.locale;
   const language = vscode.env.language;
   output.appendLine('vscode.env.language: ' + language);
-  return language;
+  return language || DEFAULT_LOCALE;
 }
 
 export function initialize() {
