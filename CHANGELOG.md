@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+### [1.15.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.15.0...v1.15.1) (2021-02-24)
+
+### Bug Fixes
+
+- 🚑 fix the bug for locale unavailable
+  ([7672206](https://github.com/vivaxy/vscode-conventional-commits/commit/76722068e7cdf64a5ad9feffccfd40d6bc231620)),
+  closes [#52](https://github.com/vivaxy/vscode-conventional-commits/issues/52)
+
 ## [1.15.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.14.0...v1.15.0) (2021-02-23)
 
 ### Features
