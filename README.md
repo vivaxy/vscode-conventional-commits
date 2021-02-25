@@ -62,8 +62,8 @@ push the commit to remote.
 - [x] `body-full-stop`
 - [ ] `body-leading-blank`
 - [x] `body-max-length`
-- [x] `body-max-line-length`
-- [ ] `body-min-length`
+- [ ] `body-max-line-length`
+- [x] `body-min-length`
 - [ ] `footer-leading-blank`
 - [x] `footer-max-length`
 - [ ] `footer-max-line-length`
