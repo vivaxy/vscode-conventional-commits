@@ -114,11 +114,24 @@ export default async function prompts({
         description: '',
         detail: localize('extension.sources.prompt.scope.newItem.detail'),
         alwaysShow: true,
+        placeholder: localize(
+          'extension.sources.prompt.scope.newItem.placeholder',
+        ),
       },
       noneItem,
-      newItemPlaceholder: localize(
-        'extension.sources.prompt.scope.newItem.placeholder',
-      ),
+      newItemWithoutSetting: {
+        label: localize(
+          'extension.sources.prompt.scope.newItemWithoutSetting.label',
+        ),
+        description: '',
+        detail: localize(
+          'extension.sources.prompt.scope.newItemWithoutSetting.detail',
+        ),
+        alwaysShow: true,
+        placeholder: localize(
+          'extension.sources.prompt.scope.newItem.placeholder',
+        ),
+      },
       validate(input: string) {
         return commitlint.lintScope(input);
       },
