@@ -6,5 +6,6 @@
     "out": true
   },
   "typescript.tsc.autoDetect": "off",
-  "svg.preview.background": "black"
+  "svg.preview.background": "black",
+  "conventionalCommits.emojiFormat": "code"
 }
