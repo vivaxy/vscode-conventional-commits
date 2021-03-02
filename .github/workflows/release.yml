@@ -15,41 +15,59 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
 
+      - name: Get version from package
+        uses: actions/github-script@v3.1.0
+        id: version
+        with:
+          result-encoding: string
+          script: |
+            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
+            core.setOutput('repo', context.repo.repo);
+            core.setOutput('version', version);
+            const time = new Date(Date.now()).toISOString().slice(0,10);
+            const titleLink = version.replace(/\./g,'') + '-' + time;
+            core.setOutput('titleLink', titleLink);
+            try {
+              var latestRelease = await github.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              const latestTag = latestRelease.data.tag_name;
+              core.setOutput('commitLink', `compare/${latestTag}...v${version}`);
+            } catch (error) {
+              if (error.message === 'Not Found') {
+                core.setOutput('commitLink', `commits/v${version}`);
+              } else {
+                core.setFailed(error.message);
+              }
+            }
+            return true;
+
       - name: Generate Package
         run: |
           yarn install
           yarn run build
 
-      - name: Get changelog content
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2.0.0
-        with:
-          path: ./CHANGELOG.md
-
       - name: Create release
         id: create_release
         uses: actions/create-release@v1.1.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          tag_name: v${{ steps.changelog_reader.outputs.version }}
-          release_name: Release v${{ steps.changelog_reader.outputs.version }}
-          body: >-
-            ${{ steps.changelog_reader.outputs.changes }}
-          prerelease:
-            ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
-          draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
+          tag_name: v${{steps.version.outputs.version}}
+          release_name: Release v${{steps.version.outputs.version}}
+          body: |
+            * Changelogs:
+            <https://github.com/${{github.repository}}/blob/master/CHANGELOG.md#${{steps.version.outputs.titleLink}}>
+            * Commits:
+            <https://github.com/${{github.repository}}/${{steps.version.outputs.commitLink}}>
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1.0.2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path:
-            ./vscode-conventional-commits-${{
-            steps.changelog_reader.outputs.version }}.vsix
-          asset_name:
-            vscode-conventional-commits-${{
-            steps.changelog_reader.outputs.version }}.vsix
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./${{steps.version.outputs.repo}}-${{steps.version.outputs.version}}.vsix
+          asset_name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.version}}.vsix
           asset_content_type: application/octet-stream
