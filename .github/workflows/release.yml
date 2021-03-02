@@ -2,6 +2,8 @@ name: release
 
 on:
   push:
+    branches:
+      - master
     paths:
       - CHANGELOG.md
 
@@ -32,7 +34,7 @@ jobs:
         with:
           tag_name: v${{ steps.changelog_reader.outputs.version }}
           release_name: Release v${{ steps.changelog_reader.outputs.version }}
-          body: >
+          body: >-
             ${{ steps.changelog_reader.outputs.changes }}
           prerelease:
             ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
