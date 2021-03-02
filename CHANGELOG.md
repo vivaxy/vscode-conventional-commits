@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## [1.16.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.15.1...v1.16.0) (2021-03-02)
+
+### Features
+
+- ✨ add new scope selection
+  ([#51](https://github.com/vivaxy/vscode-conventional-commits/issues/51))
+  ([05a5b39](https://github.com/vivaxy/vscode-conventional-commits/commit/05a5b39c3e677104a9999e069ab74e8818212bc5)),
+  closes [#50](https://github.com/vivaxy/vscode-conventional-commits/issues/50)
+
 ### [1.15.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.15.0...v1.15.1) (2021-02-24)
 
 ### Bug Fixes
