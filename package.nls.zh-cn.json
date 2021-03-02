@@ -21,7 +21,7 @@
   "extension.sources.prompt.scope.newItem.detail": "创建新作用域。（可以在工作区的 `settings.json` 中管理）",
   "extension.sources.prompt.scope.newItem.placeholder": "请输入作用域。",
   "extension.sources.prompt.scope.newItemWithoutSetting.label": "新作用域（仅用一次）",
-  "extension.sources.prompt.scope.newItemWithoutSetting.detail": "创建新作用域。（不会加入工作区的 `settings.json`）",
+  "extension.sources.prompt.scope.newItemWithoutSetting.detail": "使用新作用域。（不会加入工作区的 `settings.json`）",
   "extension.sources.prompt.gitmoji.placeholder": "请选择 gitmoji。",
   "extension.sources.prompt.gitmoji.noneItem.label": "无",
   "extension.sources.prompt.gitmoji.noneItem.detail": "无 gitmoji。",
