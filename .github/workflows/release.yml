@@ -2,20 +2,14 @@ name: release
 
 on:
   push:
-    tags:
-      - "v*"
+    paths:
+      - CHANGELOG.md
 
 jobs:
   run:
     name: release
     runs-on: ubuntu-latest
     steps:
-      - name: Get version from tag
-        id: tag_name
-        run: |
-          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
-        shell: bash
-
       - name: Checkout code
         uses: actions/checkout@v2.3.4
 
@@ -28,7 +22,6 @@ jobs:
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2.0.0
         with:
-          version: ${{ steps.tag_name.outputs.current_version }}
           path: ./CHANGELOG.md
 
       - name: Create release
@@ -37,9 +30,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.changelog_reader.outputs.version }}
-          release_name: Release ${{ steps.changelog_reader.outputs.version }}
-          body: ${{ steps.changelog_reader.outputs.changes }}
+          tag_name: v${{ steps.changelog_reader.outputs.version }}
+          release_name: Release v${{ steps.changelog_reader.outputs.version }}
+          body: >
+            ${{ steps.changelog_reader.outputs.changes }}
           prerelease:
             ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
@@ -52,8 +46,8 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path:
             ./vscode-conventional-commits-${{
-            steps.tag_name.outputs.current_version }}.vsix
+            steps.changelog_reader.outputs.version }}.vsix
           asset_name:
             vscode-conventional-commits-${{
-            steps.tag_name.outputs.current_version }}.vsix
+            steps.changelog_reader.outputs.version }}.vsix
           asset_content_type: application/octet-stream
