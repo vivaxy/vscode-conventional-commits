@@ -1,7 +1,9 @@
 name: release
+
 on:
-  tags:
-    - "v*"
+  push:
+    tags:
+      - "v*"
 
 jobs:
   run:
