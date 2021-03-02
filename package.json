@@ -103,6 +103,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "release": "standard-version && vsce publish && git push --follow-tags",
+    "version": "standard-version && git push --follow-tags",
+    "build": "vsce package",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
