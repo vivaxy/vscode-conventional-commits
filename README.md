@@ -100,6 +100,11 @@ push the commit to remote.
 - [idea-conventional-commit](https://github.com/lppedd/idea-conventional-commit)
 - [Git-commit-plugin For Vscode](https://github.com/RedJue/git-commit-plugin)
 
+## Team Members
+
+- [vivaxy](https://github.com/vivaxy)
+- [yi_Xu](https://github.com/yi-Xu-0100)
+
 ## Troubleshooting
 
 1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
