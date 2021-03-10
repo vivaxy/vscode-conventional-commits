@@ -1,11 +1,12 @@
-name: release
+name: build
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - CHANGELOG.md
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Person to greet"
+        required: true
+        default: "Mona the Octocat"
 
 jobs:
   run:
