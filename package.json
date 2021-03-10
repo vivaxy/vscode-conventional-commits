@@ -121,7 +121,8 @@
   },
   "lint-staged": {
     "*.{js,ts,css,less,json,md,html,yml,yaml,pcss,jsx,tsx}": [
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ]
   },
   "dependencies": {
