@@ -4,7 +4,7 @@
   "description": "💬Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
-  "version": "1.16.2",
+  "version": "1.16.0",
   "engines": {
     "vscode": "^1.14.0"
   },
@@ -102,7 +102,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "release": "standard-version && vsce publish && git push --follow-tags",
+    "deploy": "vsce publish --yarn",
     "build": "vsce package",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
