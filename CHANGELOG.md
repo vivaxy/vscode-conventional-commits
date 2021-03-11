@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.16.0...v1.16.1) (2021-03-11)
+
+### Bug Fixes
+
+- **actions:** :bug: fix the pushing commit before the publishing ([#65](https://github.com/vivaxy/vscode-conventional-commits/issues/65)) ([8117589](https://github.com/vivaxy/vscode-conventional-commits/commit/81175895c864b86a54cc026cd03cb113801a7e0d)), closes [#64](https://github.com/vivaxy/vscode-conventional-commits/issues/64)
+- **actions:** :recycle: rebuild ci publish system ([#63](https://github.com/vivaxy/vscode-conventional-commits/issues/63)) ([70e785b](https://github.com/vivaxy/vscode-conventional-commits/commit/70e785b162a6ffc5cd4be3dafcfbd0abdf27a8da)), closes [#59](https://github.com/vivaxy/vscode-conventional-commits/issues/59)
+
 ## [1.16.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.15.1...v1.16.0) (2021-03-02)
 
 ### Features
