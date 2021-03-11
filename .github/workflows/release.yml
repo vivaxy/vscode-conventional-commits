@@ -1,11 +1,7 @@
 name: release
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - CHANGELOG.md
+  workflow_dispatch:
 
 jobs:
   run:
@@ -14,8 +10,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
 
-      - name: Get version from package
+      - name: Setup package
+        run: yarn install
+
+      - name: Bump version
+        run: |
+          yarn standard-version --skip.commit --skip.tag
+          sed 's/^### \[/## [/' -i CHANGELOG.md
+          yarn prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
+
+      - name: Get version from package.json
         uses: actions/github-script@v3.1.0
         id: version
         with:
@@ -24,29 +31,30 @@ jobs:
             const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
             core.setOutput('repo', context.repo.repo);
             core.setOutput('version', version);
-            const time = new Date(Date.now()).toISOString().slice(0,10);
-            const titleLink = version.replace(/\./g,'') + '-' + time;
-            core.setOutput('titleLink', titleLink);
-            try {
-              var latestRelease = await github.repos.getLatestRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              const latestTag = latestRelease.data.tag_name;
-              core.setOutput('commitLink', `compare/${latestTag}...v${version}`);
-            } catch (error) {
-              if (error.message === 'Not Found') {
-                core.setOutput('commitLink', `commits/v${version}`);
-              } else {
-                core.setFailed(error.message);
-              }
-            }
-            return true;
 
-      - name: Generate Package
+      - name: Push commit
         run: |
-          yarn install
-          yarn run build
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
+          git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
+          git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
+
+      - name: Publish package
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: yarn run deploy
+
+      - name: Build release asset
+        run: yarn run build
+
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2.0.0
+        with:
+          version: ${{steps.version.outputs.version}}
+          path: ./CHANGELOG.md
 
       - name: Create release
         id: create_release
@@ -56,11 +64,10 @@ jobs:
         with:
           tag_name: v${{steps.version.outputs.version}}
           release_name: Release v${{steps.version.outputs.version}}
-          body: |
-            * Changelogs:
-            <https://github.com/${{github.repository}}/blob/master/CHANGELOG.md#${{steps.version.outputs.titleLink}}>
-            * Commits:
-            <https://github.com/${{github.repository}}/${{steps.version.outputs.commitLink}}>
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          prerelease:
+            ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
+          draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1.0.2
