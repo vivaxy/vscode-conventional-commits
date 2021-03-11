@@ -32,4 +32,4 @@ jobs:
             core.setOutput('version', version);
 
       - name: Publish package
-        run: yarn vsce -p ${{ secrets.VSCE_PAT }}
+        run: yarn vsce publish -p ${{ secrets.VSCE_PAT }}
