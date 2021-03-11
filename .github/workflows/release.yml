@@ -38,7 +38,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
-          git push "https://x-access-token:${{github.token}}@github.com/${{github.repository}}.git"
+          git push "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
+          echo "::set-output name=target_hash::$(git rev-parse HEAD)"
 
       - name: Publish package
         env:
