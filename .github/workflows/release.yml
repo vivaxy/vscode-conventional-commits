@@ -13,6 +13,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup nodejs
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 12
+
       - name: Setup package
         run: yarn install
 
@@ -41,9 +46,7 @@ jobs:
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
 
       - name: Publish package
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: yarn run deploy
+        run: yarn vsce publish -p ${{secrets.VSCE_PAT}}
 
       - name: Push release commit
         run: |
