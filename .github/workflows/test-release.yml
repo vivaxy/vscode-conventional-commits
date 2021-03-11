@@ -13,6 +13,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup nodejs
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 12
+
       - name: Setup package
         run: yarn install
 
@@ -27,6 +32,4 @@ jobs:
             core.setOutput('version', version);
 
       - name: Publish package
-        run: npm run deploy
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: yarn vsce -p ${{ secrets.VSCE_PAT }}
