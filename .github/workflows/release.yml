@@ -39,8 +39,7 @@ jobs:
           git add .
           git commit -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
-          git push "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
-          echo "::set-output name=target_hash::$(git rev-parse HEAD)"
+          git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
 
       - name: Publish package
         env:
