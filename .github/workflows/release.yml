@@ -46,7 +46,7 @@ jobs:
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
 
       - name: Publish package
-        run: yarn vsce publish -p ${{secrets.VSCE_PAT}}
+        run: yarn deploy -p ${{secrets.VSCE_PAT}}
 
       - name: Push release commit
         run: |
