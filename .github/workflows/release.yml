@@ -32,19 +32,22 @@ jobs:
             core.setOutput('repo', context.repo.repo);
             core.setOutput('version', version);
 
-      - name: Push commit
+      - name: Create commit
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
-          git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
 
       - name: Publish package
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: yarn run deploy
+
+      - name: Push release commit
+        run: |
+          git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
 
       - name: Build release asset
         run: yarn run build
