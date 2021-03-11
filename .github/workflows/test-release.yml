@@ -1,4 +1,4 @@
-name: release
+name: test-release
 
 on:
   workflow_dispatch:
@@ -27,6 +27,6 @@ jobs:
             core.setOutput('version', version);
 
       - name: Publish package
+        run: npm run deploy
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: yarn run deploy
