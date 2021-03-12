@@ -1,4 +1,4 @@
-name: release
+name: build
 
 on:
   push:
@@ -7,16 +7,11 @@ on:
     paths:
       - "src/**"
       - "package*"
-  pull_request:
-    branches:
-      - master
-    paths:
-      - "src/**"
-      - "package*"
+      - "**/build.yml"
 
 jobs:
   run:
-    name: release
+    name: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,17 +25,16 @@ jobs:
       - name: Setup package
         run: yarn install
 
-      - name: Get version from package.json
+      - name: Generate name for artifact
         uses: actions/github-script@v3.1.0
         id: version
         with:
           result-encoding: string
           script: |
-            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
             core.setOutput('repo', context.repo.repo);
-            core.setOutput('bate', version + '.' + process.env.GITHUB_WORKSPACE.slice(0,7));
+            core.setOutput('bate', process.env.GITHUB_SHA.slice(0,7));
 
-      - name: Build release asset
+      - name: Build artifact
         run: yarn build
 
       - name: Upload artifact
