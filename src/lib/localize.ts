@@ -2,10 +2,9 @@
  * @since 2020-10-09 15:46
  * @author vivaxy
  */
-import * as path from 'path';
 import * as vscode from 'vscode';
-
 import * as output from './output';
+import * as path from 'path';
 
 const DEFAULT_LOCALE = 'en';
 
@@ -28,15 +27,16 @@ export function initialize() {
 }
 
 export default function localize(key: string) {
-  return localeNLS[key] || defaultNLS[key] || `Missing translation for ${key}`;
+  return localeNLS[key] || defaultNLS[key]; // || `Missing translation for ${key}`;
 }
 
 function getNLS(locale: string = '') {
-  const ROOT = path.join(__dirname, '..', '..');
-  try {
-    const fileName = locale ? `package.nls.${locale}.json` : 'package.nls.json';
-    return require(path.join(ROOT, fileName));
-  } catch (e) {
-    return {};
+  switch (locale) {
+    case 'zh-cn': {
+      return require('../../package.nls.zh-cn.json');
+    }
+    default: {
+      return require('../../package.nls.json');
+    }
   }
 }
