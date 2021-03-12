@@ -53,7 +53,7 @@ jobs:
           git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
 
       - name: Build release asset
-        run: yarn run build
+        run: yarn build
 
       - name: Get Changelog Entry
         id: changelog_reader
