@@ -50,5 +50,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.bate}}.vsix.zip
+          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.bate}}.vsix
           path: "*.vsix"
