@@ -3,13 +3,13 @@ name: release
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "src/**"
       - "package*"
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - "src/**"
       - "package*"
