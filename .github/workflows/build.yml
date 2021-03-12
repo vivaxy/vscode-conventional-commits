@@ -25,6 +25,10 @@ jobs:
       - name: Setup package
         run: yarn install
 
+      - name: Bump version
+        run: |
+          yarn standard-version --skip.changelog --skip.commit --skip.tag
+
       - name: Generate name for artifact
         uses: actions/github-script@v3.1.0
         id: version
@@ -33,6 +37,10 @@ jobs:
           script: |
             core.setOutput('repo', context.repo.repo);
             core.setOutput('bate', process.env.GITHUB_SHA.slice(0,7));
+
+      - name: Edit version for building
+        run: |
+          sed -r 's/"version": "(.*)"/"version": "\1-${{steps.version.outputs.bate}}"/' -i package.json
 
       - name: Build artifact
         run: yarn build
