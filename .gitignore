@@ -1,5 +1,7 @@
-node_modules
-out
+node_modules/
+out/
+dist/
 yarn-error.log
 .DS_Store
 *.vsix
+locale/

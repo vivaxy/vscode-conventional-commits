@@ -4,6 +4,7 @@
     "module": "commonjs",
     "target": "es6",
     "outDir": "out",
+    "moduleResolution": "node",
     "lib": ["es6"],
     "sourceMap": true,
     "rootDir": "src",
@@ -13,5 +14,9 @@
     // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
     // "noUnusedParameters": true,  /* Report errors on unused parameters. */
   },
-  "exclude": ["node_modules", ".vscode-test"]
+  "include": [
+    "src/**/*.ts",
+    "./node_modules/vscode/vscode.d.ts",
+    "./node_modules/vscode/lib/*"
+  ]
 }
