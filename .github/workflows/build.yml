@@ -1,0 +1,50 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "package*"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "package*"
+
+jobs:
+  run:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.3.4
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 12
+
+      - name: Setup package
+        run: yarn install
+
+      - name: Get version from package.json
+        uses: actions/github-script@v3.1.0
+        id: version
+        with:
+          result-encoding: string
+          script: |
+            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
+            core.setOutput('repo', context.repo.repo);
+            core.setOutput('bate', version + '.' + process.env.GITHUB_WORKSPACE.slice(0,7));
+
+      - name: Build release asset
+        run: yarn build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.bate}}.vsix
+          path: "*.vsix"
