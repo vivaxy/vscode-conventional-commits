@@ -10,7 +10,6 @@ webpack.config.js
 renovate.json
 *.vsix
 assets/
-package.*.json
 .gitignore
 **/*.map
 !assets/icon.png

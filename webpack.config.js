@@ -2,6 +2,7 @@
 
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -60,6 +61,7 @@ const config = {
         },
       ],
     }),
+    new CleanWebpackPlugin(),
   ],
 };
 
