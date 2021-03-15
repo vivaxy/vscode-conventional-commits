@@ -17,8 +17,9 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     if: >
-      github.event.event == 'push' || github.event.event == 'workflow_dispatch'
-      || contains(github.event.pull_request.labels.*.name, 'wait-to-build')
+      ${{ github.event.event == 'push' }} || ${{ github.event.event ==
+      'workflow_dispatch' }} ||
+      contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
