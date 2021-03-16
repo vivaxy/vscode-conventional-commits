@@ -45,11 +45,11 @@ jobs:
           result-encoding: string
           script: |
             core.setOutput('repo', context.repo.repo);
-            core.setOutput('bate', process.env.GITHUB_SHA.slice(0,7));
+            core.setOutput('beta', process.env.GITHUB_SHA.slice(0,7));
 
       - name: Edit version for building
         run: |
-          sed -r 's/"version": "(.*)"/"version": "\1-${{steps.version.outputs.bate}}"/' -i package.json
+          sed -r 's/"version": "(.*)"/"version": "\1-${{steps.version.outputs.beta}}"/' -i package.json
 
       - name: Build artifact
         run: yarn build
@@ -57,5 +57,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2.2.2
         with:
-          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.bate}}.vsix
+          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
