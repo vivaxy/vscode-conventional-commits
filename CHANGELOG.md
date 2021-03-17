@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.16.1...v1.17.0) (2021-03-17)
+
+### Features
+
+- :package: use webpack to bundle extension ([#78](https://github.com/vivaxy/vscode-conventional-commits/issues/78)) ([60e7415](https://github.com/vivaxy/vscode-conventional-commits/commit/60e7415057add068f94ae89e13f3575627ce832b))
+
+### Bug Fixes
+
+- **localization:** :globe_with_meridians: fix localization missing by using the webpack ([f331c24](https://github.com/vivaxy/vscode-conventional-commits/commit/f331c24cbc1eb69d51115c968cb3c9eef1dcce99))
+- **localization:** :globe_with_meridians: fix localization missing by using the wekpack ([#82](https://github.com/vivaxy/vscode-conventional-commits/issues/82)) ([1bc69b9](https://github.com/vivaxy/vscode-conventional-commits/commit/1bc69b917666e534ce84ec1cc1b367cf41f7f25c))
+
 ## [1.16.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.16.0...v1.16.1) (2021-03-11)
 
 ### Bug Fixes
