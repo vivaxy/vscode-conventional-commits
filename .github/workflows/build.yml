@@ -78,27 +78,19 @@ jobs:
         if: ${{job.status == 'success' && github.event_name == 'pull_request'}}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
+          name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
         run: |
-          printf "The beta extension of this pull has been built in the workflow! Download " >> ./pr/comment
-          printf "\`${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix\` " >> ./pr/comment
+          printf "The beta extension of this pull has been built in the workflow! 🎉" >> ./pr/comment
+          printf "Download \`${{env.name}}\` " >> ./pr/comment
           printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
 
-      - name: Generate PR comment if failure
-        if: ${{job.status == 'failure' && github.event_name == 'pull_request'}}
+      - name: Generate PR comment if happening other conditions
+        if: ${{job.status != 'success' && github.event_name == 'pull_request'}}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#annotations
-
         run: |
           printf "Oops, The build workflow has failed! See in " >> ./pr/comment
           printf "[summary](${{env.url}}). 😥" >> ./pr/comment
-
-      - name: Generate PR comment if cancelled
-        if: >
-          ${{job.status == 'cancelled' && github.event_name == 'pull_request'}}
-        env:
-          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
-        run: |
-          printf "The build workflow has been cancelled! 👀" >> ./pr/comment
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
