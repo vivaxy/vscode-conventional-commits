@@ -26,13 +26,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Save PR number
-        if: ${{github.event_name == 'pull_request'}}
-        run: |
-          mkdir -p ./pr
-          printf ${{ github.event.number }} > ./pr/NR
-          printf 'wait-to-build' > ./pr/label
-
       - name: Setup nodejs
         uses: actions/setup-node@v2.1.5
         with:
@@ -67,8 +60,16 @@ jobs:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
 
-      - name: Save PR comment
-        if: ${{github.event_name == 'pull_request'}}
+      - name: Save PR number
+        if: ${{ always() && github.event_name == 'pull_request'}}
+        run: |
+          mkdir -p ./pr
+          printf ${{ github.event.number }} > ./pr/NR
+          printf 'wait-to-build' > ./pr/label
+
+      - name: Save PR comment if success
+        if:
+          ${{ job.status == 'success' && github.event_name == 'pull_request' }}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
         run: |
@@ -76,9 +77,27 @@ jobs:
           printf "\`${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix\`" >> ./pr/comment
           printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
 
+      - name: Save PR comment if failure
+        if:
+          ${{ job.status == 'failure' && github.event_name == 'pull_request' }}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+        run: |
+          printf "Oops, The Build workflow has failed. See in " >> ./pr/comment
+          printf "[summary](${{env.url}}). 😥" >> ./pr/comment
+
+      - name: Save PR comment if cancelled
+        if:
+          ${{ job.status == 'cancelled' && github.event_name == 'pull_request'
+          }}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+        run: |
+          printf "The build workflow has been cancelled! 👀" >> ./pr/comment
+
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
-        if: ${{ always() && github.event_name == 'pull_request'}}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         with:
           name: pr
           path: pr/
