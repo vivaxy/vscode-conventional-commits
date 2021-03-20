@@ -105,7 +105,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "deploy": "vsce publish --yarn",
-    "build": "vsce package",
+    "build1": "vsce package",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
