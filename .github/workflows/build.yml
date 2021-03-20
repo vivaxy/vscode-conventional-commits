@@ -12,9 +12,6 @@ on:
   pull_request:
     types: [labeled]
 
-env:
-  label_name: "wait-to-build"
-
 jobs:
   run:
     name: build
@@ -22,14 +19,14 @@ jobs:
     if: >
       ${{ github.event.event == 'push' }} || ${{ github.event.event ==
       'workflow_dispatch' }} ||
-      contains(github.event.pull_request.labels.*.name, ${{env.label_name}})
+      contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     steps:
       - name: Save PR number
         if: ${{github.event.event == 'pull_request'}}
         run: |
           mkdir -p ./pr
           echo ${{ github.event.number }} > ./pr/NR
-          echo ${{ env.label_name }} > ./pr/label
+          echo 'wait-to-build' > ./pr/label
 
       - name: Checkout code
         uses: actions/checkout@v2.3.4
