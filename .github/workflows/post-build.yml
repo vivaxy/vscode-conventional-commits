@@ -2,8 +2,10 @@ name: post build
 
 on:
   workflow_run:
-    workflows: ["build"]
-    branches: [main]
+    workflows:
+      - build
+    branches:
+      - master
     types:
       - completed
 
