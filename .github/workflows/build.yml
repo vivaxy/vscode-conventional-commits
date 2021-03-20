@@ -13,13 +13,15 @@ on:
     types: [labeled]
 
 jobs:
-  run:
-    name: build
+  build:
+    name: Build beta extension
     runs-on: ubuntu-latest
     if: >
-      ${{ github.event.event == 'push' }} || ${{ github.event.event ==
+      ${{ github.event_name == 'push' }} || ${{ github.event_name ==
       'workflow_dispatch' }} ||
       contains(github.event.pull_request.labels.*.name, 'wait-to-build')
+    outputs:
+      extension_name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
@@ -59,3 +61,39 @@ jobs:
         with:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
+
+  output:
+    name: Output PR information
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ always() && github.event_name == 'pull_request' }}
+    steps:
+      - name: Generate PR number and label name
+        run: |
+          mkdir -p ./pr
+          printf ${{ github.event.number }} > ./pr/NR
+          printf 'wait-to-build' > ./pr/label
+
+      - name: Generate PR comment if success
+        if: ${{ needs.build.result == 'success' }}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
+          name: ${{ needs.build.outputs.extension_name }}
+        run: |
+          printf "The beta extension of this pull has been built in the workflow! 🎉\n" >> ./pr/comment
+          printf "Download \`${{ env.name }}\` " >> ./pr/comment
+          printf "in [artifacts](${{ env.url }}). 🚀" >> ./pr/comment
+
+      - name: Generate PR comment if happening other conditions
+        if: ${{ needs.build.result != 'success' }}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#annotations
+        run: |
+          printf "Oops, The build workflow has failed! See in " >> ./pr/comment
+          printf "[summary](${{ env.url }}). 😥" >> ./pr/comment
+
+      - name: Upload the PR information
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: pr
+          path: pr/
