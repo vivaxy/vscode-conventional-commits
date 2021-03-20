@@ -92,6 +92,12 @@ jobs:
           printf "Oops, The build workflow has failed! See in " >> ./pr/comment
           printf "[summary](${{env.url}}). 😥" >> ./pr/comment
 
+      - name: echo PR status
+        if: ${{always() && github.event_name == 'pull_request'}}
+        env:
+          JOB_CONTEXT: ${{ toJSON(job) }}
+        run: echo "$JOB_CONTEXT"
+
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
         if: ${{always() && github.event_name == 'pull_request'}}
