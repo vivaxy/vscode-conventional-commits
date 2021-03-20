@@ -30,8 +30,8 @@ jobs:
         if: ${{github.event_name == 'pull_request'}}
         run: |
           mkdir -p ./pr
-          echo ${{ github.event.number }} > ./pr/NR
-          echo 'wait-to-build' > ./pr/label
+          printf ${{ github.event.number }} > ./pr/NR
+          printf 'wait-to-build' > ./pr/label
 
       - name: Setup nodejs
         uses: actions/setup-node@v2.1.5
@@ -73,9 +73,9 @@ jobs:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
         run: |
           printf "The beta extension " >> ./pr/comment
-          printf "of the commit `${{ github.event.pull_request.head.sha }}` " >> ./pr/comment
-          printf "has been built in the workflow (`[${{github.run_id}}]`).\n\n" >> ./pr/comment
-          printf "[#${{github.run_id}}]: " >> ./pr/comment
+          printf "of the commit \`${{ github.event.pull_request.head.sha }}\` " >> ./pr/comment
+          printf "has been built in the workflow (\`[${{github.run_id}}]\`).\n\n" >> ./pr/comment
+          printf "[${{github.run_id}}]: " >> ./pr/comment
           printf "${{env.url}}" >> ./pr/comment
 
       - name: Upload the PR information
