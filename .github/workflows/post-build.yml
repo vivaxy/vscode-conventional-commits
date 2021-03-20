@@ -49,8 +49,8 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('./NR'));
-            var comment = `${fs.readFileSync('./comment')}`;
-            var label_name = `${fs.readFileSync('./label')}`;
+            var comment = `${fs.readFileSync('./comment')}`.trim();
+            var label_name = `${fs.readFileSync('./label')}`.trim();
             await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -61,7 +61,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              name: label_name
+              name: label_name,
             });
 
       - name: Comment on PR
@@ -73,16 +73,35 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('./NR'));
-            var label_name = `${fs.readFileSync('./label')}`;
+            var label_name = `${fs.readFileSync('./label')}`.trim();
             await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              body: "The Build workflow has failed. See in [${{github.event.workflow_run.id}}](${{env.url}})."
+              body: "Oops, The Build workflow has failed. See in [${{github.event.workflow_run.id}}](${{env.url}}). 😥",
             });
             await github.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              name: label_name
+              name: label_name,
+            });
+
+      - name: Clear artifact
+        if: ${{github.event.workflow_run.conclusion == 'success'}}
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            await github.actions.deleteArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
             });

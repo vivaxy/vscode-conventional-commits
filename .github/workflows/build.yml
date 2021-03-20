@@ -72,11 +72,9 @@ jobs:
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
         run: |
-          printf "The beta extension " >> ./pr/comment
-          printf "of the commit \`${{ github.event.pull_request.head.sha }}\` " >> ./pr/comment
-          printf "has been built in the workflow (\`[${{github.run_id}}]\`).\n\n" >> ./pr/comment
-          printf "[${{github.run_id}}]: " >> ./pr/comment
-          printf "${{env.url}}" >> ./pr/comment
+          printf "The beta extension of this pull has been built in the workflow. See " >> ./pr/comment
+          printf "\`${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix\`" >> ./pr/comment
+          printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
