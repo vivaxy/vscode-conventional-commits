@@ -80,7 +80,7 @@ jobs:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
         run: |
-          printf "The beta extension of this pull has been built in the workflow! 🎉" >> ./pr/comment
+          printf "The beta extension of this pull has been built in the workflow! 🎉\n" >> ./pr/comment
           printf "Download \`${{env.name}}\` " >> ./pr/comment
           printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
 
