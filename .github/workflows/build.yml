@@ -13,23 +13,16 @@ on:
     types: [labeled]
 
 jobs:
-  echo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
   run:
     name: build
     runs-on: ubuntu-latest
     if: >
-      ${{ github.event.event == 'push' }} || ${{ github.event.event ==
+      ${{ github.event_name == 'push' }} || ${{ github.event_name ==
       'workflow_dispatch' }} ||
       contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     steps:
       - name: Save PR number
-        if: ${{github.event.event == 'pull_request'}}
+        if: ${{github.event_name == 'pull_request'}}
         run: |
           mkdir -p ./pr
           echo ${{ github.event.number }} > ./pr/NR
@@ -75,7 +68,7 @@ jobs:
           path: "*.vsix"
 
       - name: Save PR comment
-        if: ${{github.event.event == 'pull_request'}}
+        if: ${{github.event_name == 'pull_request'}}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_number}}
         run: |
@@ -87,7 +80,7 @@ jobs:
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
-        if: ${{ always() && github.event.event == 'pull_request'}}
+        if: ${{ always() && github.event_name == 'pull_request'}}
         with:
           name: pr
           path: pr/
