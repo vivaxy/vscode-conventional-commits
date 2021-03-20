@@ -28,13 +28,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Save PR number
-        if: ${{github.event_name == 'pull_request'}}
-        run: |
-          mkdir -p ./pr
-          printf ${{github.event.number}} > ./pr/NR
-          printf 'wait-to-build' > ./pr/label
-
       - name: Setup nodejs
         uses: actions/setup-node@v2.1.5
         with:
@@ -75,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ always() && github.event_name == 'pull_request' }}
     steps:
-      - name: Save PR number
+      - name: Generate PR number and label name
         run: |
           mkdir -p ./pr
           printf ${{ github.event.number }} > ./pr/NR
