@@ -13,6 +13,13 @@ on:
     types: [labeled]
 
 jobs:
+  echo:
+    runs-on: ubuntu-latest
+  steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
   run:
     name: build
     runs-on: ubuntu-latest
