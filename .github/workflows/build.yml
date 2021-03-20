@@ -12,12 +12,13 @@ on:
   pull_request:
     types: [labeled]
 
+env:
+  label_name: "wait-to-build"
+
 jobs:
   run:
     name: build
     runs-on: ubuntu-latest
-    env:
-      label_name: "wait-to-build"
     if: >
       ${{ github.event.event == 'push' }} || ${{ github.event.event ==
       'workflow_dispatch' }} ||
