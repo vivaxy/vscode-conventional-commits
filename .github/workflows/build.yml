@@ -16,11 +16,20 @@ jobs:
   run:
     name: build
     runs-on: ubuntu-latest
+    env:
+      label_name: "wait-to-build"
     if: >
       ${{ github.event.event == 'push' }} || ${{ github.event.event ==
       'workflow_dispatch' }} ||
-      contains(github.event.pull_request.labels.*.name, 'wait-to-build')
+      contains(github.event.pull_request.labels.*.name, ${{env.label_name}})
     steps:
+      - name: Save PR number
+        if: ${{github.event.event == 'pull_request'}}
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+          echo ${{ env.label_name }} > ./pr/label
+
       - name: Checkout code
         uses: actions/checkout@v2.3.4
         with:
@@ -59,3 +68,21 @@ jobs:
         with:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
+
+      - name: Save PR comment
+        if: ${{github.event.event == 'pull_request'}}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_number}}
+        run: |
+          printf "The beta extension " >> ./pr/comment
+          printf "of the commit `${{ github.event.pull_request.head.sha }}` " >> ./pr/comment
+          printf "has been built in the workflow ([#${{github.run_number}}]).\n\n" >> ./pr/comment
+          printf "[#${{github.run_number}}]: " >> ./pr/comment
+          printf "${{env.url}}" >> ./pr/comment
+
+      - name: Upload the PR information
+        uses: actions/upload-artifact@v2.2.2
+        if: ${{ always() && github.event.event == 'pull_request'}}
+        with:
+          name: pr
+          path: pr/

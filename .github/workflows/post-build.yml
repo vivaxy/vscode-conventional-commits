@@ -1,0 +1,80 @@
+name: post build
+
+on:
+  workflow_run:
+    workflows: ["build"]
+    types:
+      - completed
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    if: ${{github.event.workflow_run.event == 'pull_request'}}
+    steps:
+      - name: Download artifact
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+
+      - run: unzip pr.zip
+
+      - name: Comment on PR
+        if: ${{github.event.workflow_run.conclusion == 'success'}}
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            var comment = `${fs.readFileSync('./comment')}`;
+            var label_name = `${fs.readFileSync('./label')}`;
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: comment
+            });
+            await github.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: label_name
+            });
+
+      - name: Comment on PR
+        if: ${{github.event.workflow_run.conclusion == 'failure'}}
+        uses: actions/github-script@v3.1.0
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.event.workflow_run.id}}
+        with:
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            var label_name = `${fs.readFileSync('./label')}`;
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: "The Build workflow has failed. See in [${{github.event.workflow_run.id}}](${{env.url}})."
+            });
+            await github.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: label_name
+            });
