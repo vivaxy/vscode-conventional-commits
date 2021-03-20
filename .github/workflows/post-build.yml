@@ -35,21 +35,13 @@ jobs:
 
       - run: unzip pr.zip
 
-      - name: Comment on PR
-        if: ${{github.event.workflow_run.conclusion == 'success'}}
+      - name: Delete label
         uses: actions/github-script@v3.1.0
         with:
           script: |
-            var fs = require('fs');
-            var issue_number = Number(fs.readFileSync('./NR'));
-            var comment = `${fs.readFileSync('./comment')}`.trim();
-            var label_name = `${fs.readFileSync('./label')}`.trim();
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              body: comment
-            });
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            const label_name = `${fs.readFileSync('./label')}`.trim();
             await github.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -58,26 +50,17 @@ jobs:
             });
 
       - name: Comment on PR
-        if: ${{github.event.workflow_run.conclusion == 'failure'}}
         uses: actions/github-script@v3.1.0
-        env:
-          url: https://github.com/${{github.repository}}/actions/runs/${{github.event.workflow_run.id}}
         with:
           script: |
-            var fs = require('fs');
-            var issue_number = Number(fs.readFileSync('./NR'));
-            var label_name = `${fs.readFileSync('./label')}`.trim();
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            const comment = `${fs.readFileSync('./comment')}`.trim();
             await github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              body: "Oops, The Build workflow has failed. See in [${{github.event.workflow_run.id}}](${{env.url}}). 😥",
-            });
-            await github.issues.removeLabel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              name: label_name,
+              body: comment
             });
 
       - name: Clear artifact
@@ -85,12 +68,12 @@ jobs:
         uses: actions/github-script@v3.1.0
         with:
           script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
+            const artifacts = await github.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{github.event.workflow_run.id }},
             });
-            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+            const matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "pr"
             })[0];
             await github.actions.deleteArtifact({

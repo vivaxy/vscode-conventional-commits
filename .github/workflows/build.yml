@@ -30,7 +30,7 @@ jobs:
         if: ${{github.event_name == 'pull_request'}}
         run: |
           mkdir -p ./pr
-          printf ${{ github.event.number }} > ./pr/NR
+          printf ${{github.event.number}} > ./pr/NR
           printf 'wait-to-build' > ./pr/label
 
       - name: Setup nodejs
@@ -67,18 +67,42 @@ jobs:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
 
-      - name: Save PR comment
-        if: ${{github.event_name == 'pull_request'}}
+      - name: Save PR number
+        if: ${{always() && github.event_name == 'pull_request'}}
+        run: |
+          mkdir -p ./pr
+          printf ${{ github.event.number }} > ./pr/NR
+          printf 'wait-to-build' > ./pr/label
+
+      - name: Generate PR comment if success
+        if: ${{job.status == 'success' && github.event_name == 'pull_request'}}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
+        run: |
+          printf "The beta extension of this pull has been built in the workflow! Download " >> ./pr/comment
+          printf "\`${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix\` " >> ./pr/comment
+          printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
+
+      - name: Generate PR comment if failure
+        if: ${{job.status == 'failure' && github.event_name == 'pull_request'}}
+        env:
+          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#annotations
+
+        run: |
+          printf "Oops, The build workflow has failed! See in " >> ./pr/comment
+          printf "[summary](${{env.url}}). 😥" >> ./pr/comment
+
+      - name: Generate PR comment if cancelled
+        if: >
+          ${{job.status == 'cancelled' && github.event_name == 'pull_request'}}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
         run: |
-          printf "The beta extension of this pull has been built in the workflow. See " >> ./pr/comment
-          printf "\`${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix\`" >> ./pr/comment
-          printf "in [artifacts](${{env.url}}). 🚀" >> ./pr/comment
+          printf "The build workflow has been cancelled! 👀" >> ./pr/comment
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
-        if: ${{ always() && github.event_name == 'pull_request'}}
+        if: ${{always() && github.event_name == 'pull_request'}}
         with:
           name: pr
           path: pr/
