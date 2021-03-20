@@ -71,7 +71,7 @@ jobs:
 
   output:
     name: Output PR information
-    need: build
+    needs: build
     runs-on: ubuntu-latest
     if: ${{ always() && github.event_name == 'pull_request' }}
     steps:
@@ -82,7 +82,7 @@ jobs:
           printf 'wait-to-build' > ./pr/label
 
       - name: Generate PR comment if success
-        if: ${{ need.build.result == 'success' }}
+        if: ${{ needs.build.result == 'success' }}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
           name: ${{ needs.build.outputs.extension_name }}
@@ -92,7 +92,7 @@ jobs:
           printf "in [artifacts](${{ env.url }}). 🚀" >> ./pr/comment
 
       - name: Generate PR comment if happening other conditions
-        if: ${{ need.build.result != 'success' }}
+        if: ${{ needs.build.result != 'success' }}
         env:
           url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#annotations
         run: |
