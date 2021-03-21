@@ -105,7 +105,7 @@ export default async function prompts({
     }
 
     return {
-      type: PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK,
+      type: PROMPT_TYPES.CONFIGURABLE_QUICK_PICK,
       name,
       placeholder,
       configurationKey: keys.SCOPES as keyof configuration.Configuration,
