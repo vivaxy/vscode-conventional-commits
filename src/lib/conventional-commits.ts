@@ -35,7 +35,7 @@ function outputConfiguration(key: keyof configuration.Configuration) {
   output.appendLine(`${key}: ${configuration.get(key)}`);
 }
 
-function outputRelatedExtensionConfigutation(key: string) {
+function outputRelatedExtensionConfiguration(key: string) {
   output.appendLine(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
 
@@ -140,9 +140,9 @@ export default function createConventionalCommits() {
       outputConfiguration('lineBreak');
       outputConfiguration('promptScopes');
 
-      outputRelatedExtensionConfigutation('git.enableSmartCommit');
-      outputRelatedExtensionConfigutation('git.smartCommitChanges');
-      outputRelatedExtensionConfigutation('git.postCommitCommand');
+      outputRelatedExtensionConfiguration('git.enableSmartCommit');
+      outputRelatedExtensionConfiguration('git.smartCommitChanges');
+      outputRelatedExtensionConfiguration('git.postCommitCommand');
 
       // 2. check git
       const git = getGitAPI();
