@@ -138,6 +138,7 @@ export default function createConventionalCommits() {
       outputConfiguration('emojiFormat');
       outputConfiguration('scopes');
       outputConfiguration('lineBreak');
+      outputConfiguration('promptScopes');
 
       outputRelatedExtensionConfigutation('git.enableSmartCommit');
       outputRelatedExtensionConfigutation('git.smartCommitChanges');
@@ -176,6 +177,7 @@ export default function createConventionalCommits() {
           'emojiFormat',
         ),
         lineBreak: configuration.get<string>('lineBreak'),
+        promptScopes: configuration.get<boolean>('promptScopes'),
       });
       output.appendLine(
         `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,

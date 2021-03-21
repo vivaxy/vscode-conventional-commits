@@ -4,7 +4,7 @@
   "description": "💬Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
-  "version": "1.17.0",
+  "version": "1.17.1-1",
   "engines": {
     "vscode": "^1.14.0"
   },
@@ -94,6 +94,11 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
+        },
+        "conventionalCommits.promptScopes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription%"
         }
       }
     }

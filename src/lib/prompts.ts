@@ -29,11 +29,13 @@ export default async function prompts({
   showEditor,
   emojiFormat,
   lineBreak,
+  promptScopes,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
   emojiFormat: configuration.EMOJI_FORMAT;
   lineBreak: string;
+  promptScopes: boolean;
 }): Promise<CommitMessage> {
   const conventionalCommitsTypes = getConventionalCommitsTypesByLocale(locale);
 
@@ -252,7 +254,9 @@ export default async function prompts({
     },
   ]
     .filter(function (question) {
-      if (!gitmoji && question.name === 'gitmoji') {
+      if (!promptScopes && question.name === 'scope') {
+        return false;
+      } else if (!gitmoji && question.name === 'gitmoji') {
         return false;
       } else if (
         showEditor &&
