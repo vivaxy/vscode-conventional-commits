@@ -10,7 +10,7 @@ import localize from '../localize';
 export enum PROMPT_TYPES {
   QUICK_PICK,
   INPUT_BOX,
-  CONFIGURIABLE_QUICK_PICK,
+  CONFIGURABLE_QUICK_PICK,
 }
 
 type Item = {
@@ -24,7 +24,7 @@ type Item = {
 export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
   Partial<QuickPickOptions> &
   Partial<InputBoxOptions> &
-  Partial<ConfiguriableQuickPickOptions>;
+  Partial<ConfigurableQuickPickOptions>;
 
 type Options = {
   placeholder: string;
@@ -110,7 +110,7 @@ function createInputBox({
   });
 }
 
-type ConfiguriableQuickPickOptions = {
+type ConfigurableQuickPickOptions = {
   configurationKey: keyof configuration.Configuration;
   newItem: Item;
   newItemWithoutSetting: Item;
@@ -118,7 +118,7 @@ type ConfiguriableQuickPickOptions = {
   validate?: (value: string) => string | undefined;
 } & QuickPickOptions;
 
-async function createConfiguriableQuickPick({
+async function createConfigurableQuickPick({
   placeholder,
   format = (i) => i,
   step,
@@ -128,7 +128,7 @@ async function createConfiguriableQuickPick({
   noneItem,
   newItemWithoutSetting,
   validate = () => undefined,
-}: ConfiguriableQuickPickOptions): Promise<string> {
+}: ConfigurableQuickPickOptions): Promise<string> {
   const currentValus: string[] = configuration.get<string[]>(configurationKey);
   const items: Item[] = currentValus.map(function (value) {
     return {
@@ -171,5 +171,5 @@ async function createConfiguriableQuickPick({
 export default {
   [PROMPT_TYPES.QUICK_PICK]: createQuickPick,
   [PROMPT_TYPES.INPUT_BOX]: createInputBox,
-  [PROMPT_TYPES.CONFIGURIABLE_QUICK_PICK]: createConfiguriableQuickPick,
+  [PROMPT_TYPES.CONFIGURABLE_QUICK_PICK]: createConfigurableQuickPick,
 };
