@@ -32,5 +32,6 @@
   "extension.sources.prompt.subject.error.scope": "作用域：",
   "extension.sources.prompt.subject.error.gitmoji": " gitmoji：",
   "extension.sources.prompt.body.placeholder": "请填写正文。",
+  "extension.sources.prompt.breakingChange.placeholder": "请填写破环性的改变内容。",
   "extension.sources.prompt.footer.placeholder": "请填写脚注。"
 }

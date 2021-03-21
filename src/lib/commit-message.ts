@@ -8,6 +8,7 @@ export class CommitMessage {
   private _gitmoji: string = '';
   private _subject: string = '';
   private _body: string = '';
+  private _breakingChange: string = '';
   private _footer: string = '';
 
   get type() {
@@ -48,6 +49,14 @@ export class CommitMessage {
 
   set body(input: string) {
     this._body = input.trim();
+  }
+
+  get breakingChange() {
+    return this._breakingChange;
+  }
+
+  set breakingChange(input: string) {
+    this._breakingChange = input.trim();
   }
 
   get footer() {
@@ -101,9 +110,13 @@ export function serializeHeader(partialCommitMessage: {
 
 export function serialize(commitMessage: CommitMessage) {
   let message = serializeHeader(commitMessage);
-  const { body, footer } = commitMessage;
+  const { body, breakingChange, footer } = commitMessage;
   if (body) {
     message += `\n\n${body}`;
+  }
+  if (breakingChange) {
+    message = message.replace(': ', '!: ');
+    message += `\n\nBREAKING CHANGE: ${breakingChange}`;
   }
   if (footer) {
     message += `\n\n${footer}`;

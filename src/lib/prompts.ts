@@ -254,6 +254,17 @@ export default async function prompts({
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
+      name: 'breakingChange',
+      placeholder: localize(
+        'extension.sources.prompt.breakingChange.placeholder',
+      ),
+      validate(input: string) {
+        return commitlint.lintFooter(input);
+      },
+      format: lineBreakFormatter,
+    },
+    {
+      type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
       placeholder: localize('extension.sources.prompt.footer.placeholder'),
       validate(input: string) {
@@ -269,7 +280,9 @@ export default async function prompts({
         return false;
       } else if (
         showEditor &&
-        (question.name === 'body' || question.name === 'footer')
+        (question.name === 'body' ||
+          question.name === 'footer' ||
+          question.name === 'footer')
       ) {
         return false;
       } else {
