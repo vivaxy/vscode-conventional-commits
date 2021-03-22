@@ -94,6 +94,11 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
+        },
+        "conventionalCommits.promptScopes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription%"
         }
       }
     }

@@ -1,10 +1,11 @@
 {
   "extension.name": "Conventional Commits",
   "extension.configuration.properties.conventionalCommits.autoCommit.markdownDescription": "Controls whether the extension should automatically commit files.\n\n*Enable `Settings > git.enableSmartCommit` and set `Settings > git.smartCommitChanges` to `all` to commit all changes when there are no staged changes.*\n\n*Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after commit.*",
-  "extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription": "Controls whether the extension should prompt for an gitmoji.",
+  "extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription": "Controls whether the extension should prompt for a gitmoji.",
   "extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.code": "Display as `:bug:`",
   "extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.emoji": "Display as `🐛`",
   "extension.configuration.properties.conventionalCommits.scopes.markdownDescription": "Available scopes.",
+  "extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription": "Controls whether the extension should prompt for a scope.",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "Treat words as line breaks.\n\nBlank means no line breaks.",
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "Show the commit message as a text document in a separate tab.",
   "extension.sources.repositoryNotFoundInPath": "Repository not found in path: ",

@@ -29,7 +29,7 @@ You can access VSCode Conventional Commits in two ways:
    and press `Enter`.
 2. Click the icon on the Source Control menu. See the image below.
 
-<img src="./assets/docs/icon-on-the-source-control-menu.png" alt="Icon on the Source Control menu" width="300">
+![Icon on the Source Control menu](./assets/docs/icon-on-the-source-control-menu.png)
 
 ## Commit Workflow
 

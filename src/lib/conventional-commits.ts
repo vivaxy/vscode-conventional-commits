@@ -35,7 +35,7 @@ function outputConfiguration(key: keyof configuration.Configuration) {
   output.appendLine(`${key}: ${configuration.get(key)}`);
 }
 
-function outputRelatedExtensionConfigutation(key: string) {
+function outputRelatedExtensionConfiguration(key: string) {
   output.appendLine(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
 
@@ -138,10 +138,11 @@ export default function createConventionalCommits() {
       outputConfiguration('emojiFormat');
       outputConfiguration('scopes');
       outputConfiguration('lineBreak');
+      outputConfiguration('promptScopes');
 
-      outputRelatedExtensionConfigutation('git.enableSmartCommit');
-      outputRelatedExtensionConfigutation('git.smartCommitChanges');
-      outputRelatedExtensionConfigutation('git.postCommitCommand');
+      outputRelatedExtensionConfiguration('git.enableSmartCommit');
+      outputRelatedExtensionConfiguration('git.smartCommitChanges');
+      outputRelatedExtensionConfiguration('git.postCommitCommand');
 
       // 2. check git
       const git = getGitAPI();
@@ -176,6 +177,7 @@ export default function createConventionalCommits() {
           'emojiFormat',
         ),
         lineBreak: configuration.get<string>('lineBreak'),
+        promptScopes: configuration.get<boolean>('promptScopes'),
       });
       output.appendLine(
         `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,

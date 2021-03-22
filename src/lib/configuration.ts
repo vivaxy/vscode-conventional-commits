@@ -17,6 +17,7 @@ export type Configuration = {
   showEditor: boolean;
   scopes: string[];
   lineBreak: string;
+  promptScopes: boolean;
 };
 
 export function getConfiguration() {

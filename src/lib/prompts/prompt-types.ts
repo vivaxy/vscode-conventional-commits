@@ -129,8 +129,8 @@ async function createConfigurableQuickPick({
   newItemWithoutSetting,
   validate = () => undefined,
 }: ConfigurableQuickPickOptions): Promise<string> {
-  const currentValus: string[] = configuration.get<string[]>(configurationKey);
-  const items: Item[] = currentValus.map(function (value) {
+  const currentValues: string[] = configuration.get<string[]>(configurationKey);
+  const items: Item[] = currentValues.map(function (value) {
     return {
       label: value,
       description: '',
@@ -154,7 +154,7 @@ async function createConfigurableQuickPick({
       validate,
     });
     if (selectedValue) {
-      configuration.update(configurationKey, [...currentValus, selectedValue]);
+      configuration.update(configurationKey, [...currentValues, selectedValue]);
     }
   }
   if (selectedValue === newItemWithoutSetting.label) {
