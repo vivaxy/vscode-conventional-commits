@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.17.0...v1.18.0) (2021-03-22)
+
+### Features
+
+- **scope:** :sparkles: add option to disable scope prompt ([#95](https://github.com/vivaxy/vscode-conventional-commits/issues/95)) ([a35bc7b](https://github.com/vivaxy/vscode-conventional-commits/commit/a35bc7bdb0dcb1a28337770ebe139c053596098f)), closes [#43](https://github.com/vivaxy/vscode-conventional-commits/issues/43)
+
+### Bug Fixes
+
+- :pencil2: fix little typo ([#94](https://github.com/vivaxy/vscode-conventional-commits/issues/94)) ([e6a01cf](https://github.com/vivaxy/vscode-conventional-commits/commit/e6a01cff411419d6fc7be2c888c442c8dfd877b2))
+
 ## [1.17.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.16.1...v1.17.0) (2021-03-17)
 
 ### Features
