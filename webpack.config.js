@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
@@ -51,18 +50,7 @@ const config = {
   stats: {
     warnings: false,
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        {
-          from:
-            'node_modules/@yi-xu-0100/conventional-commit-types-i18n/lib/locale/',
-          to: '../locale/',
-        },
-      ],
-    }),
-    new CleanWebpackPlugin(),
-  ],
+  plugins: [new CleanWebpackPlugin()],
 };
 
 module.exports = config;

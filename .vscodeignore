@@ -14,3 +14,4 @@ assets/
 **/*.map
 !assets/icon.png
 !assets/*icon*.svg
+locale/

@@ -53,6 +53,7 @@ export default async function prompts({
     const typeEnum = commitlint.getTypeEnum();
     if (typeEnum.length === 0) {
       return Object.keys(conventionalCommitsTypes.types).map(function (type) {
+        // @ts-ignore
         const { title, description } = conventionalCommitsTypes.types[type];
         return {
           label: type,
@@ -63,6 +64,7 @@ export default async function prompts({
     }
     return typeEnum.map(function (type) {
       if (type in conventionalCommitsTypes.types) {
+        // @ts-ignore
         const { description, title } = conventionalCommitsTypes.types[type];
         return {
           label: type,
