@@ -24,6 +24,13 @@ import commitMessage, {
 import commitlint from './commitlint';
 import localize, { locale } from './localize';
 
+type ConventionalCommitsTypes = {
+  [type: string]: {
+    title: string;
+    description: string;
+  };
+};
+
 export default async function prompts({
   gitmoji,
   showEditor,
@@ -37,7 +44,9 @@ export default async function prompts({
   lineBreak: string;
   promptScopes: boolean;
 }): Promise<CommitMessage> {
-  const conventionalCommitsTypes = getConventionalCommitsTypesByLocale(locale);
+  const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
+    locale,
+  ).types;
 
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {
@@ -52,9 +61,8 @@ export default async function prompts({
   function getTypeItems() {
     const typeEnum = commitlint.getTypeEnum();
     if (typeEnum.length === 0) {
-      return Object.keys(conventionalCommitsTypes.types).map(function (type) {
-        // @ts-ignore
-        const { title, description } = conventionalCommitsTypes.types[type];
+      return Object.keys(conventionalCommitsTypes).map(function (type) {
+        const { title, description } = conventionalCommitsTypes[type];
         return {
           label: type,
           description: title,
@@ -63,9 +71,8 @@ export default async function prompts({
       });
     }
     return typeEnum.map(function (type) {
-      if (type in conventionalCommitsTypes.types) {
-        // @ts-ignore
-        const { description, title } = conventionalCommitsTypes.types[type];
+      if (type in conventionalCommitsTypes) {
+        const { description, title } = conventionalCommitsTypes[type];
         return {
           label: type,
           description: title,
