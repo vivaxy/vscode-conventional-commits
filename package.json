@@ -99,6 +99,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription%"
+        },
+        "conventionalCommits.detectBreakingChange": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.detectBreakingChange.markdownDescription%"
         }
       }
     }

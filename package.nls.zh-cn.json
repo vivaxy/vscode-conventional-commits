@@ -8,6 +8,7 @@
   "extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription": "是否需要填写作用域。",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "换行标识符。\n\n留空表示不换行。",
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "在新标签页用文本编辑器展示提交信息",
+  "extension.configuration.properties.conventionalCommits.detectBreakingChange.markdownDescription": "是否需要检测页脚存在的`BREAKING CHANGE`或者`BREAKING-CHANGE`并添加`!`到`type/scope`前缀中。",
   "extension.sources.repositoryNotFoundInPath": "以下路径中未找到仓库：",
   "extension.sources.repositoriesEmpty": "请打开一个仓库",
   "extension.sources.promptRepositoryPlaceholder": "请选择一个仓库",

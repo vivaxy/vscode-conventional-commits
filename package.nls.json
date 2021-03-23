@@ -8,6 +8,7 @@
   "extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription": "Controls whether the extension should prompt for a scope.",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "Treat words as line breaks.\n\nBlank means no line breaks.",
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "Show the commit message as a text document in a separate tab.",
+  "extension.configuration.properties.conventionalCommits.detectBreakingChange.markdownDescription": "Controls whether the extension should detect `BREAKING CHANGE` or `BREAKING-CHANGE` in the footer to add a `!` into the `type/scope` prefix.",
   "extension.sources.repositoryNotFoundInPath": "Repository not found in path: ",
   "extension.sources.repositoriesEmpty": "Please open a repository.",
   "extension.sources.promptRepositoryPlaceholder": "Choose a repository",

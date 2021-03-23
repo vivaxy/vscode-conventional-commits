@@ -139,6 +139,7 @@ export default function createConventionalCommits() {
       outputConfiguration('scopes');
       outputConfiguration('lineBreak');
       outputConfiguration('promptScopes');
+      outputConfiguration('detectBreakingChange');
 
       outputRelatedExtensionConfiguration('git.enableSmartCommit');
       outputRelatedExtensionConfiguration('git.smartCommitChanges');
@@ -182,7 +183,17 @@ export default function createConventionalCommits() {
       output.appendLine(
         `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,
       );
-      const message = serialize(commitMessage);
+
+      let message = serialize(commitMessage);
+      const detectBreakingChange = configuration.get<boolean>(
+        'detectBreakingChange',
+      );
+      if (detectBreakingChange && /^BREAKING( |-)CHANGE: /gm.test(message)) {
+        output.appendLine(
+          'detectBreakingChange: Found `BREAKING CHANGE` in message.',
+        );
+        message = message.replace(': ', '!: ');
+      }
       output.appendLine(`message: ${message}`);
 
       // 6. switch to scm and put message into message box or show the entire commit message in a separate tab
