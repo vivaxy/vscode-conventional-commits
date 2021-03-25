@@ -25,6 +25,14 @@ const config = {
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js'],
+    alias: {
+      '@commitlint/resolve-extends': path.resolve(
+        __dirname,
+        'src/modules/@commitlint/resolve-extends/lib/',
+      ),
+      'import-fresh': path.resolve(__dirname, 'src/modules/import-fresh'),
+      'resolve-global': path.resolve(__dirname, 'src/modules/resolve-global'),
+    },
   },
   module: {
     rules: [
@@ -46,9 +54,6 @@ const config = {
   },
   optimization: {
     minimize: false,
-  },
-  stats: {
-    warnings: false,
   },
   plugins: [new CleanWebpackPlugin()],
 };

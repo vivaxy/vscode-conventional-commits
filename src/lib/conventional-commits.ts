@@ -8,7 +8,7 @@ import * as VSCodeGit from '../vendors/git';
 import prompts from './prompts';
 import * as configuration from './configuration';
 import * as output from './output';
-import commitlint from './commitlint';
+import { Commitlint } from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
 import { serialize } from './commit-message';
 import localize from './localize';
@@ -158,6 +158,7 @@ export default function createConventionalCommits() {
       });
 
       // 4. get commitlint rules
+      const commitlint = new Commitlint();
       const commitlintRuleConfigs = await commitlint.loadRuleConfigs(
         repository.rootUri.fsPath,
       );
