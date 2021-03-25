@@ -21,7 +21,7 @@ import commitMessage, {
   serializeSubject,
   serializeHeader,
 } from './commit-message';
-import { Commitlint } from './commitlint';
+import commitlint from './commitlint';
 import localize, { locale } from './localize';
 
 type ConventionalCommitsTypes = {
@@ -47,7 +47,6 @@ export default async function prompts({
   const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
     locale,
   ).types;
-  const commitlint = new Commitlint();
 
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {

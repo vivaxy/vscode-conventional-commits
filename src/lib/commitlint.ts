@@ -8,7 +8,7 @@ import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { Commit } from '@commitlint/types/lib/parse';
 import { appendLine } from './output';
 
-export class Commitlint {
+class Commitlint {
   private ruleConfigs: Partial<RulesConfig> = {};
 
   async loadRuleConfigs(cwd: string): Promise<Partial<RulesConfig>> {
@@ -133,3 +133,5 @@ export class Commitlint {
     ]);
   }
 }
+
+export default new Commitlint();
