@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.18.0...v1.18.1) (2021-03-25)
+
+### Bug Fixes
+
+- **commitlint:** :bug: repair commitlint configuration failures ([#103](https://github.com/vivaxy/vscode-conventional-commits/issues/103)) ([b79bb31](https://github.com/vivaxy/vscode-conventional-commits/commit/b79bb316543dd31cb200cd6159142489cdfb5773)), closes [#102](https://github.com/vivaxy/vscode-conventional-commits/issues/102)
+
 ## [1.18.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.17.0...v1.18.0) (2021-03-22)
 
 ### Features
