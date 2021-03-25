@@ -3667,6 +3667,11 @@ vsce@^1.74.0:
     yauzl "^2.3.1"
     yazl "^2.2.2"
 
+warnings-to-errors-webpack-plugin@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/warnings-to-errors-webpack-plugin/-/warnings-to-errors-webpack-plugin-2.0.1.tgz#87e6cc85b7995a434d2886a4889fc3fded9b0214"
+  integrity sha512-PhaAMVZzINqmBB7MPSfQhUZtC8VIbJRVmDOK4He5YdKfLLkhTFEWuaT2vKU/6Crbby3UEB+4PQiJSpZ30qXmZw==
+
 watchpack@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-2.1.1.tgz#e99630550fca07df9f90a06056987baa40a689c7"

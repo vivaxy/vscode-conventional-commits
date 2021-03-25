@@ -2,10 +2,11 @@
  * @since 2020-04-28 14:37
  * @author vivaxy
  */
-import load from '@commitlint/load';
+import load from '../modules/@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
 import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { Commit } from '@commitlint/types/lib/parse';
+import { appendLine } from './output';
 
 class Commitlint {
   private ruleConfigs: Partial<RulesConfig> = {};
@@ -17,6 +18,7 @@ class Commitlint {
         return rules;
       } catch (e) {
         // catch if `Cannot find module "@commitlint/config-conventional"` happens.
+        appendLine(`[warning]: ${e.message}`);
         return {};
       }
     }
