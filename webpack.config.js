@@ -2,6 +2,7 @@
 
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WarningsToErrorsPlugin = require('warnings-to-errors-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -55,7 +56,7 @@ const config = {
   optimization: {
     minimize: false,
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [new WarningsToErrorsPlugin(), new CleanWebpackPlugin()],
 };
 
 module.exports = config;
