@@ -11,7 +11,7 @@ module.exports = (moduleId) => {
     throw new TypeError('Expected a string');
   }
 
-  const parentPath = parentModule(__filename);
+  const parentPath = parentModule(__filename) || '';
 
   const filePath = resolveFrom(path.dirname(parentPath), moduleId);
 
