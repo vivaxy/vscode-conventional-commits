@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import * as configuration from '../configuration';
 import createSimpleQuickPick from './quick-pick';
 import localize from '../localize';
+import * as output from '../output';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -89,6 +90,7 @@ function createInputBox({
       try {
         input.validationMessage = validate(input.value);
       } catch (e) {
+        output.error(`step.${input.step}`, e);
         reject(e);
       }
     });
@@ -102,6 +104,7 @@ function createInputBox({
         input.dispose();
         resolve(result);
       } catch (e) {
+        output.error(`step.${input.step}`, e);
         reject(e);
       }
     });
