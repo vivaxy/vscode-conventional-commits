@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { TextDecoder, TextEncoder } from 'util';
-import localize from '../localize';
 import { Repository } from '../../vendors/git';
 import * as configuration from '../configuration';
 import * as output from '../output';
@@ -45,6 +44,7 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
   }
 
   createDirectory(): void {}
+
   writeFile(_uri: vscode.Uri, content: Uint8Array): Thenable<void> {
     return new Promise(async (resolve) => {
       try {
@@ -68,17 +68,16 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
             resolve();
           }
 
-          output.appendLine('Finished successfully.');
+          output.info('Write file successfully.');
         }
       } catch (e) {
-        output.appendLine(`Finished with an error: ${e.stack}`);
-        vscode.window.showErrorMessage(
-          `${localize('extension.name')}: ${e.message}`,
-        );
+        output.error('writeFile', e);
       }
     });
   }
+
   rename(): void {}
+
   delete(): void {}
 })();
 
