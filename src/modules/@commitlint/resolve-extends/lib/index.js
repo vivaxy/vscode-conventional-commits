@@ -52,8 +52,7 @@ function loadExtends(config = {}, context = {}) {
   const { extends: e } = config;
   const ext = e ? (Array.isArray(e) ? e : [e]) : [];
   return ext.reduce((configs, raw) => {
-    const _require = eval('require');
-    const load = context.require || _require;
+    const load = context.require || __non_webpack_require__;
     const resolved = resolveConfig(raw, context);
     const c = load(resolved);
     const cwd = path_1.default.dirname(resolved);
@@ -73,7 +72,7 @@ function loadExtends(config = {}, context = {}) {
         )}`
           .split(path_1.default.sep)
           .join('/'),
-        parserOpts: _require(resolvedParserPreset),
+        parserOpts: __non_webpack_require__(resolvedParserPreset),
       };
       ctx.parserPreset = parserPreset;
       config.parserPreset = parserPreset;

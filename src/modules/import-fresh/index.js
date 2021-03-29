@@ -30,6 +30,7 @@ module.exports = (moduleId) => {
   delete require.cache[filePath]; // Delete module from cache
 
   const parent = require.cache[parentPath]; // If `filePath` and `parentPath` are the same, cache will already be deleted so we won't get a memory leak in next step
-  const _require = eval('require');
-  return parent === undefined ? _require(filePath) : parent.require(filePath); // In case cache doesn't have parent, fall back to normal require
+  return parent === undefined
+    ? __non_webpack_require__(filePath)
+    : parent.require(filePath); // In case cache doesn't have parent, fall back to normal require
 };

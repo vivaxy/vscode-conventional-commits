@@ -13,7 +13,6 @@ const chalk_1 = __importDefault(require('chalk'));
 const plugin_naming_1 = require('@commitlint/load/lib/utils/plugin-naming');
 const plugin_errors_1 = require('@commitlint/load/lib/utils/plugin-errors');
 function loadPlugin(plugins, pluginName, debug = false) {
-  const _require = eval('require');
   const longName = plugin_naming_1.normalizePackageName(pluginName);
   const shortName = plugin_naming_1.getShorthandName(longName);
   let plugin = null;
@@ -25,11 +24,11 @@ function loadPlugin(plugins, pluginName, debug = false) {
   const pluginKey = longName === pluginName ? shortName : pluginName;
   if (!plugins[pluginKey]) {
     try {
-      plugin = _require(longName);
+      plugin = __non_webpack_require__(longName);
     } catch (pluginLoadErr) {
       try {
         // Check whether the plugin exists
-        _require.resolve(longName);
+        __non_webpack_require__.resolve(longName);
       } catch (error) {
         // If the plugin can't be resolved, display the missing plugin error (usually a config or install error)
         console.error(
@@ -49,10 +48,10 @@ function loadPlugin(plugins, pluginName, debug = false) {
     }
     // This step is costly, so skip if debug is disabled
     if (debug) {
-      const resolvedPath = _require.resolve(longName);
+      const resolvedPath = __non_webpack_require__.resolve(longName);
       let version = null;
       try {
-        version = _require(`${longName}/package.json`).version;
+        version = __non_webpack_require__(`${longName}/package.json`).version;
       } catch (e) {
         // Do nothing
       }
