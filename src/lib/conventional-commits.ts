@@ -14,29 +14,37 @@ import { serialize } from './commit-message';
 import localize from './localize';
 import openMessageInTab from './editor';
 
-function getGitAPI(): VSCodeGit.API | void {
-  const vscodeGit = vscode.extensions.getExtension<VSCodeGit.GitExtension>(
-    'vscode.git',
-  );
-  if (vscodeGit) {
-    return vscodeGit.exports.getAPI(1);
+function getSourcesLocalize(key: string) {
+  return localize(`extension.sources.${key}`);
+}
+
+function getGitAPI(): VSCodeGit.API {
+  const vscodeGit = vscode.extensions.getExtension('vscode.git');
+  if (!vscodeGit?.exports.getAPI(1)) {
+    output.error('getGitAPI', getSourcesLocalize('vscodeGitNotFound'), true);
+  }
+  return vscodeGit!.exports.getAPI(1);
+}
+
+function outputExtensionVersion(name: string, id: string) {
+  const packageJSON = vscode.extensions.getExtension(id)?.packageJSON;
+  if (packageJSON === undefined) {
+    output.error('outputExtensionVersion', `Extension ${id} not found!`, true);
+  }
+  output.info(`${name} version: ${packageJSON.version}`);
+  return packageJSON;
+}
+
+function outputExtensionConfiguration(name: string, id: string) {
+  const packageJSON = outputExtensionVersion(name, id);
+  for (let key in packageJSON.contributes.configuration.properties) {
+    let value = configuration.getConfiguration().get(key);
+    output.info(`${key}: ${value}`);
   }
 }
 
-function outputExtensionVersion(name: string, key: string) {
-  output.appendLine(
-    `${name} version: ${
-      vscode.extensions.getExtension(key)?.packageJSON.version
-    }`,
-  );
-}
-
-function outputConfiguration(key: keyof configuration.Configuration) {
-  output.appendLine(`${key}: ${configuration.get(key)}`);
-}
-
 function outputRelatedExtensionConfiguration(key: string) {
-  output.appendLine(`${key}: ${configuration.getConfiguration().get(key)}`);
+  output.info(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
 
 type Arg = {
@@ -60,42 +68,42 @@ async function getRepository({
   arg?: Arg;
   workspaceFolders?: readonly vscode.WorkspaceFolder[];
 }) {
-  output.appendLine(`arg: ${arg?._rootUri.fsPath}`);
-  output.appendLine(
-    `git.repositories: ${git.repositories
-      .map(function (repo) {
-        return repo.rootUri.fsPath;
-      })
-      .join(', ')}`,
-  );
-  output.appendLine(
-    `workspaceFolders: ${workspaceFolders
-      ?.map(function (folder) {
-        return folder.uri.fsPath;
-      })
-      .join(', ')}`,
-  );
+  const _arg = arg?._rootUri.fsPath;
+  output.info(`arg: ${_arg}`);
 
-  if (arg && arg._rootUri.fsPath) {
+  const repositories = git.repositories
+    .map((repo) => repo.rootUri.fsPath)
+    .join(', ');
+  output.info(`git.repositories: ${repositories}`);
+
+  const _workspaceFolders = workspaceFolders
+    ?.map((folder) => folder.uri.fsPath)
+    .join(', ');
+  output.info(`workspaceFolders: ${_workspaceFolders}`);
+
+  if (_arg) {
     const repo = git.repositories.find(function (r) {
-      return r.rootUri.fsPath === arg._rootUri.fsPath;
+      return r.rootUri.fsPath === _arg;
     });
-    if (repo) {
-      return repo;
+    if (repo) return repo;
+    else {
+      output.error(
+        'getRepository',
+        getSourcesLocalize('repositoryNotFoundInPath') + _arg,
+        true,
+      );
     }
-    throw new Error(
-      localize('extension.sources.repositoryNotFoundInPath') +
-        arg._rootUri.fsPath,
-    );
   }
 
   if (git.repositories.length === 0) {
-    throw new Error(localize('extension.sources.repositoriesEmpty'));
+    output.error(
+      'getRepository',
+      getSourcesLocalize('repositoriesEmpty'),
+      true,
+    );
   }
 
-  if (git.repositories.length === 1) {
-    return git.repositories[0];
-  }
+  if (git.repositories.length === 1) return git.repositories[0];
 
   const items = git.repositories.map(function (repo, index) {
     const folder = workspaceFolders?.find(function (f) {
@@ -105,9 +113,8 @@ async function getRepository({
       index,
       label: folder?.name || path.basename(repo.rootUri.fsPath),
       description:
-        `${
-          repo.state.HEAD?.name || repo.state.HEAD?.commit?.slice(0, 8) || ''
-        }${hasChanges(repo) ? '*' : ''}` || '',
+        (repo.state.HEAD?.name || repo.state.HEAD?.commit?.slice(0, 8) || '') +
+        (hasChanges(repo) ? '*' : ''),
     };
   });
 
@@ -122,23 +129,21 @@ async function getRepository({
 export default function createConventionalCommits() {
   return async function conventionalCommits(arg?: Arg) {
     try {
-      output.appendLine('Started');
+      output.info('Conventional commits started.');
 
       // 1. output basic information
-      output.appendLine(`VSCode version: ${vscode.version}`);
+      output.info(`VSCode version: ${vscode.version}`);
+      outputExtensionVersion('Git', 'vscode.git');
 
       outputExtensionVersion(
         'VSCode Conventional Commits',
         'vivaxy.vscode-conventional-commits',
       );
-      outputExtensionVersion('Git', 'vscode.git');
 
-      outputConfiguration('autoCommit');
-      outputConfiguration('gitmoji');
-      outputConfiguration('emojiFormat');
-      outputConfiguration('scopes');
-      outputConfiguration('lineBreak');
-      outputConfiguration('promptScopes');
+      outputExtensionConfiguration(
+        'VSCode Conventional Commits',
+        'vivaxy.vscode-conventional-commits',
+      );
 
       outputRelatedExtensionConfiguration('git.enableSmartCommit');
       outputRelatedExtensionConfiguration('git.smartCommitChanges');
@@ -146,14 +151,11 @@ export default function createConventionalCommits() {
 
       // 2. check git
       const git = getGitAPI();
-      if (!git) {
-        throw new Error(localize('extension.sources.vscodeGitNotFound'));
-      }
 
       // 3. get repository
       const repository = await getRepository({
         arg,
-        git,
+        git: git,
         workspaceFolders: vscode.workspace.workspaceFolders,
       });
 
@@ -161,8 +163,8 @@ export default function createConventionalCommits() {
       const commitlintRuleConfigs = await commitlint.loadRuleConfigs(
         repository.rootUri.fsPath,
       );
-      output.appendLine(
-        `commitlintRuleConfigs: ${JSON.stringify(
+      output.info(
+        `commitlintRuleConfigs:\n${JSON.stringify(
           commitlintRuleConfigs,
           null,
           2,
@@ -179,36 +181,36 @@ export default function createConventionalCommits() {
         lineBreak: configuration.get<string>('lineBreak'),
         promptScopes: configuration.get<boolean>('promptScopes'),
       });
-      output.appendLine(
-        `commitMessage: ${JSON.stringify(commitMessage, null, 2)}`,
-      );
+      output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);
       const message = serialize(commitMessage);
-      output.appendLine(`message: ${message}`);
+      output.info(`message: ${message}`);
 
-      // 6. switch to scm and put message into message box or show the entire commit message in a separate tab
+      // 6. switch to scm and put message into message box
+      // or show the entire commit message in a separate tab
       const showEditor = configuration.get<boolean>('showEditor');
-
       if (showEditor) {
         repository.inputBox.value = message;
         openMessageInTab(repository);
-        output.appendLine(`show full commit message in a separate tab`);
+        output.info('Show full commit message in a separate tab.');
       } else {
         vscode.commands.executeCommand('workbench.view.scm');
         repository.inputBox.value = message;
-        output.appendLine(`inputBox.value: ${repository.inputBox.value}`);
+        output.info(`inputBox.value: ${repository.inputBox.value}`);
       }
 
       // 7. auto commit
       const autoCommit = configuration.get<boolean>('autoCommit');
       if (autoCommit && !showEditor) {
         await vscode.commands.executeCommand('git.commit', repository);
-        output.appendLine('Finished successfully.');
+        output.info('Auto commit finished successfully.');
       }
+
+      output.info('conventionalCommits finished successfully.');
     } catch (e) {
-      output.appendLine(`Finished with an error: ${e.stack}`);
-      vscode.window.showErrorMessage(
-        `${localize('extension.name')}: ${e.message}`,
-      );
+      // Ignore if the custom error message
+      if (e.message === 'custom breaking error has been catch!') {
+        output.info('conventionalCommits finished with custom error.');
+      } else output.error('main', e);
     }
   };
 }
