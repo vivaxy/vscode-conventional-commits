@@ -10,7 +10,7 @@ import CommitProvider from './lib/editor/provider';
 
 export function activate(context: vscode.ExtensionContext) {
   output.initialize();
-  output.appendLine('Activated');
+  output.info('Extension Activated');
   localize.initialize();
   const disposable = vscode.commands.registerCommand(
     'extension.conventionalCommits',
