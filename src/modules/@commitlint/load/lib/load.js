@@ -44,11 +44,10 @@ async function load(seed = {}, options = {}) {
       base,
       config.parserPreset,
     );
-    const _require = eval('require');
     config.parserPreset = {
       name: config.parserPreset,
       path: resolvedParserPreset,
-      parserOpts: _require(resolvedParserPreset),
+      parserOpts: __non_webpack_require__(resolvedParserPreset),
     };
   }
   // Resolve extends key
