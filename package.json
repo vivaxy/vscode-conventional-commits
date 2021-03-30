@@ -63,14 +63,10 @@
           "default": true,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.autoCommit.markdownDescription%"
         },
-        "conventionalCommits.gitmoji": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription%"
-        },
         "conventionalCommits.emojiFormat": {
           "type": "string",
           "default": "code",
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownDescription%",
           "enum": [
             "code",
             "emoji"
@@ -80,25 +76,30 @@
             "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.emoji%"
           ]
         },
-        "conventionalCommits.scopes": {
-          "type": "array",
-          "default": [],
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.scopes.markdownDescription%"
+        "conventionalCommits.gitmoji": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription%"
         },
         "conventionalCommits.lineBreak": {
           "type": "string",
           "default": "",
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription%"
         },
-        "conventionalCommits.showEditor": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
-        },
         "conventionalCommits.promptScopes": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription%"
+        },
+        "conventionalCommits.scopes": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.scopes.markdownDescription%"
+        },
+        "conventionalCommits.showEditor": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
         }
       }
     }
