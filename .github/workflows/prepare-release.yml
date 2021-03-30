@@ -35,7 +35,7 @@ jobs:
           npx prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
 
       - name: Get version from package.json
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v3.1.1
         id: version
         with:
           result-encoding: string
@@ -63,7 +63,7 @@ jobs:
           path: ./CHANGELOG.md
 
       - name: Get Changelog
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v3.1.1
         id: changelog
         env:
           CHANGELOG: ${{ steps.changelog-reader.outputs.changes }}
