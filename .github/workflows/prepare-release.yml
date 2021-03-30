@@ -1,0 +1,97 @@
+name: "prepare release"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "package*.json"
+      - "src/**"
+
+env:
+  BASE_BRANCH: "master"
+  HEAD_BRANCH: "prepare-release"
+
+jobs:
+  preparation:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 12
+
+      - name: Bump version
+        run: |
+          npx standard-version --skip.commit --skip.tag
+          sed 's/^### \[/## [/' -i CHANGELOG.md
+          npx prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
+
+      - name: Get version from package.json
+        uses: actions/github-script@v3.1.0
+        id: version
+        with:
+          result-encoding: string
+          script: |
+            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
+            core.setOutput('version', version);
+            core.setOutput('title', 'chore(release): :bookmark: release v' + version);
+
+      - name: Create commit
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m 'chore(release): :bookmark: release v${{steps.version.outputs.version}}'
+          git branch -D '${{ env.HEAD_BRANCH }}' 2>&1 | sed 's/error/warning/'
+          git checkout -b '${{ env.HEAD_BRANCH }}'
+          git remote set-url origin 'https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git'
+          git push -f -u origin '${{ env.HEAD_BRANCH }}'
+
+      - name: Get changelog context
+        id: changelog-reader
+        uses: mindsers/changelog-reader-action@v2.0.0
+        with:
+          version: ${{steps.version.outputs.version}}
+          path: ./CHANGELOG.md
+
+      - name: Get Changelog
+        uses: actions/github-script@v3.1.0
+        id: changelog
+        env:
+          CHANGELOG: ${{ steps.changelog-reader.outputs.changes }}
+        with:
+          script: return process.env.CHANGELOG;
+
+      - name: Create pull request
+        run: |
+          curl \
+            -X POST \
+            -H 'authorization: token ${{secrets.GITHUB_TOKEN}}' \
+            -H 'Accept: application/vnd.github.v3+json' \
+            'https://api.github.com/repos/${{github.repository}}/pulls' \
+            -d '{"head":"${{ env.HEAD_BRANCH }}","base":"${{ env.BASE_BRANCH }}","title":"${{steps.version.outputs.title}}","body":${{steps.changelog.outputs.result}},"maintainer_can_modify":true}'
+
+      - name: Find pull request
+        uses: juliangruber/find-pull-request-action@v1.5.0
+        id: find-pull-request
+        with:
+          branch: ${{ env.HEAD_BRANCH }}
+
+      - name: Update pull request
+        env:
+          NUMBER: ${{ steps.find-pull-request.outputs.number }}
+        run: |
+          curl \
+            -X PATCH \
+            -H 'authorization: token ${{secrets.GITHUB_TOKEN}}' \
+            -H 'Accept: application/vnd.github.v3+json' \
+            'https://api.github.com/repos/${{github.repository}}/pulls/${{ env.NUMBER }}' \
+            -d '{"base":"${{ env.BASE_BRANCH }}","title":"${{steps.version.outputs.title}}","body":${{steps.changelog.outputs.result}}}'

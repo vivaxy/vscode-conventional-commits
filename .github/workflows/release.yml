@@ -2,9 +2,14 @@ name: release
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - CHANGELOG.md
 
 jobs:
-  run:
+  release:
     name: release
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +27,7 @@ jobs:
         run: yarn install
 
       - name: Bump version
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           yarn standard-version --skip.commit --skip.tag
           sed 's/^### \[/## [/' -i CHANGELOG.md
@@ -37,12 +43,19 @@ jobs:
             core.setOutput('repo', context.repo.repo);
             core.setOutput('version', version);
 
-      - name: Create commit
+      - name: Setup git information
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
           git add .
           git commit -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
+
+      - name: Create tag
+        run: |
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
 
       - name: Publish package
@@ -55,7 +68,7 @@ jobs:
       - name: Build release asset
         run: yarn build
 
-      - name: Get Changelog Entry
+      - name: Get changelog context
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2.0.0
         with:
