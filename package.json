@@ -119,7 +119,7 @@
     "@types/node": "^12.11.7",
     "@types/vscode": "^1.14.0",
     "clean-webpack-plugin": "^3.0.0",
-    "husky": "5",
+    "husky": "6",
     "lint-staged": "^10.0.9",
     "pinst": "^2.1.4",
     "prettier": "^2.0.2",
