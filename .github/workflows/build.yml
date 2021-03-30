@@ -6,8 +6,6 @@ on:
       - master
     paths:
       - "src/**"
-      - "package*"
-      - "**/build.yml"
   workflow_dispatch:
   pull_request:
     types: [labeled]
