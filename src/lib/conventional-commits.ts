@@ -135,11 +135,6 @@ export default function createConventionalCommits() {
       output.info(`VSCode version: ${vscode.version}`);
       outputExtensionVersion('Git', 'vscode.git');
 
-      outputExtensionVersion(
-        'VSCode Conventional Commits',
-        'vivaxy.vscode-conventional-commits',
-      );
-
       outputExtensionConfiguration(
         'VSCode Conventional Commits',
         'vivaxy.vscode-conventional-commits',
