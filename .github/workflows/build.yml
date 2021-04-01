@@ -65,7 +65,7 @@ jobs:
     name: Output PR information
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ always() && github.event_name == 'pull_request' }}
+    if: contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     steps:
       - name: Generate PR number and label name
         run: |

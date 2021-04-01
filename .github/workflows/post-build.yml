@@ -10,7 +10,7 @@ on:
 jobs:
   post-build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    if: contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     steps:
       - name: Download artifact
         uses: actions/github-script@v3.1.1
