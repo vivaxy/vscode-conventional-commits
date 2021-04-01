@@ -59,8 +59,6 @@ export class CommitMessage {
   }
 }
 
-export default new CommitMessage();
-
 export function serializeSubject(partialCommitMessage: {
   gitmoji: string;
   subject: string;

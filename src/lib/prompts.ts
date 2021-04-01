@@ -16,7 +16,7 @@ const gitmojis: {
 import * as configuration from './configuration';
 import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
 import * as keys from '../configs/keys';
-import commitMessage, {
+import {
   CommitMessage,
   serializeSubject,
   serializeHeader,
@@ -44,6 +44,7 @@ export default async function prompts({
   lineBreak: string;
   promptScopes: boolean;
 }): Promise<CommitMessage> {
+  const commitMessage = new CommitMessage();
   const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
     locale,
   ).types;
