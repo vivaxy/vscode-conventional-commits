@@ -8,15 +8,39 @@ on:
     paths:
       - "package*.json"
       - "src/**"
+  pull_request_target:
+    types: [labeled]
 
 env:
   BASE_BRANCH: "master"
   HEAD_BRANCH: "prepare-release"
 
 jobs:
+  label:
+    name: Clear label
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'prepare-release')
+    steps:
+      - name: Clear label
+        uses: actions/github-script@v3.1.1
+        env:
+          NUMBER: ${{ github.event.number }}
+        with:
+          script: |
+            const { NUMBER } = process.env;
+            await github.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: NUMBER,
+              name: 'prepare-release',
+            });
+
   preparation:
     name: Prepare release
     runs-on: ubuntu-latest
+    if: >
+      contains('push,workflow_dispatch', github.event_name) ||
+      contains(github.event.pull_request.labels.*.name, 'prepare-release')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
@@ -45,6 +69,8 @@ jobs:
             core.setOutput('title', 'chore(release): :bookmark: release v' + version);
 
       - name: Create commit
+        env:
+          REMOTE_URL: https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -52,46 +78,48 @@ jobs:
           git commit -m 'chore(release): :bookmark: release v${{steps.version.outputs.version}}'
           git branch -D '${{ env.HEAD_BRANCH }}' 2>&1 | sed 's/error/warning/'
           git checkout -b '${{ env.HEAD_BRANCH }}'
-          git remote set-url origin 'https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git'
+          git remote set-url origin '${{ env.REMOTE_URL }}'
           git push -f -u origin '${{ env.HEAD_BRANCH }}'
 
       - name: Get changelog context
         id: changelog-reader
         uses: mindsers/changelog-reader-action@v2.0.0
         with:
-          version: ${{steps.version.outputs.version}}
+          version: ${{ steps.version.outputs.version }}
           path: ./CHANGELOG.md
 
-      - name: Get Changelog
+      - name: Prepare release PR
         uses: actions/github-script@v3.1.1
-        id: changelog
         env:
+          TITLE: ${{ steps.version.outputs.title }}
           CHANGELOG: ${{ steps.changelog-reader.outputs.changes }}
         with:
-          script: return process.env.CHANGELOG;
-
-      - name: Create pull request
-        run: |
-          curl \
-            -X POST \
-            -H 'authorization: token ${{secrets.GITHUB_TOKEN}}' \
-            -H 'Accept: application/vnd.github.v3+json' \
-            'https://api.github.com/repos/${{github.repository}}/pulls' \
-            -d '{"head":"${{ env.HEAD_BRANCH }}","base":"${{ env.BASE_BRANCH }}","title":"${{steps.version.outputs.title}}","body":${{steps.changelog.outputs.result}},"maintainer_can_modify":true}'
-
-      - name: Find pull request
-        uses: juliangruber/find-pull-request-action@v1.5.0
-        id: find-pull-request
-        with:
-          branch: ${{ env.HEAD_BRANCH }}
-
-      - name: Update pull request
-        env:
-          NUMBER: ${{ steps.find-pull-request.outputs.number }}
-        run: |
-          curl \
-            -X PATCH \
-            -H 'authorization: token ${{secrets.GITHUB_TOKEN}}' \
-            -H 'Accept: application/vnd.github.v3+json' \
-            'https://api.github.com/repos/${{github.repository}}/pulls/${{ env.NUMBER }}' \
-            -d '{"base":"${{ env.BASE_BRANCH }}","title":"${{steps.version.outputs.title}}","body":${{steps.changelog.outputs.result}}}'
+          script: |
+            const { HEAD_BRANCH, BASE_BRANCH, TITLE, CHANGELOG } = process.env;
+            const query = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${HEAD_BRANCH}`,
+              base: `${BASE_BRANCH}`,
+              title: `${TITLE}`,
+              body: `${CHANGELOG}`,
+            };
+            core.debug(`query:\n${JSON.stringify(query, null, 2)}`);
+            const resp = await github.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${context.repo.owner}:${HEAD_BRANCH}`,
+                base: `${BASE_BRANCH}`,
+                direction: 'desc',
+            });
+            core.debug(`resp:\n${JSON.stringify(resp, null, 2)}`);
+            const pull_number = resp.data[0].number;
+            if (!pull_number) {
+              await github.pulls.create(query);
+            } else {
+              core.info(`[info]: pull_number: ${pull_number}`);
+              query.pull_number = pull_number;
+              await github.pulls.update(query);
+            }
+            core.info(`[info]: Prepare release PR successfully!`);

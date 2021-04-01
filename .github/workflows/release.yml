@@ -39,7 +39,8 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version;
+            const { GITHUB_WORKSPACE } = process.env;
+            const version = require(`${GITHUB_WORKSPACE}/package.json`).version;
             core.setOutput('repo', context.repo.repo);
             core.setOutput('version', version);
 
@@ -62,8 +63,10 @@ jobs:
         run: yarn deploy -p ${{secrets.VSCE_PAT}}
 
       - name: Push release commit
+        env:
+          REMOTE_URL: https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git
         run: |
-          git push --follow-tags "https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git"
+          git push --follow-tags "${{env.REMOTE_URL}}"
 
       - name: Build release asset
         run: yarn build

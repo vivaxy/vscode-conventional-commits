@@ -15,8 +15,7 @@ jobs:
     name: Build beta extension
     runs-on: ubuntu-latest
     if: >
-      ${{ github.event_name == 'push' }} || ${{ github.event_name ==
-      'workflow_dispatch' }} ||
+      contains('push,workflow_dispatch', github.event_name) ||
       contains(github.event.pull_request.labels.*.name, 'wait-to-build')
     outputs:
       extension_name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
@@ -48,8 +47,10 @@ jobs:
             core.setOutput('beta', process.env.GITHUB_SHA.slice(0,7));
 
       - name: Edit version for building
+        env:
+          SUFFIX: ${{steps.version.outputs.beta}}
         run: |
-          sed -r 's/"version": "(.*)"/"version": "\1-${{steps.version.outputs.beta}}"/' -i package.json
+          sed -r 's/"version": "(.*)"/"version": "\1-${{ env.SUFFIX }}"/' -i package.json
 
       - name: Build artifact
         run: yarn build
@@ -75,20 +76,20 @@ jobs:
       - name: Generate PR comment if success
         if: ${{ needs.build.result == 'success' }}
         env:
-          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts
+          WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
           name: ${{ needs.build.outputs.extension_name }}
         run: |
           printf "The beta extension of this pull has been built in the workflow! 🎉\n" >> ./pr/comment
-          printf "Download \`${{ env.name }}\` " >> ./pr/comment
-          printf "in [artifacts](${{ env.url }}). 🚀" >> ./pr/comment
+          printf "Download \`${{env.name}}\` " >> ./pr/comment
+          printf "in [artifacts](${{env.WORKFLOW_URL}}#artifacts). 🚀" >> ./pr/comment
 
       - name: Generate PR comment if happening other conditions
         if: ${{ needs.build.result != 'success' }}
         env:
-          url: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#annotations
+          WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
         run: |
           printf "Oops, The build workflow has failed! See in " >> ./pr/comment
-          printf "[summary](${{ env.url }}). 😥" >> ./pr/comment
+          printf "[summary](${{env.WORKFLOW_URL}}#annotations). 😥" >> ./pr/comment
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.2
