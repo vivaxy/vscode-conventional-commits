@@ -19,6 +19,7 @@ export type Configuration = {
   lineBreak: string;
   promptScopes: boolean;
   promptBody: boolean;
+  promptFooter: boolean;
 };
 
 export function getConfiguration() {

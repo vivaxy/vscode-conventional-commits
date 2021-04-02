@@ -38,6 +38,7 @@ export default async function prompts({
   lineBreak,
   promptScopes,
   promptBody,
+  promptFooter,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -45,6 +46,7 @@ export default async function prompts({
   lineBreak: string;
   promptScopes: boolean;
   promptBody: boolean;
+  promptFooter: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
@@ -273,7 +275,7 @@ export default async function prompts({
       } else if (
         showEditor &&
         ((!promptBody && question.name === 'body') ||
-          question.name === 'footer')
+          (!promptFooter && question.name === 'footer'))
       ) {
         return false;
       } else {

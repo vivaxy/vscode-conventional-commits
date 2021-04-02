@@ -91,6 +91,11 @@
           "default": true,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptBody.markdownDescription%"
         },
+        "conventionalCommits.promptFooter": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptFooter.markdownDescription%"
+        },
         "conventionalCommits.promptScopes": {
           "type": "boolean",
           "default": true,

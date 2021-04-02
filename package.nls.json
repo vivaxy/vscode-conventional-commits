@@ -7,6 +7,7 @@
   "extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription": "Controls whether the extension should prompt for a `gitmoji`.",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "Specifies which word will be treat as line breaks in the `body`.\n\nBlank means no line breaks.",
   "extension.configuration.properties.conventionalCommits.promptBody.markdownDescription": "Controls whether the extension should prompt for the `body` section.",
+  "extension.configuration.properties.conventionalCommits.promptFooter.markdownDescription": "Controls whether the extension should prompt for the `footer` section.",
   "extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription": "Controls whether the extension should prompt for the `scope` section.",
   "extension.configuration.properties.conventionalCommits.scopes.markdownDescription": "Specifies available selections in the `scope` section.",
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "Show the commit message as a text document in a separate tab.",
