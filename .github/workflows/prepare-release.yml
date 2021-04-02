@@ -119,7 +119,7 @@ jobs:
               const pull_number = resp.data[0].number;
               core.info(`[info]: pull_number: ${pull_number}`);
               query.pull_number = pull_number;
-              const reps1 = await github.pulls.update(query);
+              const resp1 = await github.pulls.update(query);
               core.info('[info]: Update release PR successfully!');
               core.info(`[info]: See pull request in ${resp1.data.url}`);
             } catch (err) {
