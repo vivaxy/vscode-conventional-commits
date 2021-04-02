@@ -121,14 +121,14 @@ jobs:
               query.pull_number = pull_number;
               const reps1 = await github.pulls.update(query);
               core.info('[info]: Update release PR successfully!');
-              core.info(`[info]: See pull request in ${resp1.data.url}`);
+              core.info(`[info]: See pull request in ${resp1.data.html_url}`);
             } catch (err) {
               if (err.message === 'Cannot read property \'number\' of undefined') {
                 core.info('[info]: Not found previous pull request.');
                 core.info('[info]: Try to create a new pull request.');
                 const resp2 = await github.pulls.create(query);
                 core.info('[info]: Create release PR successfully!');
-                core.info(`[info]: See pull request in ${resp2.data.url}`);
+                core.info(`[info]: See pull request in ${resp2.data.html_url}`);
               } else core.setFailed(`Prepare release PR failed with error:\n${err}`);
             }
             core.info(`[info]: Prepare release PR successfully!`);
