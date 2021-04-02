@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.19.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.18.2...v1.19.0) (2021-04-02)
+
+### Features
+
+- **body:** :sparkles: add option to remove body prompt ([a199912](https://github.com/vivaxy/vscode-conventional-commits/commit/a1999123e07f9df9ed7f3c63d38168d27f596984)), closes [#107](https://github.com/vivaxy/vscode-conventional-commits/issues/107)
+- **footer:** :sparkles: add option to remove footer prompt ([46fc717](https://github.com/vivaxy/vscode-conventional-commits/commit/46fc717b82d3f13b37a33ea1f9f7d6576efca6e0)), closes [#107](https://github.com/vivaxy/vscode-conventional-commits/issues/107)
+
+### Bug Fixes
+
+- **commit-message:** :bug: fix the prompt context retaining issue ([#119](https://github.com/vivaxy/vscode-conventional-commits/issues/119)) ([cde052c](https://github.com/vivaxy/vscode-conventional-commits/commit/cde052ceafd3d5bc781af48eb05c441364bc9c53))
+- **log:** :bug: fix repeated output of extension version ([bb809ae](https://github.com/vivaxy/vscode-conventional-commits/commit/bb809ae7f1046ae0fb85ce9e9fa14273169ddfd0))
+
 ## [1.18.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.18.1...v1.18.2) (2021-03-29)
 
 ### Bug Fixes
