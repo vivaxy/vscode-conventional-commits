@@ -114,12 +114,14 @@ jobs:
                 direction: 'desc',
             });
             core.debug(`resp:\n${JSON.stringify(resp, null, 2)}`);
-            const pull_number = resp.data[0].number;
-            if (!pull_number) {
-              await github.pulls.create(query);
-            } else {
+            try {
+              const pull_number = resp.data[0].number;
               core.info(`[info]: pull_number: ${pull_number}`);
               query.pull_number = pull_number;
               await github.pulls.update(query);
+            } catch (err) {
+              if (err.message === 'Cannot read property \'number\' of undefined') {
+                await github.pulls.create(query);
+              } else core.setFailed(`Prepare release PR failed with error:\n${err}`);
             }
             core.info(`[info]: Prepare release PR successfully!`);
