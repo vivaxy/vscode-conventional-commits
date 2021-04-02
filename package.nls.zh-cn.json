@@ -7,6 +7,7 @@
   "extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription": "是否需要填写 `gitmoji`。",
   "extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription": "指定哪种换行标识符应该被在 `body` 中识别。\n\n留空表示不换行。",
   "extension.configuration.properties.conventionalCommits.promptBody.markdownDescription": "是否需要填写 `body`。",
+  "extension.configuration.properties.conventionalCommits.promptFooter.markdownDescription": "是否需要填写 `footer`。",
   "extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription": "是否需要填写 `scope`。",
   "extension.configuration.properties.conventionalCommits.scopes.markdownDescription": "指定 `scope` 中的可选项。",
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "在新标签页用文本编辑器展示提交信息",
