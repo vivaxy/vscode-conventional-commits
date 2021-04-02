@@ -45,6 +45,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2.3.4
         with:
+          ref: ${{ env.BASE_BRANCH }}
           fetch-depth: 0
 
       - name: Setup nodejs
@@ -118,10 +119,16 @@ jobs:
               const pull_number = resp.data[0].number;
               core.info(`[info]: pull_number: ${pull_number}`);
               query.pull_number = pull_number;
-              await github.pulls.update(query);
+              const reps1 = await github.pulls.update(query);
+              core.info('[info]: Update release PR successfully!');
+              core.info(`[info]: See pull request in ${resp1.data.url}`);
             } catch (err) {
               if (err.message === 'Cannot read property \'number\' of undefined') {
-                await github.pulls.create(query);
+                core.info('[info]: Not found previous pull request.');
+                core.info('[info]: Try to create a new pull request.');
+                const resp2 = await github.pulls.create(query);
+                core.info('[info]: Create release PR successfully!');
+                core.info(`[info]: See pull request in ${resp2.data.url}`);
               } else core.setFailed(`Prepare release PR failed with error:\n${err}`);
             }
             core.info(`[info]: Prepare release PR successfully!`);
