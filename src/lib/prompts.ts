@@ -37,12 +37,14 @@ export default async function prompts({
   emojiFormat,
   lineBreak,
   promptScopes,
+  promptBody,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
   emojiFormat: configuration.EMOJI_FORMAT;
   lineBreak: string;
   promptScopes: boolean;
+  promptBody: boolean;
 }): Promise<CommitMessage> {
   const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
     locale,
@@ -269,7 +271,8 @@ export default async function prompts({
         return false;
       } else if (
         showEditor &&
-        (question.name === 'body' || question.name === 'footer')
+        ((!promptBody && question.name === 'body') ||
+          question.name === 'footer')
       ) {
         return false;
       } else {

@@ -86,6 +86,11 @@
           "default": "",
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription%"
         },
+        "conventionalCommits.promptBody": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptBody.markdownDescription%"
+        },
         "conventionalCommits.promptScopes": {
           "type": "boolean",
           "default": true,
