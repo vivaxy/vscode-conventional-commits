@@ -175,6 +175,7 @@ export default function createConventionalCommits() {
         ),
         lineBreak: configuration.get<string>('lineBreak'),
         promptScopes: configuration.get<boolean>('promptScopes'),
+        promptBody: configuration.get<boolean>('promptBody'),
       });
       output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);
       const message = serialize(commitMessage);

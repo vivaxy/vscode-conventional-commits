@@ -18,6 +18,7 @@ export type Configuration = {
   scopes: string[];
   lineBreak: string;
   promptScopes: boolean;
+  promptBody: boolean;
 };
 
 export function getConfiguration() {
