@@ -180,7 +180,7 @@ export default function createConventionalCommits() {
       });
       output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);
       const message = serialize(commitMessage);
-      output.info(`message: ${message}`);
+      output.info(`message:\n${message}`);
 
       // 6. switch to scm and put message into message box
       // or show the entire commit message in a separate tab
@@ -192,7 +192,7 @@ export default function createConventionalCommits() {
       } else {
         vscode.commands.executeCommand('workbench.view.scm');
         repository.inputBox.value = message;
-        output.info(`inputBox.value: ${repository.inputBox.value}`);
+        output.info(`inputBox.value:\n${repository.inputBox.value}`);
       }
 
       // 7. auto commit
