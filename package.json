@@ -110,6 +110,11 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
+        },
+        "conventionalCommits.editor.keepAfterSave": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.properties.conventionalCommits.editor.keepAfterSave.markdownDescription%"
         }
       }
     }
