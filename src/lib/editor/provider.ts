@@ -26,7 +26,8 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
       const keepAfterSave = configuration.get<boolean>('editor.keepAfterSave');
       output.info('The commit message tab has been disposed.');
       if (state.repository) {
-        output.info(`inputBox.value:\n${state.repository.inputBox.value}`);
+        const value = state.repository.inputBox.value;
+        output.info(`finally inputBox.value:\n${value}`);
         if (keepAfterSave) {
           await vscode.commands.executeCommand('workbench.view.scm');
           if (autoCommit) {
