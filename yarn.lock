@@ -445,10 +445,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yi-xu-0100/conventional-commit-types-i18n@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@yi-xu-0100/conventional-commit-types-i18n/-/conventional-commit-types-i18n-1.5.0.tgz#138f0ec8dc9b02a97f1c4f17c88f321c492fb4df"
-  integrity sha512-++ZVv17yAnDN/DJ6UTqjxVf/3WPAitq6M6EkO3YvPgZLG0MY5VTmVvqGCyZT4/9bKvaSSf8S/BtdlhHqVWgYaw==
+"@yi-xu-0100/conventional-commit-types-i18n@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@yi-xu-0100/conventional-commit-types-i18n/-/conventional-commit-types-i18n-1.6.0.tgz#0432098442a4fe3176020422e0fcb2c5185ca591"
+  integrity sha512-zIfzQHRbKJd6yOsgWJmRRKFc5pif1Z/O0Ac0NERHm9AmifucuRfCITJVsG5w5p+VGlR9AHS9vj87/KXMPc9/Xg==
 
 JSONStream@^1.0.4:
   version "1.3.5"

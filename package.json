@@ -158,7 +158,7 @@
     "@commitlint/config-conventional": "^12.0.0",
     "@commitlint/load": "^12.0.0",
     "@commitlint/rules": "^12.0.0",
-    "@yi-xu-0100/conventional-commit-types-i18n": "^1.5.0",
+    "@yi-xu-0100/conventional-commit-types-i18n": "1.6.0",
     "gitmojis": "^3.0.0"
   },
   "commitlint": {
