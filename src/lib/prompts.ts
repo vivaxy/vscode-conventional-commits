@@ -2,7 +2,7 @@
  * @since 2020-03-25 09:09
  * @author vivaxy
  */
-import { conventionalCommitsTypes as getConventionalCommitsTypesByLocale } from '@yi-xu-0100/conventional-commit-types-i18n';
+import getTypesByLocale from '@yi-xu-0100/conventional-commit-types-i18n';
 const gitmojis: {
   gitmojis: {
     emoji: string;
@@ -24,13 +24,6 @@ import {
 import commitlint from './commitlint';
 import localize, { locale } from './localize';
 
-type ConventionalCommitsTypes = {
-  [type: string]: {
-    title: string;
-    description: string;
-  };
-};
-
 export default async function prompts({
   gitmoji,
   showEditor,
@@ -49,9 +42,7 @@ export default async function prompts({
   promptFooter: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
-  const conventionalCommitsTypes: ConventionalCommitsTypes = getConventionalCommitsTypesByLocale(
-    locale,
-  ).types;
+  const conventionalCommitsTypes = getTypesByLocale(locale).types;
 
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {
