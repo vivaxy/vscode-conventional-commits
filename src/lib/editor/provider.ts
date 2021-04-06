@@ -13,8 +13,7 @@ export const state: State = {
 };
 
 /**
- * Simplified provider for handling Git commit messages.
- * On save, the contents are instead autocommited or used to update repository object (depending on settings).
+ * Simplified file provider for handling Git commit messages.
  */
 const CommitProvider = new (class implements vscode.FileSystemProvider {
   private _emitter = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
@@ -22,7 +21,28 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
     ._emitter.event;
 
   watch(_resource: vscode.Uri): vscode.Disposable {
-    return new vscode.Disposable(() => {});
+    return new vscode.Disposable(async () => {
+      const autoCommit = configuration.get<boolean>('autoCommit');
+      const keepAfterSave = configuration.get<boolean>('editor.keepAfterSave');
+      output.info('The commit message tab has been disposed.');
+      if (state.repository) {
+        const value = state.repository.inputBox.value;
+        output.info(`finally inputBox.value:\n${value}`);
+        if (keepAfterSave) {
+          await vscode.commands.executeCommand('workbench.view.scm');
+          if (autoCommit) {
+            await vscode.commands.executeCommand(
+              'git.commit',
+              state.repository,
+            );
+            output.info('Auto commit finished successfully.');
+          }
+        }
+      } else {
+        output.warning('provider: state.repository not found!');
+        output.info(`state: ${state}`);
+      }
+    });
   }
 
   stat(): vscode.FileStat {
@@ -46,34 +66,37 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
   createDirectory(): void {}
 
   writeFile(_uri: vscode.Uri, content: Uint8Array): Thenable<void> {
-    return new Promise(async (resolve) => {
-      try {
-        const value = new TextDecoder().decode(content);
-
-        if (state.repository) {
+    return new Promise(
+      async (resolve): Promise<void> => {
+        try {
           const autoCommit = configuration.get<boolean>('autoCommit');
-          state.repository.inputBox.value = value;
-          vscode.commands.executeCommand(
-            'workbench.action.revertAndCloseActiveEditor',
+          const keepAfterSave = configuration.get<boolean>(
+            'editor.keepAfterSave',
           );
-
-          if (autoCommit) {
-            await vscode.commands.executeCommand(
-              'git.commit',
-              state.repository,
-            );
-            resolve();
-          } else {
-            await vscode.commands.executeCommand('workbench.view.scm');
+          const value = new TextDecoder().decode(content);
+          if (state.repository) {
+            state.repository.inputBox.value = value;
+            output.info('Sync commit message successfully.');
+            if (!keepAfterSave) {
+              vscode.commands.executeCommand(
+                'workbench.action.revertAndCloseActiveEditor',
+              );
+              if (autoCommit) {
+                await vscode.commands.executeCommand('workbench.view.scm');
+                await vscode.commands.executeCommand(
+                  'git.commit',
+                  state.repository,
+                );
+                output.info('Auto commit finished successfully.');
+              }
+            }
             resolve();
           }
-
-          output.info('Write file successfully.');
+        } catch (e) {
+          output.error('writeFile', e);
         }
-      } catch (e) {
-        output.error('writeFile', e);
-      }
-    });
+      },
+    );
   }
 
   rename(): void {}

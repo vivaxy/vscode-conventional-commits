@@ -8,7 +8,8 @@ import * as VSCodeGit from '../../vendors/git';
 import { state } from './provider';
 
 /**
- * Opens a new empty file and adds the commit message. The language mode is set to "Git Commit Message" and
+ * Opens a new empty file and adds the commit message.
+ * The language mode is set to "Git Commit Message" and
  * the FileSystemProvider is set to CommitProvider.
  * @param repository The project repository.
  */

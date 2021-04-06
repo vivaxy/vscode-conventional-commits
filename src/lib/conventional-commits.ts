@@ -187,8 +187,8 @@ export default function createConventionalCommits() {
       const showEditor = configuration.get<boolean>('showEditor');
       if (showEditor) {
         repository.inputBox.value = message;
-        openMessageInTab(repository);
-        output.info('Show full commit message in a separate tab.');
+        await openMessageInTab(repository);
+        output.info('Show full commit message in a separate tab successfully.');
       } else {
         vscode.commands.executeCommand('workbench.view.scm');
         repository.inputBox.value = message;

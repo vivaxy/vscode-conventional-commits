@@ -20,6 +20,7 @@ export type Configuration = {
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  'editor.keepAfterSave': boolean;
 };
 
 export function getConfiguration() {
