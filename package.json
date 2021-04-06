@@ -135,6 +135,7 @@
     "pinst": "^2.1.4",
     "prettier": "^2.0.2",
     "standard-version": "^9.0.0",
+    "string-replace-loader": "^3.0.1",
     "ts-loader": "^8.0.18",
     "typescript": "^4.0.0",
     "vsce": "^1.74.0",

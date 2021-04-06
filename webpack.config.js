@@ -26,17 +26,99 @@ const config = {
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js'],
-    alias: {
-      '@commitlint/resolve-extends': path.resolve(
-        __dirname,
-        'src/modules/@commitlint/resolve-extends/lib/',
-      ),
-      'import-fresh': path.resolve(__dirname, 'src/modules/import-fresh'),
-      'resolve-global': path.resolve(__dirname, 'src/modules/resolve-global'),
-    },
   },
   module: {
+    parser: {
+      javascript: {
+        commonjsMagicComments: true,
+      },
+    },
     rules: [
+      {
+        enforce: 'pre',
+        test: /@commitlint[\/\\]load[\/\\]lib[\/\\]utils[\/\\]load-plugin\.js/,
+        loader: 'string-replace-loader',
+        options: {
+          multiple: [
+            {
+              search: 'plugin = require(longName);',
+              replace: 'plugin = __non_webpack_require__(longName);',
+              strict: true,
+            },
+            {
+              search: /require.resolve\(longName\);/g,
+              replace: '__non_webpack_require__.resolve(longName);',
+              strict: true,
+            },
+            {
+              search: 'version = require(`${longName}/package.json`).version;',
+              replace:
+                'version = __non_webpack_require__(`${longName}/package.json`).version;',
+              strict: true,
+            },
+          ],
+        },
+      },
+      {
+        enforce: 'pre',
+        test: /@commitlint[\/\\]load[\/\\]lib[\/\\]load\.js/,
+        loader: 'string-replace-loader',
+        options: {
+          search: 'parserOpts: require(resolvedParserPreset),',
+          replace: 'parserOpts: __non_webpack_require__(resolvedParserPreset),',
+          strict: true,
+        },
+      },
+      {
+        enforce: 'pre',
+        test: /@commitlint[\/\\]resolve-extends[\/\\]lib[\/\\]index\.js/,
+        loader: 'string-replace-loader',
+        options: {
+          multiple: [
+            {
+              search: 'const load = context.require || require;',
+              replace:
+                'const load = context.require || __non_webpack_require__;',
+              strict: true,
+            },
+            {
+              search: 'parserOpts: require(resolvedParserPreset),',
+              replace:
+                'parserOpts: __non_webpack_require__(resolvedParserPreset),',
+              strict: true,
+            },
+          ],
+        },
+      },
+      {
+        enforce: 'pre',
+        test: /resolve-global[\/\\]index\.js/,
+        loader: 'string-replace-loader',
+        options: {
+          search: /require.resolve/g,
+          replace: '__non_webpack_require__.resolve',
+          strict: true,
+        },
+      },
+      {
+        enforce: 'pre',
+        test: /import-fresh[\/\\]index\.js/,
+        loader: 'string-replace-loader',
+        options: {
+          multiple: [
+            {
+              search: 'const parentPath = parentModule(__filename);',
+              replace: 'const parentPath = parentModule(__filename) || "";',
+              strict: true,
+            },
+            {
+              search: / require\(filePath\)/g,
+              replace: ' __non_webpack_require__(filePath)',
+              strict: true,
+            },
+          ],
+        },
+      },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
