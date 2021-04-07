@@ -13,8 +13,8 @@
   "extension.configuration.properties.conventionalCommits.showEditor.markdownDescription": "是否需要在新标签页用文本编辑器展示提交信息",
   "extension.configuration.properties.conventionalCommits.editor.keepAfterSave.markdownDescription": "是否需要在保存提交消息后保持编辑状态。",
   "extension.sources.repositoryNotFoundInPath": "以下路径中未找到仓库：",
-  "extension.sources.repositoriesEmpty": "请打开一个仓库",
-  "extension.sources.promptRepositoryPlaceholder": "请选择一个仓库",
+  "extension.sources.repositoriesEmpty": "请打开一个仓库。",
+  "extension.sources.promptRepositoryPlaceholder": "请选择一个仓库。",
   "extension.sources.vscodeGitNotFound": "vscode.git 插件未启用。",
   "extension.sources.prompt.fromWorkspaceConfiguration": "从工作区配置文件中加载。",
   "extension.sources.prompt.type.placeholder": "请选择类型。",
@@ -36,5 +36,5 @@
   "extension.sources.prompt.subject.error.scope": "作用域：",
   "extension.sources.prompt.subject.error.gitmoji": " gitmoji：",
   "extension.sources.prompt.body.placeholder": "请填写正文。",
-  "extension.sources.prompt.footer.placeholder": "请填写脚注。"
+  "extension.sources.prompt.footer.placeholder": "请填写脚注（列举相关的 issues）。"
 }
