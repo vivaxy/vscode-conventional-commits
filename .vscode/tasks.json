@@ -4,7 +4,6 @@
     {
       "type": "npm",
       "script": "webpack-dev",
-      // https://github.com/eamodio/vscode-tsl-problem-matcher
       "problemMatcher": "$ts-webpack-watch",
       "isBackground": true,
       "presentation": {
