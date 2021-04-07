@@ -123,6 +123,12 @@ Or `\\n` in JSON format.
 **A:** See issue discussion
 [#15](https://github.com/vivaxy/vscode-conventional-commits/issues/15#issuecomment-633161627).
 
+**Q:** How do I use `commitlint` in `showEditor` mode?
+
+**A:** The extension - [vscode-commitlint] will helpful!
+
+[vscode-commitlint]: https://github.com/joshbolduc/vscode-commitlint
+
 ## Troubleshooting
 
 1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
@@ -130,6 +136,16 @@ Or `\\n` in JSON format.
    private information.
 
 ![Debug instruction](./assets/docs/debug-instruction.png)
+
+## contribution
+
+1. The vscode task needs to install the extension -
+   [vscode-tsl-problem-matcher].
+2. The effect of code changes needs to reactivate the extension. Just restart
+   the task.
+
+[vscode-tsl-problem-matcher]:
+  https://github.com/eamodio/vscode-tsl-problem-matcher
 
 ## Team Members
 
