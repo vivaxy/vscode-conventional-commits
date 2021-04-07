@@ -68,3 +68,7 @@ function getNLS(locale: string = '') {
     return JSON.parse(content);
   }
 }
+
+export function getPromptLocalize(key: string) {
+  return localize(`extension.sources.prompt.${key}`);
+}
