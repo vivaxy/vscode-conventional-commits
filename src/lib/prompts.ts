@@ -22,7 +22,7 @@ import {
   serializeHeader,
 } from './commit-message';
 import commitlint from './commitlint';
-import localize, { locale } from './localize';
+import { getPromptLocalize, locale } from './localize';
 
 export default async function prompts({
   gitmoji,
@@ -78,19 +78,19 @@ export default async function prompts({
       return {
         label: type,
         description: '',
-        detail: localize('extension.sources.prompt.type.fromCommitlintConfig'),
+        detail: getPromptLocalize('type.fromCommitlintConfig'),
       };
     });
   }
 
   function getScopePrompt() {
     const name = 'scope';
-    const placeholder = localize('extension.sources.prompt.scope.placeholder');
+    const placeholder = getPromptLocalize('scope.placeholder');
     const scopeEnum = commitlint.getScopeEnum();
     const noneItem = {
-      label: localize('extension.sources.prompt.scope.noneItem.label'),
+      label: getPromptLocalize('scope.noneItem.label'),
       description: '',
-      detail: localize('extension.sources.prompt.scope.noneItem.detail'),
+      detail: getPromptLocalize('scope.noneItem.detail'),
       alwaysShow: true,
     };
     if (scopeEnum.length) {
@@ -102,9 +102,7 @@ export default async function prompts({
           return {
             label: scope,
             description: '',
-            detail: localize(
-              'extension.sources.prompt.type.fromCommitlintConfig',
-            ),
+            detail: getPromptLocalize('type.fromCommitlintConfig'),
           };
         }),
         noneItem,
@@ -117,27 +115,19 @@ export default async function prompts({
       placeholder,
       configurationKey: keys.SCOPES as keyof configuration.Configuration,
       newItem: {
-        label: localize('extension.sources.prompt.scope.newItem.label'),
+        label: getPromptLocalize('scope.newItem.label'),
         description: '',
-        detail: localize('extension.sources.prompt.scope.newItem.detail'),
+        detail: getPromptLocalize('scope.newItem.detail'),
         alwaysShow: true,
-        placeholder: localize(
-          'extension.sources.prompt.scope.newItem.placeholder',
-        ),
+        placeholder: getPromptLocalize('scope.newItem.placeholder'),
       },
       noneItem,
       newItemWithoutSetting: {
-        label: localize(
-          'extension.sources.prompt.scope.newItemWithoutSetting.label',
-        ),
+        label: getPromptLocalize('scope.newItemWithoutSetting.label'),
         description: '',
-        detail: localize(
-          'extension.sources.prompt.scope.newItemWithoutSetting.detail',
-        ),
+        detail: getPromptLocalize('scope.newItemWithoutSetting.detail'),
         alwaysShow: true,
-        placeholder: localize(
-          'extension.sources.prompt.scope.newItem.placeholder',
-        ),
+        placeholder: getPromptLocalize('scope.newItem.placeholder'),
       },
       validate(input: string) {
         return commitlint.lintScope(input);
@@ -149,7 +139,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'type',
-      placeholder: localize('extension.sources.prompt.type.placeholder'),
+      placeholder: getPromptLocalize('type.placeholder'),
       items: getTypeItems(),
       validate(input: string) {
         return commitlint.lintType(input);
@@ -159,7 +149,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
-      placeholder: localize('extension.sources.prompt.gitmoji.placeholder'),
+      placeholder: getPromptLocalize('gitmoji.placeholder'),
       items: gitmojis.gitmojis.map(function ({ emoji, code, description }) {
         return {
           label: emojiFormat === 'code' ? code : emoji,
@@ -168,16 +158,16 @@ export default async function prompts({
         };
       }),
       noneItem: {
-        label: localize('extension.sources.prompt.gitmoji.noneItem.label'),
+        label: getPromptLocalize('gitmoji.noneItem.label'),
         description: '',
-        detail: localize('extension.sources.prompt.gitmoji.noneItem.detail'),
+        detail: getPromptLocalize('gitmoji.noneItem.detail'),
         alwaysShow: true,
       },
     },
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
-      placeholder: localize('extension.sources.prompt.subject.placeholder'),
+      placeholder: getPromptLocalize('subject.placeholder'),
       validate(input: string) {
         const { type, scope, gitmoji } = commitMessage;
         const serializedSubject = serializeSubject({
@@ -188,12 +178,8 @@ export default async function prompts({
         if (subjectError) {
           if (gitmoji) {
             subjectError += ' (';
-            subjectError += localize(
-              'extension.sources.prompt.subject.error.including',
-            );
-            subjectError += localize(
-              'extension.sources.prompt.subject.error.gitmoji',
-            );
+            subjectError += getPromptLocalize('subject.error.including');
+            subjectError += getPromptLocalize('subject.error.gitmoji');
             subjectError += gitmoji;
             subjectError += ')';
           }
@@ -210,25 +196,17 @@ export default async function prompts({
         );
         if (headerError) {
           headerError += ' (';
-          headerError += localize(
-            'extension.sources.prompt.subject.error.including',
-          );
-          headerError += localize(
-            'extension.sources.prompt.subject.error.type',
-          );
+          headerError += getPromptLocalize('subject.error.including');
+          headerError += getPromptLocalize('subject.error.type');
           headerError += type;
           if (scope) {
             headerError += ', ';
-            headerError += localize(
-              'extension.sources.prompt.subject.error.scope',
-            );
+            headerError += getPromptLocalize('subject.error.scope');
             headerError += scope;
           }
           if (gitmoji) {
             headerError += ', ';
-            headerError += localize(
-              'extension.sources.prompt.subject.error.gitmoji',
-            );
+            headerError += getPromptLocalize('subject.error.gitmoji');
             headerError += gitmoji;
           }
           headerError += ')';
@@ -242,7 +220,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
-      placeholder: localize('extension.sources.prompt.body.placeholder'),
+      placeholder: getPromptLocalize('body.placeholder'),
       validate(input: string) {
         return commitlint.lintBody(input);
       },
@@ -251,7 +229,7 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
-      placeholder: localize('extension.sources.prompt.footer.placeholder'),
+      placeholder: getPromptLocalize('footer.placeholder'),
       validate(input: string) {
         return commitlint.lintFooter(input);
       },
@@ -259,19 +237,18 @@ export default async function prompts({
     },
   ]
     .filter(function (question) {
-      if (!promptScopes && question.name === 'scope') {
-        return false;
-      } else if (!gitmoji && question.name === 'gitmoji') {
-        return false;
-      } else if (
-        showEditor &&
-        ((!promptBody && question.name === 'body') ||
-          (!promptFooter && question.name === 'footer'))
-      ) {
-        return false;
-      } else {
-        return true;
+      if (question.name === 'scope' && !promptScopes) return false;
+
+      if (question.name === 'gitmoji' && !gitmoji) return false;
+
+      if (question.name === 'body') {
+        if (showEditor || !promptBody) return false;
       }
+
+      if (question.name === 'footer') {
+        if (showEditor || !promptFooter) return false;
+      }
+      return true;
     })
     .map(function (question, index, array) {
       return {
