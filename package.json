@@ -61,60 +61,60 @@
         "conventionalCommits.autoCommit": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.autoCommit.markdownDescription%"
+          "markdownDescription": "%extension.configuration.autoCommit.markdownDescription%"
         },
         "conventionalCommits.emojiFormat": {
           "type": "string",
           "default": "code",
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownDescription%",
+          "markdownDescription": "%extension.configuration.emojiFormat.markdownDescription%",
           "enum": [
             "code",
             "emoji"
           ],
           "markdownEnumDescriptions": [
-            "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.code%",
-            "%extension.configuration.properties.conventionalCommits.emojiFormat.markdownEnumDescriptions.emoji%"
+            "%extension.configuration.emojiFormat.markdownEnumDescriptions.code%",
+            "%extension.configuration.emojiFormat.markdownEnumDescriptions.emoji%"
           ]
         },
         "conventionalCommits.gitmoji": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.gitmoji.markdownDescription%"
+          "markdownDescription": "%extension.configuration.gitmoji.markdownDescription%"
         },
         "conventionalCommits.lineBreak": {
           "type": "string",
           "default": "",
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.lineBreak.markdownDescription%"
+          "markdownDescription": "%extension.configuration.lineBreak.markdownDescription%"
         },
         "conventionalCommits.promptBody": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptBody.markdownDescription%"
+          "markdownDescription": "%extension.configuration.promptBody.markdownDescription%"
         },
         "conventionalCommits.promptFooter": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptFooter.markdownDescription%"
+          "markdownDescription": "%extension.configuration.promptFooter.markdownDescription%"
         },
         "conventionalCommits.promptScopes": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.promptScopes.markdownDescription%"
+          "markdownDescription": "%extension.configuration.promptScopes.markdownDescription%"
         },
         "conventionalCommits.scopes": {
           "type": "array",
           "default": [],
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.scopes.markdownDescription%"
+          "markdownDescription": "%extension.configuration.scopes.markdownDescription%"
         },
         "conventionalCommits.showEditor": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.showEditor.markdownDescription%"
+          "markdownDescription": "%extension.configuration.showEditor.markdownDescription%"
         },
         "conventionalCommits.editor.keepAfterSave": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "%extension.configuration.properties.conventionalCommits.editor.keepAfterSave.markdownDescription%"
+          "markdownDescription": "%extension.configuration.editor.keepAfterSave.markdownDescription%"
         }
       }
     }
@@ -122,14 +122,12 @@
   "scripts": {
     "vscode:prepublish": "webpack --mode production",
     "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch  --info-verbosity verbose",
+    "webpack-dev": "webpack --mode development --watch --info-verbosity verbose",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "deploy": "vsce publish --yarn",
     "build": "vsce package",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/node": "^12.11.7",
