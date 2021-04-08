@@ -20,6 +20,7 @@ export type Configuration = {
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
 };
 
@@ -33,8 +34,12 @@ export function get<T>(key: keyof Configuration): T {
   ) as unknown) as T;
 }
 
-export async function update(key: keyof Configuration, value: any) {
+export async function update(
+  key: keyof Configuration,
+  value: any,
+  configurationTarget?: boolean,
+) {
   return await vscode.workspace
     .getConfiguration()
-    .update(`${keys.PREFIX}.${key}`, value);
+    .update(`${keys.PREFIX}.${key}`, value, configurationTarget);
 }

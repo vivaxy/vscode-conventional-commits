@@ -7,17 +7,19 @@ import createConventionalCommits from './lib/conventional-commits';
 import * as output from './lib/output';
 import * as localize from './lib/localize';
 import CommitProvider from './lib/editor/provider';
+import { ID } from './configs/keys';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   output.initialize();
   output.info('Extension Activated');
   localize.initialize();
-  const disposable = vscode.commands.registerCommand(
-    'extension.conventionalCommits',
-    createConventionalCommits(),
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'extension.conventionalCommits',
+      createConventionalCommits(),
+    ),
   );
-
-  context.subscriptions.push(disposable);
+  output.showNewVersionNotes(ID, context);
   vscode.workspace.registerFileSystemProvider('commit-message', CommitProvider);
 }
 

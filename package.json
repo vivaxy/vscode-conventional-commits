@@ -111,6 +111,11 @@
           "default": false,
           "markdownDescription": "%extension.configuration.showEditor.markdownDescription%"
         },
+        "conventionalCommits.showNewVersionNotes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%extension.configuration.showNewVersionNotes.markdownDescription%"
+        },
         "conventionalCommits.editor.keepAfterSave": {
           "type": "boolean",
           "default": false,

@@ -4,6 +4,7 @@
  */
 import * as vscode from 'vscode';
 import localize from './localize';
+import { getSourcesLocalize } from './localize';
 import * as configuration from './configuration';
 
 let output: vscode.OutputChannel;
@@ -62,4 +63,38 @@ export function extensionConfiguration(id: string) {
 
 export function relatedExtensionConfiguration(key: string) {
   info(`${key}: ${configuration.getConfiguration().get(key)}`);
+}
+
+export async function showNewVersionNotes(
+  id: string,
+  context: vscode.ExtensionContext,
+) {
+  if (configuration.get('showNewVersionNotes')) {
+    const lastUsedVersion = context.globalState.get('version', '0.0.0');
+    info(`last used version: ${lastUsedVersion}`);
+    const packageJSON = extensionPackageJSON(id);
+    const currentVersion = packageJSON.version;
+    context.globalState.update('version', currentVersion);
+
+    const welcomeNewVersion = getSourcesLocalize('output.welcomeNewVersion');
+    const showReleaseNotes = getSourcesLocalize('output.showReleaseNotes');
+    const dontShowThisAgain = getSourcesLocalize('output.dontShowThisAgain');
+    const changelog = vscode.Uri.parse(
+      'https://github.com/vivaxy/vscode-conventional-commits/blob/master/CHANGELOG.md',
+    );
+    if (lastUsedVersion != currentVersion) {
+      const title = localize('extension.name');
+      const btn = await vscode.window.showInformationMessage(
+        `${title}: ` + welcomeNewVersion + ` ${currentVersion} !`,
+        showReleaseNotes,
+        dontShowThisAgain,
+      );
+      switch (btn) {
+        case showReleaseNotes:
+          return vscode.env.openExternal(changelog);
+        case dontShowThisAgain:
+          return configuration.update('showNewVersionNotes', false, true);
+      }
+    }
+  }
 }
