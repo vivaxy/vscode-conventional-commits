@@ -73,3 +73,7 @@ function getNLS(locale: string = '') {
 export function getPromptLocalize(key: string) {
   return localize(`extension.sources.prompt.${key}`);
 }
+
+export function getSourcesLocalize(key: string) {
+  return localize(`extension.sources.${key}`);
+}

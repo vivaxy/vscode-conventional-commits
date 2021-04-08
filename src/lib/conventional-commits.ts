@@ -11,13 +11,9 @@ import * as output from './output';
 import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
 import { serialize } from './commit-message';
-import localize from './localize';
+import { getSourcesLocalize } from './localize';
 import openMessageInTab from './editor';
 import { ID } from '../configs/keys';
-
-function getSourcesLocalize(key: string) {
-  return localize(`extension.sources.${key}`);
-}
 
 function getGitAPI(): VSCodeGit.API {
   const vscodeGit = vscode.extensions.getExtension('vscode.git');
@@ -99,7 +95,7 @@ async function getRepository({
   });
 
   const [{ index }] = await createSimpleQuickPick({
-    placeholder: localize('extension.sources.promptRepositoryPlaceholder'),
+    placeholder: getSourcesLocalize('promptRepositoryPlaceholder'),
     items,
   });
 
