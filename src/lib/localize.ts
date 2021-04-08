@@ -6,8 +6,9 @@ import { extensions, env } from 'vscode';
 import * as output from './output';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
+import { ID } from '../configs/keys';
 
-export const rootPath = getRoot('vivaxy.vscode-conventional-commits');
+export const rootPath = getRoot(ID);
 
 function getRoot(name: string) {
   const extension = extensions.getExtension(name);
