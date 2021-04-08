@@ -13,6 +13,7 @@ import createSimpleQuickPick from './prompts/quick-pick';
 import { serialize } from './commit-message';
 import localize from './localize';
 import openMessageInTab from './editor';
+import { ID } from '../configs/keys';
 
 function getSourcesLocalize(key: string) {
   return localize(`extension.sources.${key}`);
@@ -24,27 +25,6 @@ function getGitAPI(): VSCodeGit.API {
     output.error('getGitAPI', getSourcesLocalize('vscodeGitNotFound'), true);
   }
   return vscodeGit!.exports.getAPI(1);
-}
-
-function outputExtensionVersion(name: string, id: string) {
-  const packageJSON = vscode.extensions.getExtension(id)?.packageJSON;
-  if (packageJSON === undefined) {
-    output.error('outputExtensionVersion', `Extension ${id} not found!`, true);
-  }
-  output.info(`${name} version: ${packageJSON.version}`);
-  return packageJSON;
-}
-
-function outputExtensionConfiguration(name: string, id: string) {
-  const packageJSON = outputExtensionVersion(name, id);
-  for (let key in packageJSON.contributes.configuration.properties) {
-    let value = configuration.getConfiguration().get(key);
-    output.info(`${key}: ${value}`);
-  }
-}
-
-function outputRelatedExtensionConfiguration(key: string) {
-  output.info(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
 
 type Arg = {
@@ -133,16 +113,14 @@ export default function createConventionalCommits() {
 
       // 1. output basic information
       output.info(`VSCode version: ${vscode.version}`);
-      outputExtensionVersion('Git', 'vscode.git');
+      output.extensionVersion('Git', 'vscode.git');
 
-      outputExtensionConfiguration(
-        'VSCode Conventional Commits',
-        'vivaxy.vscode-conventional-commits',
-      );
+      output.extensionVersion('VSCode Conventional Commits', ID);
+      output.extensionConfiguration(ID);
 
-      outputRelatedExtensionConfiguration('git.enableSmartCommit');
-      outputRelatedExtensionConfiguration('git.smartCommitChanges');
-      outputRelatedExtensionConfiguration('git.postCommitCommand');
+      output.relatedExtensionConfiguration('git.enableSmartCommit');
+      output.relatedExtensionConfiguration('git.smartCommitChanges');
+      output.relatedExtensionConfiguration('git.postCommitCommand');
 
       // 2. check git
       const git = getGitAPI();

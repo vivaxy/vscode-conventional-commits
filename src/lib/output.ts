@@ -4,6 +4,7 @@
  */
 import * as vscode from 'vscode';
 import localize from './localize';
+import * as configuration from './configuration';
 
 let output: vscode.OutputChannel;
 
@@ -36,4 +37,29 @@ export function error(
   const body = typeof arg === 'string' ? arg : arg.message;
   vscode.window.showErrorMessage(`${title}: ${body}`);
   if (isBreaking) throw new Error('custom breaking error has been catch!');
+}
+
+export function extensionPackageJSON(id: string) {
+  const packageJSON = vscode.extensions.getExtension(id)?.packageJSON;
+  if (packageJSON === undefined) {
+    error('outputExtensionVersion', `Extension ${id} not found!`, true);
+  }
+  return packageJSON;
+}
+
+export function extensionVersion(name: string, id: string) {
+  const packageJSON = extensionPackageJSON(id);
+  info(`${name} version: ${packageJSON.version}`);
+}
+
+export function extensionConfiguration(id: string) {
+  const packageJSON = extensionPackageJSON(id);
+  for (let key in packageJSON.contributes.configuration.properties) {
+    let value = configuration.getConfiguration().get(key);
+    info(`${key}: ${value}`);
+  }
+}
+
+export function relatedExtensionConfiguration(key: string) {
+  info(`${key}: ${configuration.getConfiguration().get(key)}`);
 }
