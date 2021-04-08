@@ -1,5 +1,7 @@
 {
   "extension.name": "Conventional Commits",
+  "extension.commands.resetGlobalState": "Conventional Commits: Reset Global State",
+  "extension.commands.showNewVersionNotes": "Conventional Commits: Show Version Notes",
   "extension.configuration.autoCommit.markdownDescription": "Control whether the extension should automatically commit files.\n\nWhen `#git.enableSmartCommit#` enabled and `#git.smartCommitChanges#` was set to `all`, It allows to commit all changes when there are no staged changes.\n\nAnd set `#git.postCommitCommand#` to `sync` to run `git.sync` after commit.",
   "extension.configuration.emojiFormat.markdownDescription": "Specify which format will be shown in the `gitmoji`.",
   "extension.configuration.emojiFormat.markdownEnumDescriptions.code": "Display as `:bug:`",
@@ -40,5 +42,6 @@
   "extension.sources.prompt.footer.placeholder": "List any breaking changes or issues closed by this change.",
   "extension.sources.output.welcomeNewVersion": "Welcome to use new version",
   "extension.sources.output.showReleaseNotes": "Show release notes",
-  "extension.sources.output.dontShowThisAgain": "Don't show this again"
+  "extension.sources.output.dontShowThisAgain": "Don't show this again",
+  "extension.sources.resetMessage": "Reset Global state successfully!"
 }
