@@ -11,6 +11,7 @@
   "extension.configuration.promptScopes.markdownDescription": "是否需要填写 `scope`。",
   "extension.configuration.scopes.markdownDescription": "指定 `scope` 中的可选项。",
   "extension.configuration.showEditor.markdownDescription": "是否需要在新标签页用文本编辑器展示提交信息",
+  "extension.configuration.showNewVersionNotes.markdownDescription": "是否需要显示新版本说明。",
   "extension.configuration.editor.keepAfterSave.markdownDescription": "是否需要在保存提交消息后保持编辑状态。",
   "extension.sources.repositoryNotFoundInPath": "以下路径中未找到仓库：",
   "extension.sources.repositoriesEmpty": "请打开一个仓库。",
@@ -36,5 +37,8 @@
   "extension.sources.prompt.subject.error.scope": "作用域：",
   "extension.sources.prompt.subject.error.gitmoji": " gitmoji：",
   "extension.sources.prompt.body.placeholder": "请填写正文。",
-  "extension.sources.prompt.footer.placeholder": "请填写脚注（列举相关的 issues）。"
+  "extension.sources.prompt.footer.placeholder": "请填写脚注（列举相关的 issues）。",
+  "extension.sources.output.welcomeNewVersion": "欢迎使用新版本",
+  "extension.sources.output.showReleaseNotes": "显示变更日志",
+  "extension.sources.output.dontShowThisAgain": "不再提示"
 }
