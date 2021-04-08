@@ -68,8 +68,9 @@ export function relatedExtensionConfiguration(key: string) {
 export async function showNewVersionNotes(
   id: string,
   context: vscode.ExtensionContext,
+  force: boolean = false,
 ) {
-  if (configuration.get('showNewVersionNotes')) {
+  if (configuration.get('showNewVersionNotes') || force) {
     const lastUsedVersion = context.globalState.get('version', '0.0.0');
     info(`last used version: ${lastUsedVersion}`);
     const packageJSON = extensionPackageJSON(id);
@@ -82,7 +83,7 @@ export async function showNewVersionNotes(
     const changelog = vscode.Uri.parse(
       'https://github.com/vivaxy/vscode-conventional-commits/blob/master/CHANGELOG.md',
     );
-    if (lastUsedVersion != currentVersion) {
+    if (lastUsedVersion != currentVersion || force) {
       const title = localize('extension.name');
       const btn = await vscode.window.showInformationMessage(
         `${title}: ` + welcomeNewVersion + ` ${currentVersion} !`,

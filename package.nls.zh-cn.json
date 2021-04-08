@@ -1,5 +1,7 @@
 {
   "extension.name": "约定式提交",
+  "extension.commands.resetGlobalState": "约定式提交: 重置全局状态",
+  "extension.commands.showNewVersionNotes": "约定式提交: 显示版本提示",
   "extension.configuration.autoCommit.markdownDescription": "是否自动提交改动。\n\n当打开 `#git.enableSmartCommit#` 并设置 `#git.smartCommitChanges#` 为 `all` 时，可以在无暂存内容时，自动将所有改动提交。\n\n设置 `#git.postCommitCommand#` 为 `sync` 可以在提交后自动执行 `git.sync`。",
   "extension.configuration.emojiFormat.markdownDescription": "指定将在 `gitmoji` 中显示的格式。",
   "extension.configuration.emojiFormat.markdownEnumDescriptions.code": "显示为 `:bug:`",
@@ -40,5 +42,6 @@
   "extension.sources.prompt.footer.placeholder": "请填写脚注（列举相关的 issues）。",
   "extension.sources.output.welcomeNewVersion": "欢迎使用新版本",
   "extension.sources.output.showReleaseNotes": "显示变更日志",
-  "extension.sources.output.dontShowThisAgain": "不再提示"
+  "extension.sources.output.dontShowThisAgain": "不再提示",
+  "extension.sources.resetMessage": "成功重置全局状态！"
 }

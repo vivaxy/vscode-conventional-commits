@@ -32,7 +32,9 @@
   },
   "homepage": "https://github.com/vivaxy/vscode-conventional-commits",
   "activationEvents": [
-    "onCommand:extension.conventionalCommits"
+    "onCommand:extension.conventionalCommits",
+    "onCommand:extension.conventionalCommits.resetGlobalState",
+    "onCommand:extension.conventionalCommits.showNewVersionNotes"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -44,6 +46,14 @@
           "dark": "./assets/menu-icon-dark.svg",
           "light": "./assets/menu-icon-light.svg"
         }
+      },
+      {
+        "command": "extension.conventionalCommits.resetGlobalState",
+        "title": "%extension.commands.resetGlobalState%"
+      },
+      {
+        "command": "extension.conventionalCommits.showNewVersionNotes",
+        "title": "%extension.commands.showNewVersionNotes%"
       }
     ],
     "menus": {
