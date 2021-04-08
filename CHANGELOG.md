@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.20.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.19.0...v1.20.0) (2021-04-08)
+
+### Features
+
+- **editor:** :sparkles: add option to allow keeping editor after saving files ([7d773c4](https://github.com/vivaxy/vscode-conventional-commits/commit/7d773c433c26f1c8dc7f1106c36ec1cc87e05b22)), closes [#128](https://github.com/vivaxy/vscode-conventional-commits/issues/128)
+- **extension:** :sparkles: add new version note ([92e554c](https://github.com/vivaxy/vscode-conventional-commits/commit/92e554c9db64fc59bc71d00522728806e69e7f78))
+- **extension:** :sparkles: add two commands about note ([d9e1118](https://github.com/vivaxy/vscode-conventional-commits/commit/d9e11186b35e96fd92fda02d854de660df59efc9))
+
 ## [1.19.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.18.2...v1.19.0) (2021-04-02)
 
 ### Features
