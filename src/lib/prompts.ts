@@ -32,6 +32,9 @@ export default async function prompts({
   promptScopes,
   promptBody,
   promptFooter,
+  promptBreakingChange,
+  detectBreakingChange,
+  breakingChangeFormat,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -40,6 +43,9 @@ export default async function prompts({
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  promptBreakingChange: boolean;
+  detectBreakingChange: boolean;
+  breakingChangeFormat: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -114,6 +120,7 @@ export default async function prompts({
       name,
       placeholder,
       configurationKey: keys.SCOPES as keyof configuration.Configuration,
+      noneItem,
       newItem: {
         label: getPromptLocalize('scope.newItem.label'),
         description: '',
@@ -121,7 +128,6 @@ export default async function prompts({
         alwaysShow: true,
         placeholder: getPromptLocalize('scope.newItem.placeholder'),
       },
-      noneItem,
       newItemWithoutSetting: {
         label: getPromptLocalize('scope.newItemWithoutSetting.label'),
         description: '',
@@ -147,6 +153,39 @@ export default async function prompts({
     },
     getScopePrompt(),
     {
+      type: PROMPT_TYPES.BREAKING_CHANGE_QUICK_PICK,
+      name: 'breakingChange',
+      placeholder: getPromptLocalize('breakingChange.placeholder'),
+      noneItem: {
+        label: getPromptLocalize('breakingChange.noneItem.label'),
+        description: '',
+        detail: getPromptLocalize('breakingChange.noneItem.detail'),
+        alwaysShow: true,
+      },
+      pointItem: {
+        label: getPromptLocalize('breakingChange.pointItem.label'),
+        description: '',
+        detail: getPromptLocalize('breakingChange.pointItem.detail'),
+        alwaysShow: true,
+      },
+      spaceItem: {
+        label: getPromptLocalize('breakingChange.spaceItem.label'),
+        description: '',
+        detail: getPromptLocalize('breakingChange.spaceItem.detail'),
+        alwaysShow: true,
+        placeholder: getPromptLocalize('breakingChange.message.placeholder'),
+      },
+      hyphenItem: {
+        label: getPromptLocalize('breakingChange.hyphenItem.label'),
+        description: '',
+        detail: getPromptLocalize('breakingChange.hyphenItem.detail'),
+        alwaysShow: true,
+        placeholder: getPromptLocalize('breakingChange.message.placeholder'),
+      },
+      breakingChangeFormat: breakingChangeFormat,
+      format: lineBreakFormatter,
+    },
+    {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
       placeholder: getPromptLocalize('gitmoji.placeholder'),
@@ -169,7 +208,7 @@ export default async function prompts({
       name: 'subject',
       placeholder: getPromptLocalize('subject.placeholder'),
       validate(input: string) {
-        const { type, scope, gitmoji } = commitMessage;
+        const { type, scope, breakingChange, gitmoji } = commitMessage;
         const serializedSubject = serializeSubject({
           gitmoji,
           subject: input,
@@ -188,10 +227,14 @@ export default async function prompts({
 
         let headerError = commitlint.lintHeader(
           serializeHeader({
-            type,
-            scope,
-            gitmoji,
-            subject: input,
+            partialCommitMessage: {
+              type,
+              scope,
+              breakingChange,
+              gitmoji,
+              subject: input,
+            },
+            detectBreakingChange: detectBreakingChange,
           }),
         );
         if (headerError) {
@@ -240,6 +283,10 @@ export default async function prompts({
       if (question.name === 'scope' && !promptScopes) return false;
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
+
+      if (question.name === 'breakingChange') {
+        if (!promptBreakingChange) return false;
+      }
 
       if (question.name === 'body') {
         if (showEditor || !promptBody) return false;

@@ -12,6 +12,7 @@ export enum PROMPT_TYPES {
   QUICK_PICK,
   INPUT_BOX,
   CONFIGURABLE_QUICK_PICK,
+  BREAKING_CHANGE_QUICK_PICK,
 }
 
 type Item = {
@@ -171,8 +172,73 @@ async function createConfigurableQuickPick({
   return format(selectedValue);
 }
 
+type BreakingChangeQuickPickOptions = {
+  pointItem: Item;
+  hyphenItem: Item;
+  spaceItem: Item;
+  breakingChangeFormat: configuration.BREAKING_CHANGE_FORMAT;
+  validate?: (value: string) => string | undefined;
+} & QuickPickOptions;
+
+async function createBreakingChangeQuickPick({
+  placeholder,
+  format = (i) => i,
+  step,
+  totalSteps,
+  pointItem,
+  hyphenItem,
+  spaceItem,
+  noneItem,
+  breakingChangeFormat,
+  validate = () => undefined,
+}: BreakingChangeQuickPickOptions): Promise<string> {
+  const items: Item[] = [];
+  items.push(pointItem);
+  if (breakingChangeFormat === configuration.BREAKING_CHANGE_FORMAT.space) {
+    items.push(spaceItem);
+  }
+  if (breakingChangeFormat === configuration.BREAKING_CHANGE_FORMAT.hyphen) {
+    items.push(hyphenItem);
+  }
+  if (breakingChangeFormat === configuration.BREAKING_CHANGE_FORMAT.both) {
+    items.push(spaceItem, hyphenItem);
+  }
+  let selectedValue = await createQuickPick({
+    placeholder,
+    items,
+    step,
+    totalSteps,
+    noneItem,
+  });
+  if (selectedValue === spaceItem.label) {
+    selectedValue =
+      'BREAKING CHANGE: ' +
+      (await createInputBox({
+        placeholder: spaceItem.placeholder!,
+        step,
+        totalSteps,
+        validate,
+      }));
+  }
+  if (selectedValue === hyphenItem.label) {
+    selectedValue =
+      'BREAKING-CHANGE: ' +
+      (await createInputBox({
+        placeholder: hyphenItem.placeholder!,
+        step,
+        totalSteps,
+        validate,
+      }));
+  }
+  if (selectedValue === pointItem.label) {
+    selectedValue = '!';
+  }
+  return format(selectedValue);
+}
+
 export default {
   [PROMPT_TYPES.QUICK_PICK]: createQuickPick,
   [PROMPT_TYPES.INPUT_BOX]: createInputBox,
   [PROMPT_TYPES.CONFIGURABLE_QUICK_PICK]: createConfigurableQuickPick,
+  [PROMPT_TYPES.BREAKING_CHANGE_QUICK_PICK]: createBreakingChangeQuickPick,
 };

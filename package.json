@@ -130,6 +130,30 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.editor.keepAfterSave.markdownDescription%"
+        },
+        "conventionalCommits.detectBreakingChange": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.detectBreakingChange.markdownDescription%"
+        },
+        "conventionalCommits.promptBreakingChange": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.promptBreakingChange.markdownDescription%"
+        },
+        "conventionalCommits.breakingChangeFormat": {
+          "type": "string",
+          "default": "both",
+          "enum": [
+            "space",
+            "hyphen",
+            "both"
+          ],
+          "markdownEnumDescriptions": [
+            "%extension.configuration.breakingChangeFormat.markdownEnumDescriptions.space%",
+            "%extension.configuration.breakingChangeFormat.markdownEnumDescriptions.hyphen%",
+            "%extension.configuration.breakingChangeFormat.markdownEnumDescriptions.both%"
+          ]
         }
       }
     }
