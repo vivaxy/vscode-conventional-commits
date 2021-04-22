@@ -68,7 +68,7 @@ jobs:
     if: ${{ always() }}
     steps:
       - name: Generate PR number
-        if: ${{ github.event_name == pull_request }}
+        if: ${{ github.event_name == 'pull_request' }}
         id: PR
         run: |
           mkdir -p ./pr
@@ -100,7 +100,7 @@ jobs:
 
       - name: Upload the PR information
         uses: actions/upload-artifact@v2.2.3
-        if: ${{ github.event_name == pull_request }}
+        if: ${{ github.event_name == 'pull_request' }}
         with:
           name: pr
           path: pr/
