@@ -1,0 +1,91 @@
+name: post build
+
+on:
+  workflow_run:
+    workflows:
+      - build
+    types:
+      - completed
+
+jobs:
+  post-build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    steps:
+      - name: Download artifact
+        uses: actions/github-script@v4.0.1
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+
+      - name: Get PR information
+        run: unzip pr.zip
+
+      - name: Delete label
+        id: label
+        uses: actions/github-script@v4.0.1
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            try {
+              const label_name = `${fs.readFileSync('./label')}`.trim();
+              await github.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number,
+                name: label_name,
+              });
+              return label_name;
+            } catch (e) {
+              if (e.code !== 'ENOENT') throw e;
+            }
+
+      - name: Comment on PR
+        uses: actions/github-script@v4.0.1
+        if: ${{ steps.label.outputs.result }}
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./NR'));
+            const comment = `${fs.readFileSync('./comment')}`.trim();
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: comment
+            });
+
+      - name: Clear artifact
+        uses: actions/github-script@v3.1.1
+        with:
+          script: |
+            const artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            const matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            await github.actions.deleteArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+            });
