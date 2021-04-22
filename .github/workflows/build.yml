@@ -61,11 +61,13 @@ jobs:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
 
-  output:
+  post-build:
     name: Output PR information
     needs: build
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'wait-to-build')
+    if: >
+      ${{ always() && contains(github.event.pull_request.labels.*.name,
+      'wait-to-build')}}
     steps:
       - name: Generate PR number and label name
         run: |
@@ -91,8 +93,30 @@ jobs:
           printf "Oops, The build workflow has failed! See in " >> ./pr/comment
           printf "[summary](${{env.WORKFLOW_URL}}#annotations). 😥" >> ./pr/comment
 
-      - name: Upload the PR information
-        uses: actions/upload-artifact@v2.2.3
+      - name: Comment on PR
+        uses: actions/github-script@v3.1.1
         with:
-          name: pr
-          path: pr/
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./pr/NR'));
+            const comment = `${fs.readFileSync('./pr/comment')}`.trim();
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: comment
+            });
+
+      - name: Delete label
+        uses: actions/github-script@v3.1.1
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./pr/NR'));
+            const label_name = `${fs.readFileSync('./pr/label')}`.trim();
+            await github.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: label_name,
+            });
