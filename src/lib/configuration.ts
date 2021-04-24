@@ -10,6 +10,12 @@ export enum EMOJI_FORMAT {
   emoji = 'emoji',
 }
 
+export enum BREAKING_CHANGE_FORMAT {
+  hyphen = 'hyphen',
+  space = 'space',
+  both = 'both',
+}
+
 export type Configuration = {
   autoCommit: boolean;
   gitmoji: boolean;
@@ -22,6 +28,9 @@ export type Configuration = {
   promptFooter: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
+  detectBreakingChange: boolean;
+  promptBreakingChange: boolean;
+  breakingChangeFormat: BREAKING_CHANGE_FORMAT;
 };
 
 export function getConfiguration() {

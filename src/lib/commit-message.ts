@@ -5,6 +5,7 @@
 export class CommitMessage {
   private _type: string = '';
   private _scope: string = '';
+  private _breakingChange: string = '';
   private _gitmoji: string = '';
   private _subject: string = '';
   private _body: string = '';
@@ -24,6 +25,14 @@ export class CommitMessage {
 
   set scope(input: string) {
     this._scope = input.trim();
+  }
+
+  get breakingChange() {
+    return this._breakingChange;
+  }
+
+  set breakingChange(input: string) {
+    this._breakingChange = input.trim();
   }
 
   get gitmoji() {
@@ -49,7 +58,6 @@ export class CommitMessage {
   set body(input: string) {
     this._body = input.trim();
   }
-
   get footer() {
     return this._footer;
   }
@@ -77,34 +85,51 @@ export function serializeSubject(partialCommitMessage: {
   return result;
 }
 
-export function serializeHeader(partialCommitMessage: {
-  type: string;
-  scope: string;
-  gitmoji: string;
-  subject: string;
+export function serializeHeader({
+  partialCommitMessage,
+  detectBreakingChange,
+}: {
+  partialCommitMessage: {
+    type: string;
+    scope: string;
+    breakingChange: string;
+    gitmoji: string;
+    subject: string;
+  };
+  detectBreakingChange: boolean;
 }) {
-  let result = '';
-  result += partialCommitMessage.type;
-  const { scope } = partialCommitMessage;
-  if (scope) {
-    result += `(${scope})`;
-  }
-  result += ': ';
+  let result = '' + partialCommitMessage.type;
+
+  const { scope, breakingChange } = partialCommitMessage;
+  if (scope) result += `(${scope})`;
+
+  if (breakingChange && (breakingChange === '!' || detectBreakingChange)) {
+    result += `!: `;
+  } else result += ': ';
+
   const subject = serializeSubject(partialCommitMessage);
-  if (subject) {
-    result += subject;
-  }
+  if (subject) result += subject;
+
   return result;
 }
 
-export function serialize(commitMessage: CommitMessage) {
-  let message = serializeHeader(commitMessage);
-  const { body, footer } = commitMessage;
-  if (body) {
-    message += `\n\n${body}`;
+export function serialize(
+  commitMessage: CommitMessage,
+  detectBreakingChange: boolean,
+) {
+  let message = serializeHeader({
+    partialCommitMessage: commitMessage,
+    detectBreakingChange,
+  });
+  const { breakingChange, body, footer } = commitMessage;
+  if (body) message += `\n\n${body}`;
+
+  if (breakingChange && breakingChange != '!') {
+    message += `\n\n${breakingChange}`;
   }
   if (footer) {
-    message += `\n\n${footer}`;
+    message += breakingChange && breakingChange != '!' ? '\n' : '\n\n';
+    message += footer;
   }
   return message;
 }

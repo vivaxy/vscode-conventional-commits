@@ -141,6 +141,9 @@ export default function createConventionalCommits() {
       );
 
       // 5. get message
+      const detectBreakingChange = configuration.get<boolean>(
+        'detectBreakingChange',
+      );
       const commitMessage = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         showEditor: configuration.get<boolean>('showEditor'),
@@ -151,10 +154,17 @@ export default function createConventionalCommits() {
         promptScopes: configuration.get<boolean>('promptScopes'),
         promptBody: configuration.get<boolean>('promptBody'),
         promptFooter: configuration.get<boolean>('promptFooter'),
+        promptBreakingChange: configuration.get<boolean>(
+          'promptBreakingChange',
+        ),
+        detectBreakingChange: detectBreakingChange,
+        breakingChangeFormat: configuration.get<boolean>(
+          'breakingChangeFormat',
+        ),
       });
-      output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);
-      const message = serialize(commitMessage);
-      output.info(`message:\n${message}`);
+      output.info(`commitMessage: ${JSON.stringify(commitMessage, null, 2)}`);
+      let message = serialize(commitMessage, detectBreakingChange);
+      output.info(`message: ${message}`);
 
       // 6. switch to scm and put message into message box
       // or show the entire commit message in a separate tab
