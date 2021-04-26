@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.21.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.20.0...v1.21.0) (2021-04-26)
+
+### Features
+
+- **deps:** :arrow_up: update vscode engines ([153a685](https://github.com/vivaxy/vscode-conventional-commits/commit/153a6859489a2ae32e0c38d9e7e004ba6d842885)), closes [#141](https://github.com/vivaxy/vscode-conventional-commits/issues/141)
+
+### Bug Fixes
+
+- **readme:** :memo: fix the configuration mistake ([c59fba3](https://github.com/vivaxy/vscode-conventional-commits/commit/c59fba3b3c94baca9dd2ef1a52a7150cd01d71a9))
+
 ## [1.20.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.19.0...v1.20.0) (2021-04-08)
 
 ### Features
