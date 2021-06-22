@@ -59,8 +59,13 @@ jobs:
         run: |
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
 
-      - name: Publish package
+      - name: Publish package to visual studio marketplace
         run: yarn deploy -p ${{secrets.VSCE_PAT}}
+
+      - name: Publish package to open VSX registry
+        env:
+          FILENAME: ${{steps.version.outputs.repo}}-${{steps.version.outputs.version}}.vsix
+        run: yarn ovsx publish ${{env.FILENAME}} -p ${{secrets.OPEN_VSX_TOKEN}}
 
       - name: Push release commit
         env:
