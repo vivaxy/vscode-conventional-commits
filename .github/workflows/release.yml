@@ -59,6 +59,9 @@ jobs:
         run: |
           git tag -a v${{steps.version.outputs.version}} -m "chore(release): :bookmark: release v${{steps.version.outputs.version}}"
 
+      - name: Build release asset
+        run: yarn build
+
       - name: Publish package to visual studio marketplace
         run: yarn deploy -p ${{secrets.VSCE_PAT}}
 
@@ -72,9 +75,6 @@ jobs:
           REMOTE_URL: https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git
         run: |
           git push --follow-tags "${{env.REMOTE_URL}}"
-
-      - name: Build release asset
-        run: yarn build
 
       - name: Get changelog context
         id: changelog_reader
