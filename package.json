@@ -150,6 +150,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "husky": "6",
     "lint-staged": "^11.0.0",
+    "ovsx": "^0.2.0",
     "pinst": "^2.1.4",
     "prettier": "^2.0.2",
     "standard-version": "^9.0.0",
