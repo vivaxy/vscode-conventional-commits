@@ -29,9 +29,11 @@ export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
 
 type Options = {
   placeholder: string;
+  value?: string;
   format?: (input: string) => string;
   step: number;
   totalSteps: number;
+  buttons?: vscode.QuickInputButton[];
 };
 
 type QuickPickOptions = {
@@ -42,13 +44,15 @@ type QuickPickOptions = {
 async function createQuickPick({
   placeholder,
   items = [],
+  value,
   format = (i: string) => i,
   step,
   totalSteps,
   noneItem,
+  buttons = [],
 }: QuickPickOptions): Promise<string> {
   const pickerItems = items;
-  if (noneItem) {
+  if (noneItem && !pickerItems.includes(noneItem)) {
     pickerItems.unshift(noneItem);
   }
 
@@ -58,8 +62,10 @@ async function createQuickPick({
     matchOnDetail: true,
     ignoreFocusOut: true,
     items,
+    value,
     step,
     totalSteps,
+    buttons,
   });
 
   let selectedValue = selectedItems[0].label;
@@ -75,10 +81,12 @@ type InputBoxOptions = {
 
 function createInputBox({
   placeholder,
+  value,
   format = (i) => i,
   step,
   totalSteps,
   validate = () => undefined,
+  buttons,
 }: InputBoxOptions): Promise<string> {
   return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
@@ -86,6 +94,12 @@ function createInputBox({
     input.totalSteps = totalSteps;
     input.ignoreFocusOut = true;
     input.placeholder = placeholder;
+    if (value) {
+      input.value = value;
+    }
+    if (buttons) {
+      input.buttons = buttons;
+    }
     input.onDidChangeValue(function () {
       try {
         input.validationMessage = validate(input.value);
@@ -108,6 +122,11 @@ function createInputBox({
         reject(e);
       }
     });
+    input.onDidTriggerButton(function (e) {
+      if (e === vscode.QuickInputButtons.Back) {
+        reject({ button: e, value: input.value });
+      }
+    });
     input.prompt = placeholder;
     input.show();
   });
@@ -123,6 +142,7 @@ type ConfigurableQuickPickOptions = {
 
 async function createConfigurableQuickPick({
   placeholder,
+  value,
   format = (i) => i,
   step,
   totalSteps,
@@ -131,6 +151,7 @@ async function createConfigurableQuickPick({
   noneItem,
   newItemWithoutSetting,
   validate = () => undefined,
+  buttons,
 }: ConfigurableQuickPickOptions): Promise<string> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
   const items: Item[] = currentValues.map(function (value) {
@@ -145,16 +166,20 @@ async function createConfigurableQuickPick({
   let selectedValue = await createQuickPick({
     placeholder,
     items,
+    value,
     step,
     totalSteps,
     noneItem,
+    buttons,
   });
   if (selectedValue === newItem.label) {
     selectedValue = await createInputBox({
       placeholder: newItem.placeholder!,
+      value,
       step,
       totalSteps,
       validate,
+      buttons,
     });
     if (selectedValue) {
       configuration.update(configurationKey, [...currentValues, selectedValue]);
@@ -163,9 +188,11 @@ async function createConfigurableQuickPick({
   if (selectedValue === newItemWithoutSetting.label) {
     selectedValue = await createInputBox({
       placeholder: newItemWithoutSetting.placeholder!,
+      value,
       step,
       totalSteps,
       validate,
+      buttons,
     });
   }
   return format(selectedValue);

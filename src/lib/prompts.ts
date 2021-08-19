@@ -23,6 +23,7 @@ import {
 } from './commit-message';
 import commitlint from './commitlint';
 import { getPromptLocalize, locale } from './localize';
+import { QuickInputButtons, QuickInputButton } from 'vscode';
 
 export default async function prompts({
   gitmoji,
@@ -255,16 +256,29 @@ export default async function prompts({
         ...question,
         step: index + 1,
         totalSteps: array.length,
+        buttons: index > 0 ? [QuickInputButtons.Back] : [],
       };
     });
 
-  for (const question of questions) {
-    commitMessage[question.name as keyof CommitMessage] = await promptTypes[
-      question.type
-    ](
+  const questionValues = new Array<string>(questions.length).fill('');
+  let index = 0;
+  while (index < questions.length) {
+    let doBack = false;
+    questions[index].value = questionValues[index];
+    const question = questions[index];
+    questionValues[index] = await promptTypes[question.type](
       // @ts-ignore
       question,
-    );
+    ).catch((e) => {
+      if (e && 'button' in e && e.button === QuickInputButtons.Back) {
+        doBack = true;
+        return 'value' in e ? e.value : questionValues[index];
+      } else {
+        throw e;
+      }
+    });
+    commitMessage[question.name as keyof CommitMessage] = questionValues[index];
+    index = doBack ? index - 1 : index + 1;
   }
   return commitMessage;
 }
