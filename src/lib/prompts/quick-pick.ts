@@ -8,15 +8,10 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
   placeholder,
   items = [],
   value = '',
-  format = (i) => i,
   step,
   totalSteps,
   buttons = [],
-}: Partial<
-  vscode.QuickPick<T> & {
-    format(i: T[]): T[];
-  }
->): Promise<T[]> {
+}: Partial<vscode.QuickPick<T>>): Promise<T[]> {
   return new Promise(function (resolve, reject) {
     const picker = vscode.window.createQuickPick();
     picker.placeholder = placeholder;
@@ -31,7 +26,7 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.show();
     picker.onDidAccept(function () {
       if (picker.selectedItems.length) {
-        const result = format(picker.selectedItems as T[]);
+        const result = picker.selectedItems as T[];
         picker.dispose();
         resolve(result);
       }

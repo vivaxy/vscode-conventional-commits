@@ -277,8 +277,12 @@ export default async function prompts({
         throw e;
       }
     });
-    commitMessage[question.name as keyof CommitMessage] = questionValues[index];
     index = doBack ? index - 1 : index + 1;
   }
+  questionValues.forEach((element, index) => {
+    element = questions[index].format?.(element) ?? element;
+    commitMessage[questions[index].name as keyof CommitMessage] = element;
+  });
+
   return commitMessage;
 }

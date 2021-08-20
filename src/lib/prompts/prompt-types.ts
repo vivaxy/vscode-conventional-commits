@@ -45,7 +45,6 @@ async function createQuickPick({
   placeholder,
   items = [],
   value,
-  format = (i: string) => i,
   step,
   totalSteps,
   noneItem,
@@ -72,7 +71,7 @@ async function createQuickPick({
   if (noneItem && selectedValue === noneItem.label) {
     selectedValue = '';
   }
-  return format(selectedValue);
+  return selectedValue;
 }
 
 type InputBoxOptions = {
@@ -82,7 +81,6 @@ type InputBoxOptions = {
 function createInputBox({
   placeholder,
   value,
-  format = (i) => i,
   step,
   totalSteps,
   validate = () => undefined,
@@ -114,7 +112,7 @@ function createInputBox({
         if (input.validationMessage) {
           return;
         }
-        const result = format(input.value);
+        const result = input.value;
         input.dispose();
         resolve(result);
       } catch (e) {
@@ -143,7 +141,6 @@ type ConfigurableQuickPickOptions = {
 async function createConfigurableQuickPick({
   placeholder,
   value,
-  format = (i) => i,
   step,
   totalSteps,
   configurationKey,
@@ -195,7 +192,7 @@ async function createConfigurableQuickPick({
       buttons,
     });
   }
-  return format(selectedValue);
+  return selectedValue;
 }
 
 export default {
