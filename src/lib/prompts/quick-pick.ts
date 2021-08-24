@@ -7,11 +7,15 @@ import * as vscode from 'vscode';
 export default function createQuickPick<T extends vscode.QuickPickItem>({
   placeholder,
   items = [],
+  activeItems = [],
   value = '',
   step,
   totalSteps,
   buttons = [],
-}: Partial<vscode.QuickPick<T>>): Promise<T[]> {
+}: Partial<vscode.QuickPick<T>>): Promise<{
+  value: string;
+  activeItems: T[];
+}> {
   return new Promise(function (resolve, reject) {
     const picker = vscode.window.createQuickPick();
     picker.placeholder = placeholder;
@@ -19,21 +23,28 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.matchOnDetail = true;
     picker.ignoreFocusOut = true;
     picker.items = items;
+    picker.activeItems = activeItems;
     picker.value = value;
     picker.step = step;
     picker.totalSteps = totalSteps;
     picker.buttons = buttons;
     picker.show();
     picker.onDidAccept(function () {
-      if (picker.selectedItems.length) {
-        const result = picker.selectedItems as T[];
+      if (picker.activeItems.length) {
+        resolve({
+          value: picker.value,
+          activeItems: picker.activeItems as T[],
+        });
         picker.dispose();
-        resolve(result);
       }
     });
     picker.onDidTriggerButton(function (e) {
       if (e === vscode.QuickInputButtons.Back) {
-        reject({ button: e, value: picker.value });
+        reject({
+          button: e,
+          value: picker.value,
+          activeItems: picker.activeItems,
+        });
       }
     });
   });

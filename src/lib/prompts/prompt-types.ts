@@ -14,7 +14,7 @@ export enum PROMPT_TYPES {
   CONFIGURABLE_QUICK_PICK,
 }
 
-type Item = {
+export type Item = {
   label: string;
   detail?: string;
   description?: string;
@@ -27,6 +27,8 @@ export type Prompt = { name: string; type: PROMPT_TYPES } & Options &
   Partial<InputBoxOptions> &
   Partial<ConfigurableQuickPickOptions>;
 
+export type PromptStatus = { value: string; activeItems: Item[] };
+
 type Options = {
   placeholder: string;
   value?: string;
@@ -38,40 +40,36 @@ type Options = {
 
 type QuickPickOptions = {
   items: Item[];
+  activeItems: Item[];
   noneItem?: Item;
 } & Options;
 
 async function createQuickPick({
   placeholder,
   items = [],
+  activeItems = [],
   value,
   step,
   totalSteps,
   noneItem,
   buttons = [],
-}: QuickPickOptions): Promise<string> {
-  const pickerItems = items;
-  if (noneItem && !pickerItems.includes(noneItem)) {
-    pickerItems.unshift(noneItem);
+}: QuickPickOptions): Promise<PromptStatus> {
+  if (noneItem && !items.includes(noneItem)) {
+    items.unshift(noneItem);
   }
-
-  const selectedItems = await createSimpleQuickPick<Item>({
+  const promptStatus: PromptStatus = await createSimpleQuickPick<Item>({
     placeholder,
     matchOnDescription: true,
     matchOnDetail: true,
     ignoreFocusOut: true,
     items,
+    activeItems,
     value,
     step,
     totalSteps,
     buttons,
   });
-
-  let selectedValue = selectedItems[0].label;
-  if (noneItem && selectedValue === noneItem.label) {
-    selectedValue = '';
-  }
-  return selectedValue;
+  return promptStatus;
 }
 
 type InputBoxOptions = {
@@ -85,7 +83,7 @@ function createInputBox({
   totalSteps,
   validate = () => undefined,
   buttons,
-}: InputBoxOptions): Promise<string> {
+}: InputBoxOptions): Promise<PromptStatus> {
   return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
     input.step = step;
@@ -112,9 +110,8 @@ function createInputBox({
         if (input.validationMessage) {
           return;
         }
-        const result = input.value;
+        resolve({ value: input.value, activeItems: [] });
         input.dispose();
-        resolve(result);
       } catch (e) {
         output.error(`step.${input.step}`, e);
         reject(e);
@@ -122,7 +119,10 @@ function createInputBox({
     });
     input.onDidTriggerButton(function (e) {
       if (e === vscode.QuickInputButtons.Back) {
-        reject({ button: e, value: input.value });
+        reject({
+          button: e,
+          value: input.value,
+        });
       }
     });
     input.prompt = placeholder;
@@ -130,7 +130,7 @@ function createInputBox({
   });
 }
 
-type ConfigurableQuickPickOptions = {
+export type ConfigurableQuickPickOptions = {
   configurationKey: keyof configuration.Configuration;
   newItem: Item;
   newItemWithoutSetting: Item;
@@ -146,53 +146,101 @@ async function createConfigurableQuickPick({
   configurationKey,
   newItem,
   noneItem,
+  activeItems = [],
   newItemWithoutSetting,
   validate = () => undefined,
   buttons,
-}: ConfigurableQuickPickOptions): Promise<string> {
+}: ConfigurableQuickPickOptions): Promise<PromptStatus> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
+  const workspaceConfigurationItemInfo = {
+    description: '',
+    detail: localize('extension.sources.prompt.fromWorkspaceConfiguration'),
+  };
   const items: Item[] = currentValues.map(function (value) {
     return {
       label: value,
-      description: '',
-      detail: localize('extension.sources.prompt.fromWorkspaceConfiguration'),
+      ...workspaceConfigurationItemInfo,
     };
   });
   items.push(newItem);
   items.push(newItemWithoutSetting);
-  let selectedValue = await createQuickPick({
+
+  // If activeItems[0] is contained in items, then make activeItems[0] the activeItems[0] contained in items.
+  if (activeItems[0]) {
+    const activeItemInItems = items.find((item) => {
+      const activeItemKeys = Object.keys(activeItems[0]).sort();
+      const itemKeys = Object.keys(item).sort();
+      if (JSON.stringify(activeItemKeys) !== JSON.stringify(itemKeys))
+        return false;
+      for (let i = 0; i < activeItemKeys.length; i++) {
+        if (
+          activeItems[0][activeItemKeys[i] as keyof Item] !==
+          item[activeItemKeys[i] as keyof Item]
+        )
+          return false;
+      }
+      return true;
+    });
+    if (activeItemInItems !== undefined) {
+      activeItems[0] = activeItemInItems;
+    }
+  }
+
+  let promptStatus = await createQuickPick({
     placeholder,
     items,
+    activeItems,
     value,
     step,
     totalSteps,
     noneItem,
     buttons,
   });
-  if (selectedValue === newItem.label) {
-    selectedValue = await createInputBox({
-      placeholder: newItem.placeholder!,
-      value,
+  if (
+    promptStatus.activeItems[0] &&
+    promptStatus.activeItems[0].label === newItem.label
+  ) {
+    const newItemInputStatus = await createInputBox({
+      placeholder: newItem.placeholder ?? '',
+      value: promptStatus.value,
       step,
       totalSteps,
       validate,
       buttons,
     });
-    if (selectedValue) {
-      configuration.update(configurationKey, [...currentValues, selectedValue]);
+    promptStatus.value = newItemInputStatus.value;
+    if (promptStatus.value) {
+      configuration.update(configurationKey, [
+        ...currentValues,
+        promptStatus.value,
+      ]);
+      promptStatus.activeItems = [
+        {
+          label: promptStatus.value,
+          ...workspaceConfigurationItemInfo,
+        },
+      ];
     }
   }
-  if (selectedValue === newItemWithoutSetting.label) {
-    selectedValue = await createInputBox({
-      placeholder: newItemWithoutSetting.placeholder!,
-      value,
-      step,
-      totalSteps,
-      validate,
-      buttons,
-    });
+  if (
+    promptStatus.activeItems[0] &&
+    promptStatus.activeItems[0].label === newItemWithoutSetting.label
+  ) {
+    promptStatus = {
+      value: (
+        await createInputBox({
+          placeholder: newItemWithoutSetting.placeholder ?? '',
+          value: promptStatus.value,
+          step,
+          totalSteps,
+          validate,
+          buttons,
+        })
+      ).value,
+      activeItems: [newItemWithoutSetting],
+    };
   }
-  return selectedValue;
+  return promptStatus;
 }
 
 export default {
