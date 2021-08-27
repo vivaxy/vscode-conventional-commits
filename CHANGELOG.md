@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.21.3...v1.22.0) (2021-08-27)
+
+### Features
+
+- :sparkles: add back button ([#183](https://github.com/vivaxy/vscode-conventional-commits/issues/183)) ([f5d17fb](https://github.com/vivaxy/vscode-conventional-commits/commit/f5d17fbf91d8f62f43915cd4acf24a6b1d6a20d8))
+
+### Bug Fixes
+
+- **deps:** update commitlint monorepo to v13 ([5c6f70e](https://github.com/vivaxy/vscode-conventional-commits/commit/5c6f70ef9842432d211e8ef2d6f7d94b640bad0a))
+
 ## [1.21.3](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.21.0...v1.21.3) (2021-06-26)
 
 ## [1.21.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.21.0...v1.21.2) (2021-06-26)
