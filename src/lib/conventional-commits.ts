@@ -94,10 +94,12 @@ async function getRepository({
     };
   });
 
-  const [{ index }] = await createSimpleQuickPick({
-    placeholder: getSourcesLocalize('promptRepositoryPlaceholder'),
-    items,
-  });
+  const [{ index }] = (
+    await createSimpleQuickPick({
+      placeholder: getSourcesLocalize('promptRepositoryPlaceholder'),
+      items,
+    })
+  ).activeItems;
 
   return git.repositories[index];
 }

@@ -14,7 +14,12 @@ const gitmojis: {
 } = require('gitmojis');
 
 import * as configuration from './configuration';
-import promptTypes, { PROMPT_TYPES, Prompt } from './prompts/prompt-types';
+import promptTypes, {
+  PROMPT_TYPES,
+  Item,
+  Prompt,
+  PromptStatus,
+} from './prompts/prompt-types';
 import * as keys from '../configs/keys';
 import {
   CommitMessage,
@@ -23,6 +28,7 @@ import {
 } from './commit-message';
 import commitlint from './commitlint';
 import { getPromptLocalize, locale } from './localize';
+import { QuickInputButtons } from 'vscode';
 
 export default async function prompts({
   gitmoji,
@@ -54,7 +60,7 @@ export default async function prompts({
     return input;
   }
 
-  function getTypeItems() {
+  function getTypeItems(): Item[] {
     const typeEnum = commitlint.getTypeEnum();
     if (typeEnum.length === 0) {
       return Object.keys(conventionalCommitsTypes).map(function (type) {
@@ -83,11 +89,11 @@ export default async function prompts({
     });
   }
 
-  function getScopePrompt() {
+  function getScopePrompt(): Omit<Prompt, 'step' | 'totalSteps'> {
     const name = 'scope';
     const placeholder = getPromptLocalize('scope.placeholder');
     const scopeEnum = commitlint.getScopeEnum();
-    const noneItem = {
+    const noneItem: Item = {
       label: getPromptLocalize('scope.noneItem.label'),
       description: '',
       detail: getPromptLocalize('scope.noneItem.detail'),
@@ -98,7 +104,7 @@ export default async function prompts({
         type: PROMPT_TYPES.QUICK_PICK,
         name,
         placeholder,
-        items: scopeEnum.map(function (scope) {
+        items: scopeEnum.map(function (scope): Item {
           return {
             label: scope,
             description: '',
@@ -255,16 +261,91 @@ export default async function prompts({
         ...question,
         step: index + 1,
         totalSteps: array.length,
+        buttons: index > 0 ? [QuickInputButtons.Back] : [],
       };
     });
 
-  for (const question of questions) {
-    commitMessage[question.name as keyof CommitMessage] = await promptTypes[
-      question.type
-    ](
-      // @ts-ignore
-      question,
-    );
+  const promptStatuses: PromptStatus[] = new Array<PromptStatus>(
+    questions.length,
+  )
+    .fill({
+      value: '',
+      activeItems: [],
+    })
+    .map(() => ({
+      value: '',
+      activeItems: [],
+    }));
+
+  let index = 0;
+  while (index < questions.length) {
+    const activeItem = promptStatuses[index].activeItems[0];
+    if (questions[index].type === PROMPT_TYPES.QUICK_PICK) {
+      if (activeItem) {
+        questions[index].activeItems = [activeItem];
+      }
+    } else if (questions[index].type === PROMPT_TYPES.CONFIGURABLE_QUICK_PICK) {
+      if (activeItem) {
+        questions[index].activeItems = [activeItem];
+        if (questions[index].newItemWithoutSetting) {
+          if (activeItem === questions[index].newItemWithoutSetting) {
+            questions[index].value = promptStatuses[index].value;
+          } else {
+            questions[index].value = '';
+          }
+        }
+      }
+    } else {
+      questions[index].value = promptStatuses[index].value;
+    }
+
+    try {
+      promptStatuses[index] = await promptTypes[questions[index].type](
+        // @ts-ignore
+        questions[index],
+      );
+    } catch (e) {
+      if (e && 'button' in e) {
+        if (e.button === QuickInputButtons.Back) {
+          promptStatuses[index] = {
+            value: 'value' in e ? e.value : promptStatuses[index].value,
+            activeItems:
+              'activeItems' in e
+                ? e.activeItems
+                : promptStatuses[index].activeItems,
+          };
+          index -= 1;
+          continue;
+        } else {
+          throw e;
+        }
+      } else {
+        throw e;
+      }
+    }
+
+    index += 1;
   }
+
+  promptStatuses
+    .map((p, index) => {
+      const activeItem = p.activeItems[0];
+      if (!activeItem) return p.value;
+      if (questions[index].noneItem && activeItem === questions[index].noneItem)
+        return '';
+      if (questions[index].newItem && activeItem === questions[index].newItem)
+        return p.value;
+      if (
+        questions[index].newItemWithoutSetting &&
+        activeItem === questions[index].newItemWithoutSetting
+      )
+        return p.value;
+      return activeItem.label;
+    })
+    .forEach((value, index) => {
+      commitMessage[questions[index].name as keyof CommitMessage] =
+        questions[index].format?.(value) ?? value;
+    });
+
   return commitMessage;
 }
