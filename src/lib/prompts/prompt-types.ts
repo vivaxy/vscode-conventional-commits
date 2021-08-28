@@ -4,7 +4,7 @@
  */
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
-import createSimpleQuickPick from './quick-pick';
+import createSimpleQuickPick, { confirmButton } from './quick-pick';
 import localize from '../localize';
 import * as output from '../output';
 
@@ -93,9 +93,7 @@ function createInputBox({
     if (value) {
       input.value = value;
     }
-    if (buttons) {
-      input.buttons = buttons;
-    }
+    input.buttons = [...(buttons ?? []), confirmButton];
     input.onDidChangeValue(function () {
       try {
         input.validationMessage = validate(input.value);
@@ -118,6 +116,20 @@ function createInputBox({
       }
     });
     input.onDidTriggerButton(function (e) {
+      if (e === confirmButton) {
+        try {
+          input.validationMessage = validate(input.value);
+          if (input.validationMessage) {
+            return;
+          }
+          resolve({ value: input.value, activeItems: [] });
+          input.dispose();
+        } catch (e) {
+          output.error(`step.${input.step}`, e);
+          reject(e);
+        }
+      }
+
       if (e === vscode.QuickInputButtons.Back) {
         reject({
           button: e,
