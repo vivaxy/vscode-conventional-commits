@@ -4,6 +4,11 @@
  */
 import * as vscode from 'vscode';
 
+export const confirmButton: vscode.QuickInputButton = {
+  iconPath: new vscode.ThemeIcon('arrow-right'),
+  tooltip: 'confirm',
+};
+
 export default function createQuickPick<T extends vscode.QuickPickItem>({
   placeholder,
   items = [],
@@ -29,6 +34,7 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.totalSteps = totalSteps;
     picker.buttons = buttons;
     picker.show();
+    picker.buttons = [...buttons, confirmButton];
     picker.onDidAccept(function () {
       if (picker.activeItems.length) {
         resolve({
@@ -39,6 +45,21 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
       }
     });
     picker.onDidTriggerButton(function (e) {
+      if (e === confirmButton) {
+        if (picker.activeItems.length) {
+          resolve({
+            value: picker.value,
+            activeItems: picker.activeItems as T[],
+          });
+        } else {
+          resolve({
+            value: picker.value,
+            activeItems: [picker.items[0]] as T[],
+          });
+        }
+        picker.dispose();
+      }
+
       if (e === vscode.QuickInputButtons.Back) {
         reject({
           button: e,
