@@ -28,11 +28,10 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.matchOnDetail = true;
     picker.ignoreFocusOut = true;
     picker.items = items;
-    picker.activeItems = activeItems;
+    picker.activeItems = activeItems.length === 0 ? [items[0]] : activeItems;
     picker.value = value;
     picker.step = step;
     picker.totalSteps = totalSteps;
-    picker.buttons = buttons;
     picker.show();
     picker.buttons = [...buttons, confirmButton];
     picker.onDidAccept(function () {
