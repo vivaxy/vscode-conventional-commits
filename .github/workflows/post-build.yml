@@ -16,7 +16,7 @@ jobs:
         uses: actions/github-script@v5.0.0
         with:
           script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
+            var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{github.event.workflow_run.id }},
@@ -24,7 +24,7 @@ jobs:
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "pr"
             })[0];
-            var download = await github.actions.downloadArtifact({
+            var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
@@ -46,7 +46,7 @@ jobs:
             const issue_number = Number(fs.readFileSync('./NR'));
             try {
               const label_name = `${fs.readFileSync('./label')}`.trim();
-              await github.issues.removeLabel({
+              await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue_number,
@@ -65,7 +65,7 @@ jobs:
             const fs = require('fs');
             const issue_number = Number(fs.readFileSync('./NR'));
             const comment = `${fs.readFileSync('./comment')}`.trim();
-            await github.issues.createComment({
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
@@ -76,7 +76,7 @@ jobs:
         uses: actions/github-script@v5.0.0
         with:
           script: |
-            const artifacts = await github.actions.listWorkflowRunArtifacts({
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{github.event.workflow_run.id }},
