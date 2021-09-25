@@ -22,13 +22,13 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'prepare-release')
     steps:
       - name: Clear label
-        uses: actions/github-script@v4.1.1
+        uses: actions/github-script@v5.0.0
         env:
           NUMBER: ${{ github.event.number }}
         with:
           script: |
             const { NUMBER } = process.env;
-            await github.issues.removeLabel({
+            await github.rest.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: NUMBER,
@@ -60,7 +60,7 @@ jobs:
           npx prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
 
       - name: Get version from package.json
-        uses: actions/github-script@v4.1.1
+        uses: actions/github-script@v5.0.0
         id: version
         with:
           result-encoding: string
@@ -90,7 +90,7 @@ jobs:
           path: ./CHANGELOG.md
 
       - name: Prepare release PR
-        uses: actions/github-script@v4.1.1
+        uses: actions/github-script@v5.0.0
         env:
           TITLE: ${{ steps.version.outputs.title }}
           CHANGELOG: ${{ steps.changelog-reader.outputs.changes }}
@@ -106,7 +106,7 @@ jobs:
               body: `${CHANGELOG}`,
             };
             core.debug(`query:\n${JSON.stringify(query, null, 2)}`);
-            const resp = await github.pulls.list({
+            const resp = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
@@ -119,14 +119,14 @@ jobs:
               const pull_number = resp.data[0].number;
               core.info(`[info]: pull_number: ${pull_number}`);
               query.pull_number = pull_number;
-              const resp1 = await github.pulls.update(query);
+              const resp1 = await github.rest.pulls.update(query);
               core.info('[info]: Update release PR successfully!');
               core.info(`[info]: See pull request in ${resp1.data.html_url}`);
             } catch (err) {
               if (err.message === 'Cannot read property \'number\' of undefined') {
                 core.info('[info]: Not found previous pull request.');
                 core.info('[info]: Try to create a new pull request.');
-                const resp2 = await github.pulls.create(query);
+                const resp2 = await github.rest.pulls.create(query);
                 core.info('[info]: Create release PR successfully!');
                 core.info(`[info]: See pull request in ${resp2.data.html_url}`);
               } else core.setFailed(`Prepare release PR failed with error:\n${err}`);
