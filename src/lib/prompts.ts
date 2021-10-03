@@ -11,7 +11,7 @@ const gitmojis: {
     description: string;
     name: string;
   }[];
-} = require('gitmojis');
+} = require('../vendors/gitmojis.json');
 
 import * as configuration from './configuration';
 import promptTypes, {

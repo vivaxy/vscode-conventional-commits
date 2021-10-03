@@ -141,7 +141,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "deploy": "vsce publish --yarn",
-    "build": "vsce package",
+    "build": "node prepare.js && vsce package",
     "prepare": "husky install"
   },
   "devDependencies": {
