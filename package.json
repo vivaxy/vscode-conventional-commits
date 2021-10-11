@@ -73,6 +73,11 @@
           "default": true,
           "markdownDescription": "%extension.configuration.autoCommit.markdownDescription%"
         },
+        "conventionalCommits.silentAutoCommit": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.silentAutoCommit.markdownDescription%"
+        },
         "conventionalCommits.emojiFormat": {
           "type": "string",
           "default": "code",

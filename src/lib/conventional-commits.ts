@@ -161,12 +161,15 @@ export default function createConventionalCommits() {
       // 6. switch to scm and put message into message box
       // or show the entire commit message in a separate tab
       const showEditor = configuration.get<boolean>('showEditor');
+      const silentAutoCommit = configuration.get<boolean>('silentAutoCommit');
       if (showEditor) {
         repository.inputBox.value = message;
         await openMessageInTab(repository);
         output.info('Show full commit message in a separate tab successfully.');
       } else {
-        vscode.commands.executeCommand('workbench.view.scm');
+        if (!silentAutoCommit) {
+          vscode.commands.executeCommand('workbench.view.scm');
+        }
         repository.inputBox.value = message;
         output.info(`inputBox.value:\n${repository.inputBox.value}`);
       }
