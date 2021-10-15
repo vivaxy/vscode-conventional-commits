@@ -43,7 +43,7 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'prepare-release')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
         with:
           ref: ${{ env.BASE_BRANCH }}
           fetch-depth: 0

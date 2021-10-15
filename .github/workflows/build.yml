@@ -21,7 +21,7 @@ jobs:
       extension_name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0
 
