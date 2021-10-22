@@ -2,6 +2,7 @@
 
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Financial Contributors on Open Collective](https://opencollective.com/vscode-conventional-commits/all/badge.svg?label=financial+contributors)](https://opencollective.com/vscode-conventional-commits)
 
 [Conventional Commits](https://www.conventionalcommits.org/) for VSCode.
 
@@ -152,6 +153,20 @@ Or `\\n` in JSON format.
 
 - [vivaxy](https://github.com/vivaxy)
 - [yi_Xu](https://github.com/yi-Xu-0100)
+
+## Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/vscode-conventional-commits/contribute)]
+
+### Individuals
+
+<a href="https://opencollective.com/vscode-conventional-commits"><img src="https://opencollective.com/vscode-conventional-commits/individuals.svg?width=890"></a>
+
+### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/vscode-conventional-commits/contribute)]
+
+<a href="https://opencollective.com/vscode-conventional-commits"><img src="https://opencollective.com/vscode-conventional-commits/organization.svg?width=890"></a>
 
 ## Related Projects
 
