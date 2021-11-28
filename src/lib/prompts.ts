@@ -38,6 +38,7 @@ export default async function prompts({
   promptScopes,
   promptBody,
   promptFooter,
+  promptCi,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -46,6 +47,7 @@ export default async function prompts({
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  promptCi: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -175,7 +177,7 @@ export default async function prompts({
       name: 'subject',
       placeholder: getPromptLocalize('subject.placeholder'),
       validate(input: string) {
-        const { type, scope, gitmoji } = commitMessage;
+        const { type, scope, gitmoji, ci } = commitMessage;
         const serializedSubject = serializeSubject({
           gitmoji,
           subject: input,
@@ -198,6 +200,7 @@ export default async function prompts({
             scope,
             gitmoji,
             subject: input,
+            ci,
           }),
         );
         if (headerError) {
@@ -241,11 +244,18 @@ export default async function prompts({
       },
       format: lineBreakFormatter,
     },
+    {
+      type: PROMPT_TYPES.INPUT_BOX,
+      name: 'ci',
+      placeholder: getPromptLocalize('ci.placeholder'),
+    },
   ]
     .filter(function (question) {
       if (question.name === 'scope' && !promptScopes) return false;
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
+
+      if (question.name === 'ci' && !promptCi) return false;
 
       if (question.name === 'body') {
         if (showEditor || !promptBody) return false;
@@ -254,6 +264,7 @@ export default async function prompts({
       if (question.name === 'footer') {
         if (showEditor || !promptFooter) return false;
       }
+
       return true;
     })
     .map(function (question, index, array) {

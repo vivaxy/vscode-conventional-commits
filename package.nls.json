@@ -34,6 +34,7 @@
   "extension.sources.prompt.gitmoji.noneItem.label": "None",
   "extension.sources.prompt.gitmoji.noneItem.detail": "No gitmoji.",
   "extension.sources.prompt.subject.placeholder": "Write a short, imperative tense description of the change.",
+  "extension.sources.prompt.ci.placeholder": "Type 'y' or 'yes' if you want to skip ci run.",
   "extension.sources.prompt.subject.error.including": "including ",
   "extension.sources.prompt.subject.error.type": "type: ",
   "extension.sources.prompt.subject.error.scope": "scope: ",

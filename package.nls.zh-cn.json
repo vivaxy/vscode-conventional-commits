@@ -34,6 +34,7 @@
   "extension.sources.prompt.gitmoji.noneItem.label": "无",
   "extension.sources.prompt.gitmoji.noneItem.detail": "无 gitmoji。",
   "extension.sources.prompt.subject.placeholder": "请填写描述。",
+  "extension.sources.prompt.ci.placeholder": "如果要跳过 ci run，请键入“y”或“yes”。",
   "extension.sources.prompt.subject.error.including": "包括",
   "extension.sources.prompt.subject.error.type": "类型：",
   "extension.sources.prompt.subject.error.scope": "作用域：",
