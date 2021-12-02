@@ -173,6 +173,24 @@ export default async function prompts({
       },
     },
     {
+      type: PROMPT_TYPES.QUICK_PICK,
+      name: 'ci',
+      placeholder: getPromptLocalize('ci.placeholder'),
+      items: [
+        {
+          label: getPromptLocalize('ci.accept.label'),
+          description: '',
+          detail: getPromptLocalize('ci.accept.detail'),
+        },
+      ],
+      noneItem: {
+        label: getPromptLocalize('ci.decline.label'),
+        description: '',
+        detail: getPromptLocalize('ci.decline.detail'),
+        alwaysShow: true,
+      },
+    },
+    {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
       placeholder: getPromptLocalize('subject.placeholder'),
@@ -243,11 +261,6 @@ export default async function prompts({
         return commitlint.lintFooter(input);
       },
       format: lineBreakFormatter,
-    },
-    {
-      type: PROMPT_TYPES.INPUT_BOX,
-      name: 'ci',
-      placeholder: getPromptLocalize('ci.placeholder'),
     },
   ]
     .filter(function (question) {

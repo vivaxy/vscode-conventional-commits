@@ -104,7 +104,7 @@ export function serializeHeader(partialCommitMessage: {
   if (subject) {
     result += subject;
   }
-  if (ci === 'y' || ci === 'yes') {
+  if (ci === 'Yes') {
     result += ' [skip ci]';
   }
   return result;
