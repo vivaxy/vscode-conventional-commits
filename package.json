@@ -101,10 +101,10 @@
           "default": true,
           "markdownDescription": "%extension.configuration.promptBody.markdownDescription%"
         },
-        "conventionalCommits.promptCi": {
+        "conventionalCommits.promptCI": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "%extension.configuration.promptCi.markdownDescription%"
+          "markdownDescription": "%extension.configuration.promptCI.markdownDescription%"
         },
         "conventionalCommits.promptFooter": {
           "type": "boolean",

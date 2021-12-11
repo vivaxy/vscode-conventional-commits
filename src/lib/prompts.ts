@@ -38,7 +38,7 @@ export default async function prompts({
   promptScopes,
   promptBody,
   promptFooter,
-  promptCi,
+  promptCI,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -47,7 +47,7 @@ export default async function prompts({
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
-  promptCi: boolean;
+  promptCI: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -268,7 +268,7 @@ export default async function prompts({
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
 
-      if (question.name === 'ci' && !promptCi) return false;
+      if (question.name === 'ci' && !promptCI) return false;
 
       if (question.name === 'body') {
         if (showEditor || !promptBody) return false;

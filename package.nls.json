@@ -11,7 +11,7 @@
   "extension.configuration.promptBody.markdownDescription": "Control whether the extension should prompt for the `body` section.",
   "extension.configuration.promptFooter.markdownDescription": "Control whether the extension should prompt for the `footer` section.",
   "extension.configuration.promptScopes.markdownDescription": "Control whether the extension should prompt for the `scope` section.",
-  "extension.configuration.promptCi.markdownDescription": "Control whether the extension should prompt for skipping CI run.",
+  "extension.configuration.promptCI.markdownDescription": "Control whether the extension should prompt for skipping CI run.",
   "extension.configuration.scopes.markdownDescription": "Specify available selections in the `scope` section.",
   "extension.configuration.showEditor.markdownDescription": "Control whether the extension should show the commit message as a text document in a separate tab.",
   "extension.configuration.showNewVersionNotes.markdownDescription": "Control whether the extension should show the new version notes.",
