@@ -153,6 +153,7 @@ export default function createConventionalCommits() {
         promptScopes: configuration.get<boolean>('promptScopes'),
         promptBody: configuration.get<boolean>('promptBody'),
         promptFooter: configuration.get<boolean>('promptFooter'),
+        promptCI: configuration.get<boolean>('promptCI'),
       });
       output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);
       const message = serialize(commitMessage);

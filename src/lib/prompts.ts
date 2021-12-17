@@ -38,6 +38,7 @@ export default async function prompts({
   promptScopes,
   promptBody,
   promptFooter,
+  promptCI,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -46,6 +47,7 @@ export default async function prompts({
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  promptCI: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -171,11 +173,29 @@ export default async function prompts({
       },
     },
     {
+      type: PROMPT_TYPES.QUICK_PICK,
+      name: 'ci',
+      placeholder: getPromptLocalize('ci.placeholder'),
+      items: [
+        {
+          label: getPromptLocalize('ci.accept.label'),
+          description: '',
+          detail: getPromptLocalize('ci.accept.detail'),
+        },
+      ],
+      noneItem: {
+        label: getPromptLocalize('ci.decline.label'),
+        description: '',
+        detail: getPromptLocalize('ci.decline.detail'),
+        alwaysShow: true,
+      },
+    },
+    {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
       placeholder: getPromptLocalize('subject.placeholder'),
       validate(input: string) {
-        const { type, scope, gitmoji } = commitMessage;
+        const { type, scope, gitmoji, ci } = commitMessage;
         const serializedSubject = serializeSubject({
           gitmoji,
           subject: input,
@@ -198,6 +218,7 @@ export default async function prompts({
             scope,
             gitmoji,
             subject: input,
+            ci,
           }),
         );
         if (headerError) {
@@ -247,6 +268,8 @@ export default async function prompts({
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
 
+      if (question.name === 'ci' && !promptCI) return false;
+
       if (question.name === 'body') {
         if (showEditor || !promptBody) return false;
       }
@@ -254,6 +277,7 @@ export default async function prompts({
       if (question.name === 'footer') {
         if (showEditor || !promptFooter) return false;
       }
+
       return true;
     })
     .map(function (question, index, array) {
