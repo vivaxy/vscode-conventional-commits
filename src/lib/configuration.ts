@@ -20,6 +20,7 @@ export type Configuration = {
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
+  promptCI: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
 };
