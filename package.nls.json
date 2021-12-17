@@ -3,6 +3,7 @@
   "extension.commands.resetGlobalState": "Conventional Commits: Reset Global State",
   "extension.commands.showNewVersionNotes": "Conventional Commits: Show Version Notes",
   "extension.configuration.autoCommit.markdownDescription": "Control whether the extension should commit files after: forming the message or closing the editor tab.\n\nWhen `#git.enableSmartCommit#` enabled and `#git.smartCommitChanges#` was set to `all`, It allows to commit all changes when there are no staged changes.\n\nAnd set `#git.postCommitCommand#` to `sync` to run `git.sync` after commit.",
+  "extension.configuration.silentAutoCommit.markdownDescription": "Control that auto commit should be silent, without focusing source control panel.",
   "extension.configuration.emojiFormat.markdownDescription": "Specify which format will be shown in the `gitmoji`.",
   "extension.configuration.emojiFormat.markdownEnumDescriptions.code": "Display as `:bug:`",
   "extension.configuration.emojiFormat.markdownEnumDescriptions.emoji": "Display as `🐛`",

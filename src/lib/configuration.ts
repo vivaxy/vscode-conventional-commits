@@ -12,6 +12,7 @@ export enum EMOJI_FORMAT {
 
 export type Configuration = {
   autoCommit: boolean;
+  silentAutoCommit: boolean;
   gitmoji: boolean;
   emojiFormat: EMOJI_FORMAT;
   showEditor: boolean;
