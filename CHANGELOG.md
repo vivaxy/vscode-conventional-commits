@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.23.0...v1.24.0) (2021-12-17)
+
+### Features
+
+- :sparkles: add option to skip ci run ([#213](https://github.com/vivaxy/vscode-conventional-commits/issues/213)) ([67c9da7](https://github.com/vivaxy/vscode-conventional-commits/commit/67c9da7849f58a3fd56b55f13327ec8aad1c3f29))
+- add silentAutoCommit option to not focus scm pane on auto commit ([#200](https://github.com/vivaxy/vscode-conventional-commits/issues/200)) ([15258eb](https://github.com/vivaxy/vscode-conventional-commits/commit/15258ebc5c79e508fc765f93ee69a639524f1003))
+- **gitmojis:** :sparkles: update gitmojis to v3.8.0 ([#216](https://github.com/vivaxy/vscode-conventional-commits/issues/216)) ([0dfc309](https://github.com/vivaxy/vscode-conventional-commits/commit/0dfc30993e501bc7578e68b4230a2a3910405a17))
+
 ## [1.23.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.22.0...v1.23.0) (2021-10-08)
 
 ### Features
