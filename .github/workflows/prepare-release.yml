@@ -49,7 +49,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup nodejs
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
         with:
           node-version: 12
 
