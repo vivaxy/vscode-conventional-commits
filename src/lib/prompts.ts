@@ -161,7 +161,7 @@ export default async function prompts({
       items: gitmojis.gitmojis.map(function ({ emoji, code, description }) {
         return {
           label: emojiFormat === 'code' ? code : emoji,
-          description: emojiFormat === 'code' ? emoji : '',
+          description: emojiFormat === 'code' ? emoji : code,
           detail: description,
         };
       }),
