@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.24.0...v1.24.1) (2022-04-22)
+
+### Bug Fixes
+
+- :bug: update gitmoji description ([#241](https://github.com/vivaxy/vscode-conventional-commits/issues/241)) ([aa24fdd](https://github.com/vivaxy/vscode-conventional-commits/commit/aa24fdd6864922028e6a523d9083464ac1bfab2f)), closes [#240](https://github.com/vivaxy/vscode-conventional-commits/issues/240)
+
 ## [1.24.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.23.0...v1.24.0) (2021-12-17)
 
 ### Features
