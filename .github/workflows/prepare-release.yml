@@ -51,7 +51,7 @@ jobs:
       - name: Setup nodejs
         uses: actions/setup-node@v3.0.0
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Bump version
         run: |
