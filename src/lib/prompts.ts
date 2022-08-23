@@ -178,14 +178,14 @@ export default async function prompts({
       placeholder: getPromptLocalize('ci.placeholder'),
       items: [
         {
-          label: getPromptLocalize('ci.accept.label'),
-          description: '',
+          label: 'Yes',
+          description: getPromptLocalize('ci.accept.label'),
           detail: getPromptLocalize('ci.accept.detail'),
         },
       ],
       noneItem: {
-        label: getPromptLocalize('ci.decline.label'),
-        description: '',
+        label: 'No',
+        description: getPromptLocalize('ci.decline.label'),
         detail: getPromptLocalize('ci.decline.detail'),
         alwaysShow: true,
       },
