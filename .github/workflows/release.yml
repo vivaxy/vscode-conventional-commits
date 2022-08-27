@@ -34,7 +34,7 @@ jobs:
           yarn prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
 
       - name: Get version from package.json
-        uses: actions/github-script@v6.1.1
+        uses: actions/github-script@v6.2.0
         id: version
         with:
           result-encoding: string
