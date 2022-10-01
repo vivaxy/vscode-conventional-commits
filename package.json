@@ -4,7 +4,7 @@
   "description": "💬Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
-  "version": "1.24.2",
+  "version": "1.24.3",
   "engines": {
     "vscode": "^1.44.0"
   },
