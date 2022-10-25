@@ -155,7 +155,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.0.0",
     "@types/vscode": "^1.44.0",
     "clean-webpack-plugin": "^4.0.0",
     "husky": "8",
