@@ -24,7 +24,7 @@ function getGitAPI(): VSCodeGit.API {
 }
 
 type Arg = {
-  _rootUri: vscode.Uri;
+  _rootUri?: vscode.Uri;
 };
 
 function hasChanges(repo: VSCodeGit.Repository) {
@@ -44,7 +44,7 @@ async function getRepository({
   arg?: Arg;
   workspaceFolders?: readonly vscode.WorkspaceFolder[];
 }) {
-  const _arg = arg?._rootUri.fsPath;
+  const _arg = arg?._rootUri?.fsPath;
   output.info(`arg: ${_arg}`);
 
   const repositories = git.repositories
