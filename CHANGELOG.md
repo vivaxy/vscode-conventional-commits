@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.4](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.24.3...v1.24.4) (2022-12-09)
+
+### Bug Fixes
+
+- mark `_rootUri` as optional property ([#284](https://github.com/vivaxy/vscode-conventional-commits/issues/284)) ([da7c9fa](https://github.com/vivaxy/vscode-conventional-commits/commit/da7c9fa9c71f5f9c27d4d2d79f4c4b95edd9f679)), closes [#282](https://github.com/vivaxy/vscode-conventional-commits/issues/282)
+
 ## [1.24.3](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.24.2...v1.24.3) (2022-08-23)
 
 ## [1.24.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.24.1...v1.24.2) (2022-08-23)
