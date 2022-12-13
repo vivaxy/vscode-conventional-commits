@@ -45,7 +45,7 @@ async function getRepository({
   arg?: Arg;
   workspaceFolders?: readonly vscode.WorkspaceFolder[];
 }) {
-  const _arg = arg?._rootUri?.fsPath | arg?.y?.fsPath;
+  const _arg = arg?._rootUri?.fsPath || arg?.y?.fsPath;
   output.info(`arg: ${_arg}`);
 
   const repositories = git.repositories
