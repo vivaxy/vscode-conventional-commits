@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const file = fs.createWriteStream('./src/vendors/gitmojis.json');
 const request = https.get(
-  'https://raw.githubusercontent.com/carloscuesta/gitmoji/v3.8.0/src/data/gitmojis.json',
+  'https://raw.githubusercontent.com/carloscuesta/gitmoji/v3.13.1/packages/gitmojis/src/gitmojis.json',
   function (response) {
     response.pipe(file);
   },
