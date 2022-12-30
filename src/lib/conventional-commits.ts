@@ -23,10 +23,6 @@ function getGitAPI(): VSCodeGit.API {
   return vscodeGit!.exports.getAPI(1);
 }
 
-type Arg = {
-  _rootUri?: vscode.Uri;
-};
-
 function hasChanges(repo: VSCodeGit.Repository) {
   return (
     repo.state.workingTreeChanges.length ||
@@ -41,11 +37,11 @@ async function getRepository({
   workspaceFolders,
 }: {
   git: VSCodeGit.API;
-  arg?: Arg;
+  arg?: vscode.Uri;
   workspaceFolders?: readonly vscode.WorkspaceFolder[];
 }) {
-  const _arg = arg?._rootUri?.fsPath;
-  output.info(`arg: ${_arg}`);
+  const _arg = arg?.fsPath;
+  output.info(`_arg: ${_arg}`);
 
   const repositories = git.repositories
     .map((repo) => repo.rootUri.fsPath)
@@ -105,7 +101,7 @@ async function getRepository({
 }
 
 export default function createConventionalCommits() {
-  return async function conventionalCommits(arg?: Arg) {
+  return async function conventionalCommits(repoUri?: VSCodeGit.Repository | vscode.Uri) {
     try {
       output.info('Conventional commits started.');
 
@@ -124,8 +120,12 @@ export default function createConventionalCommits() {
       const git = getGitAPI();
 
       // 3. get repository
+      let _repoUri = repoUri;
+      if (!(repoUri instanceof vscode.Uri) && (repoUri !== undefined)) {
+        _repoUri = repoUri.rootUri;
+      }
       const repository = await getRepository({
-        arg,
+        arg: (<vscode.Uri | undefined>_repoUri),
         git: git,
         workspaceFolders: vscode.workspace.workspaceFolders,
       });
