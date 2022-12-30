@@ -1,7 +1,9 @@
 # VSCode Conventional Commits
 
-[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Marketplace Version](https://vsmarketplacebadges.dev/version/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Downloads](https://vsmarketplacebadges.dev/downloads-short/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+[![Rating](https://vsmarketplacebadges.dev/rating/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
 [![Financial Contributors on Open Collective](https://opencollective.com/vscode-conventional-commits/all/badge.svg?label=financial+contributors)](https://opencollective.com/vscode-conventional-commits)
 
 [Conventional Commits](https://www.conventionalcommits.org/) for VSCode.
