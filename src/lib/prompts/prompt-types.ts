@@ -36,6 +36,7 @@ type Options = {
   step: number;
   totalSteps: number;
   buttons?: vscode.QuickInputButton[];
+  name?: string;
 };
 
 type QuickPickOptions = {
@@ -83,6 +84,7 @@ function createInputBox({
   totalSteps,
   validate = () => undefined,
   buttons,
+  name,
 }: InputBoxOptions): Promise<PromptStatus> {
   return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
@@ -97,7 +99,7 @@ function createInputBox({
     input.onDidChangeValue(function () {
       try {
         input.validationMessage = validate(input.value);
-        promptMessageMaxLength(input, placeholder);
+        promptMessageMaxLength(input, placeholder, name);
       } catch (e) {
         output.error(`step.${input.step}`, e);
         reject(e);
@@ -137,7 +139,7 @@ function createInputBox({
         });
       }
     });
-    promptMessageMaxLength(input, placeholder);
+    promptMessageMaxLength(input, placeholder, name);
     input.show();
   });
 }
@@ -219,6 +221,7 @@ async function createConfigurableQuickPick({
       totalSteps,
       validate,
       buttons,
+      name: newItem.label,
     });
     promptStatus.value = newItemInputStatus.value;
     if (promptStatus.value) {
@@ -261,11 +264,15 @@ export default {
   [PROMPT_TYPES.CONFIGURABLE_QUICK_PICK]: createConfigurableQuickPick,
 };
 
-function promptMessageMaxLength(input: vscode.InputBox, placeholder: string) {
-  if (input.step === 4) {
+function promptMessageMaxLength(
+  input: vscode.InputBox,
+  placeholder: string,
+  name: string = '',
+) {
+  if (name === 'subject') {
     input.prompt = `(${input.value.length.toString()}/50) ${placeholder}`;
   }
-  if (input.step === 5) {
+  if (name === 'body') {
     input.prompt = `(${input.value.length.toString()}/72) ${placeholder}`;
   }
 }
