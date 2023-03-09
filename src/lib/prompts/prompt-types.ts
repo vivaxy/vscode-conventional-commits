@@ -97,7 +97,7 @@ function createInputBox({
     input.onDidChangeValue(function () {
       try {
         input.validationMessage = validate(input.value);
-        promptMessageMaxLength(input);
+        promptMessageMaxLength(input, placeholder);
       } catch (e) {
         output.error(`step.${input.step}`, e);
         reject(e);
@@ -137,7 +137,7 @@ function createInputBox({
         });
       }
     });
-    promptMessageMaxLength(input);
+    promptMessageMaxLength(input, placeholder);
     input.show();
   });
 }
@@ -261,11 +261,11 @@ export default {
   [PROMPT_TYPES.CONFIGURABLE_QUICK_PICK]: createConfigurableQuickPick,
 };
 
-function promptMessageMaxLength(input: vscode.InputBox) {
+function promptMessageMaxLength(input: vscode.InputBox, placeholder: string) {
   if (input.step === 4) {
-    input.prompt = `(${input.value.length.toString()}/50) Write a short, imperative tense description of the change.`;
+    input.prompt = `(${input.value.length.toString()}/50) ${placeholder}`;
   }
   if (input.step === 5) {
-    input.prompt = `(${input.value.length.toString()}/72) Provide a longer description of the change.`;
+    input.prompt = `(${input.value.length.toString()}/72) ${placeholder}`;
   }
 }
