@@ -146,6 +146,7 @@ function createInputBox({
         });
       }
     });
+    input.prompt = placeholder;
     promptMessageMaxLength({ input, placeholder, name });
     input.show();
   });
