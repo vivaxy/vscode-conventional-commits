@@ -17,6 +17,8 @@
   "extension.configuration.showEditor.markdownDescription": "是否需要在新标签页用文本编辑器展示提交信息",
   "extension.configuration.showNewVersionNotes.markdownDescription": "是否需要显示新版本说明。",
   "extension.configuration.editor.keepAfterSave.markdownDescription": "是否需要在保存提交消息后保持编辑状态。",
+  "extension.configuration.commitMaxLength.subject.markdownDescription": "在“描述”输入框下方显示建议的最大长度值。",
+  "extension.configuration.commitMaxLength.body.markdownDescription": "在“正文”输入框下方显示建议的最大长度值。",
   "extension.sources.repositoryNotFoundInPath": "以下路径中未找到仓库：",
   "extension.sources.repositoriesEmpty": "请打开一个仓库。",
   "extension.sources.promptRepositoryPlaceholder": "请选择一个仓库。",

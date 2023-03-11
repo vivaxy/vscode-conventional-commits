@@ -1,3 +1,5 @@
+import { getPromptLocalize } from './localize';
+
 export class CommitStore {
   private _data: Data[] = [];
   private static INSTANCE: CommitStore;
@@ -20,7 +22,12 @@ export class CommitStore {
 
   get(name: string): any {
     const result = this._data.filter((e: Data) => e.name === name);
-    if (!result || !result[0].value || result[0].value === 'None') {
+    if (
+      !result ||
+      !result[0].value ||
+      result[0].value === getPromptLocalize('scope.noneItem.label') ||
+      result[0].value === getPromptLocalize('gitmoji.noneItem.label')
+    ) {
       return '';
     }
     return result[0].value;
