@@ -39,6 +39,7 @@ export default async function prompts({
   promptBody,
   promptFooter,
   promptCI,
+  alwaysUseNewUnsavedScope,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -48,6 +49,7 @@ export default async function prompts({
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
+  alwaysUseNewUnsavedScope: boolean;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -101,6 +103,20 @@ export default async function prompts({
       detail: getPromptLocalize('scope.noneItem.detail'),
       alwaysShow: true,
     };
+
+    if (alwaysUseNewUnsavedScope) {
+      return {
+        type: PROMPT_TYPES.INPUT_BOX,
+        name,
+        placeholder: getPromptLocalize(
+          'scope.alwaysUseNewUnsavedScope.placeholder',
+        ),
+        validate(input: string) {
+          return commitlint.lintScope(input);
+        },
+      };
+    }
+
     if (scopeEnum.length) {
       return {
         type: PROMPT_TYPES.QUICK_PICK,
