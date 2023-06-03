@@ -23,6 +23,7 @@ export type Configuration = {
   promptFooter: boolean;
   promptCI: boolean;
   showNewVersionNotes: boolean;
+  alwaysUseNewUnsavedScope: boolean;
   'editor.keepAfterSave': boolean;
 };
 
