@@ -1,7 +1,7 @@
 {
   "name": "vscode-conventional-commits",
   "displayName": "%extension.name%",
-  "description": "💬Conventional Commits for VSCode.",
+  "description": "💬 Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
   "version": "1.25.0",
