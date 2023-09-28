@@ -50,7 +50,7 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
         picker.dispose();
       }
     });
-    picker.onDidTriggerButton(function (e) {
+    picker.onDidTriggerButton(function (e: any) {
       if (e === confirmButton) {
         if (picker.activeItems.length) {
           resolve({
