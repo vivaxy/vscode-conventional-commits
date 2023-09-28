@@ -17,8 +17,6 @@
   "extension.configuration.showEditor.markdownDescription": "Control whether the extension should show the commit message as a text document in a separate tab.",
   "extension.configuration.showNewVersionNotes.markdownDescription": "Control whether the extension should show the new version notes.",
   "extension.configuration.editor.keepAfterSave.markdownDescription": "Control whether the extension should keep the editor tab open, after saving the commit message.",
-  "extension.configuration.commitMaxLength.subject.markdownDescription": "Control the recommended maximum size displayed in the subject on commit message.",
-  "extension.configuration.commitMaxLength.body.markdownDescription": "Control the recommended maximum size displayed in the body on commit message.",
   "extension.sources.repositoryNotFoundInPath": "Repository not found in path: ",
   "extension.sources.repositoriesEmpty": "Please open a repository.",
   "extension.sources.promptRepositoryPlaceholder": "Choose a repository.",

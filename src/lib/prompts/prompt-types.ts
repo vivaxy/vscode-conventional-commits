@@ -8,6 +8,7 @@ import createSimpleQuickPick, { confirmButton } from './quick-pick';
 import localize from '../localize';
 import * as output from '../output';
 import { CommitStore } from '../commit-store';
+import commitlint from '../commitlint';
 
 const storeCommit = CommitStore.initialize();
 
@@ -125,7 +126,7 @@ function createInputBox({
         reject(e);
       }
     });
-    input.onDidTriggerButton(function (e) {
+    input.onDidTriggerButton(function (e: any) {
       if (e === confirmButton) {
         try {
           if (input.validationMessage) {
@@ -287,10 +288,8 @@ function promptMessageMaxLength({
   placeholder: string;
   name?: string;
 }) {
-  const subjectMax: number = configuration.get<number>(
-    'commitMaxLength.subject',
-  );
-  const bodyMax: number = configuration.get<number>('commitMaxLength.body');
+  const subjectMax: number = Number(commitlint.getSubjectMaxLengthEnum());
+  const bodyMax: number = Number(commitlint.getBodyMaxLengthEnum());
   if (name && name === 'subject') {
     const type = storeCommit.get('type');
     const scope = storeCommit.get('scope');

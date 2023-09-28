@@ -83,6 +83,14 @@ class Commitlint {
     return this.getEnum('type-enum');
   }
 
+  getSubjectMaxLengthEnum() {
+    return this.getEnum('subject-max-length');
+  }
+
+  getBodyMaxLengthEnum() {
+    return this.getEnum('body-max-length');
+  }
+
   getScopeEnum() {
     return this.getEnum('scope-enum');
   }
