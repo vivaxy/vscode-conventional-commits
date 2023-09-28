@@ -83,12 +83,23 @@ class Commitlint {
     return this.getEnum('type-enum');
   }
 
-  getSubjectMaxLengthEnum() {
-    return this.getEnum('subject-max-length');
+  getValueConfig(key: keyof RulesConfig) {
+    const config = this.ruleConfigs[key];
+    if (!config) {
+      return undefined;
+    }
+
+    //@ts-ignore
+    const [level, condition, value] = config;
+    return value ?? undefined;
   }
 
-  getBodyMaxLengthEnum() {
-    return this.getEnum('body-max-length');
+  getSubjectMaxLength() {
+    return this.getValueConfig('subject-max-length');
+  }
+
+  getBodyMaxLength() {
+    return this.getValueConfig('body-max-length');
   }
 
   getScopeEnum() {

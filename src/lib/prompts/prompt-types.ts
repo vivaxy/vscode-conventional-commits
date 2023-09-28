@@ -288,8 +288,12 @@ function promptMessageMaxLength({
   placeholder: string;
   name?: string;
 }) {
-  const subjectMax: number = Number(commitlint.getSubjectMaxLengthEnum());
-  const bodyMax: number = Number(commitlint.getBodyMaxLengthEnum());
+  const subjectMax: number =
+    Number(commitlint.getSubjectMaxLength()) ??
+    configuration.get<number>('commitMaxLength.subject');
+  const bodyMax: number =
+    Number(commitlint.getBodyMaxLength()) ??
+    configuration.get<number>('commitMaxLength.body');
   if (name && name === 'subject') {
     const type = storeCommit.get('type');
     const scope = storeCommit.get('scope');
