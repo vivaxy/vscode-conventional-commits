@@ -277,7 +277,7 @@ export default {
 };
 
 /**
- * @description this function represent a complete commit message for help the user  regulate the limit of characters in commit
+ * @description this function represent a complete commit message for help the user regulate the limit of characters in commit
  */
 function promptMessageMaxLength({
   input,
@@ -289,10 +289,10 @@ function promptMessageMaxLength({
   name?: string;
 }) {
   const subjectMax: number =
-    Number(commitlint.getSubjectMaxLength()) ??
+    Number(commitlint.getSubjectMaxLength()) ||
     configuration.get<number>('commitMaxLength.subject');
   const bodyMax: number =
-    Number(commitlint.getBodyMaxLength()) ??
+    Number(commitlint.getBodyMaxLength()) ||
     configuration.get<number>('commitMaxLength.body');
   if (name && name === 'subject') {
     const type = storeCommit.get('type');
