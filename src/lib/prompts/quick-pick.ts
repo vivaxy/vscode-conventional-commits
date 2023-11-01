@@ -3,6 +3,9 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
+import { CommitStore } from '../commit-store';
+
+const storeCommit = CommitStore.initialize();
 
 export const confirmButton: vscode.QuickInputButton = {
   iconPath: new vscode.ThemeIcon('arrow-right'),
@@ -17,7 +20,8 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
   step,
   totalSteps,
   buttons = [],
-}: Partial<vscode.QuickPick<T>>): Promise<{
+  name,
+}: Partial<vscode.QuickPick<T>> & { name?: string }): Promise<{
   value: string;
   activeItems: T[];
 }> {
@@ -36,6 +40,9 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
     picker.buttons = [...buttons, confirmButton];
     picker.onDidAccept(function () {
       if (picker.activeItems.length) {
+        if (name) {
+          storeCommit.store(name, picker.activeItems[0].label);
+        }
         resolve({
           value: picker.value,
           activeItems: picker.activeItems as T[],
@@ -43,7 +50,7 @@ export default function createQuickPick<T extends vscode.QuickPickItem>({
         picker.dispose();
       }
     });
-    picker.onDidTriggerButton(function (e) {
+    picker.onDidTriggerButton(function (e: any) {
       if (e === confirmButton) {
         if (picker.activeItems.length) {
           resolve({

@@ -24,6 +24,8 @@ export type Configuration = {
   promptCI: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
+  'commitMaxLength.subject': number;
+  'commitMaxLength.body': number;
 };
 
 export function getConfiguration() {

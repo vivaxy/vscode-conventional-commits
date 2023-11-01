@@ -140,6 +140,16 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.editor.keepAfterSave.markdownDescription%"
+        },
+        "conventionalCommits.commitMaxLength.subject": {
+          "type": "number",
+          "default": 70,
+          "markdownDescription": "%extension.configuration.commitMaxLength.subject.markdownDescription%"
+        },
+        "conventionalCommits.commitMaxLength.body": {
+          "type": "number",
+          "default": 140,
+          "markdownDescription": "%extension.configuration.commitMaxLength.body.markdownDescription%"
         }
       }
     }
