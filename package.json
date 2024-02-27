@@ -179,10 +179,10 @@
     ]
   },
   "dependencies": {
-    "@commitlint/cli": "^13.0.0",
-    "@commitlint/config-conventional": "^13.0.0",
-    "@commitlint/load": "^13.0.0",
-    "@commitlint/rules": "^13.0.0",
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
+    "@commitlint/load": "^19.0.0",
+    "@commitlint/rules": "^19.0.0",
     "@yi-xu-0100/conventional-commit-types-i18n": "1.6.0"
   },
   "commitlint": {
