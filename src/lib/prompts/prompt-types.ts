@@ -3,10 +3,11 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
+
 import * as configuration from '../configuration';
-import createSimpleQuickPick, { confirmButton } from './quick-pick';
 import localize from '../localize';
 import * as output from '../output';
+import createSimpleQuickPick, { confirmButton } from './quick-pick';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -98,7 +99,8 @@ function createInputBox({
       try {
         input.validationMessage = validate(input.value);
       } catch (e) {
-        output.error(`step.${input.step}`, e);
+        const err = e as Error;
+        output.error(`step.${input.step}`, err);
         reject(e);
       }
     });
@@ -111,7 +113,7 @@ function createInputBox({
         resolve({ value: input.value, activeItems: [] });
         input.dispose();
       } catch (e) {
-        output.error(`step.${input.step}`, e);
+        output.error(`step.${input.step}`, e as Error);
         reject(e);
       }
     });
@@ -125,7 +127,7 @@ function createInputBox({
           resolve({ value: input.value, activeItems: [] });
           input.dispose();
         } catch (e) {
-          output.error(`step.${input.step}`, e);
+          output.error(`step.${input.step}`, e as Error);
           reject(e);
         }
       }
@@ -148,6 +150,7 @@ export type ConfigurableQuickPickOptions = {
   newItemWithoutSetting: Item;
   addNoneOption: boolean;
   validate?: (value: string) => string | undefined;
+  storeGlobal: boolean | undefined;
 } & QuickPickOptions;
 
 async function createConfigurableQuickPick({
@@ -162,6 +165,7 @@ async function createConfigurableQuickPick({
   newItemWithoutSetting,
   validate = () => undefined,
   buttons,
+  storeGlobal = undefined,
 }: ConfigurableQuickPickOptions): Promise<PromptStatus> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
   const workspaceConfigurationItemInfo = {
@@ -222,10 +226,11 @@ async function createConfigurableQuickPick({
     });
     promptStatus.value = newItemInputStatus.value;
     if (promptStatus.value) {
-      configuration.update(configurationKey, [
-        ...currentValues,
-        promptStatus.value,
-      ]);
+      configuration.update(
+        configurationKey,
+        [...currentValues, promptStatus.value],
+        storeGlobal,
+      );
       promptStatus.activeItems = [
         {
           label: promptStatus.value,

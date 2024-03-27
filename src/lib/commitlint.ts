@@ -4,8 +4,9 @@
  */
 import load from '@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
-import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { Commit } from '@commitlint/types/lib/parse';
+import { RuleConfigSeverity, RulesConfig } from '@commitlint/types/lib/rules';
+
 import * as output from './output';
 
 class Commitlint {
@@ -18,14 +19,15 @@ class Commitlint {
         output.info('Load commitlint configuration successfully.');
         return rules;
       } catch (e) {
+        const error = e as Error;
         // Catch if `Cannot find module "@commitlint/config-conventional"` happens.
-        if (e.message.startsWith('Cannot find module')) {
+        if (error.message.startsWith('Cannot find module')) {
           output.warning(`commitlint: The cwd is ${cwd}`);
-          output.warning(`commitlint: ${e.message}`);
+          output.warning(`commitlint: ${error.message}`);
         } else {
           output.error('commitlint', `The cwd is ${cwd}`);
           // Not break even if it gets configuration failure.
-          output.error('commitlint', e);
+          output.error('commitlint', error);
         }
         return {};
       }

@@ -3,6 +3,7 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
+
 import * as keys from '../configs/keys';
 
 export enum EMOJI_FORMAT {
@@ -24,6 +25,7 @@ export type Configuration = {
   promptCI: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
+  storeScopesGlobally: boolean;
 };
 
 export function getConfiguration() {

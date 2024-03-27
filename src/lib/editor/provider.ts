@@ -1,5 +1,6 @@
-import * as vscode from 'vscode';
 import { TextDecoder, TextEncoder } from 'util';
+import * as vscode from 'vscode';
+
 import { Repository } from '../../vendors/git';
 import * as configuration from '../configuration';
 import * as output from '../output';
@@ -93,7 +94,7 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
             resolve();
           }
         } catch (e) {
-          output.error('writeFile', e);
+          output.error('writeFile', e as Error);
         }
       },
     );

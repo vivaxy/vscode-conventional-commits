@@ -3,6 +3,24 @@
  * @author vivaxy
  */
 import getTypesByLocale from '@yi-xu-0100/conventional-commit-types-i18n';
+import { QuickInputButtons } from 'vscode';
+
+import * as keys from '../configs/keys';
+import {
+  CommitMessage,
+  serializeHeader,
+  serializeSubject,
+} from './commit-message';
+import commitlint from './commitlint';
+import * as configuration from './configuration';
+import { getPromptLocalize, locale } from './localize';
+import promptTypes, {
+  Item,
+  Prompt,
+  PROMPT_TYPES,
+  PromptStatus,
+} from './prompts/prompt-types';
+
 const gitmojis: {
   gitmojis: {
     emoji: string;
@@ -12,23 +30,6 @@ const gitmojis: {
     name: string;
   }[];
 } = require('../vendors/gitmojis.json');
-
-import * as configuration from './configuration';
-import promptTypes, {
-  PROMPT_TYPES,
-  Item,
-  Prompt,
-  PromptStatus,
-} from './prompts/prompt-types';
-import * as keys from '../configs/keys';
-import {
-  CommitMessage,
-  serializeSubject,
-  serializeHeader,
-} from './commit-message';
-import commitlint from './commitlint';
-import { getPromptLocalize, locale } from './localize';
-import { QuickInputButtons } from 'vscode';
 
 export default async function prompts({
   gitmoji,
@@ -140,6 +141,7 @@ export default async function prompts({
       validate(input: string) {
         return commitlint.lintScope(input);
       },
+      storeGlobal: configuration.get<boolean>('storeScopesGlobally'),
     };
   }
 
@@ -329,13 +331,14 @@ export default async function prompts({
         questions[index],
       );
     } catch (e) {
-      if (e && 'button' in e) {
-        if (e.button === QuickInputButtons.Back) {
+      const err = e as Error | PromptStatus;
+      if (e && 'button' in err) {
+        if (err.button === QuickInputButtons.Back) {
           promptStatuses[index] = {
-            value: 'value' in e ? e.value : promptStatuses[index].value,
+            value: 'value' in err ? err.value : promptStatuses[index].value,
             activeItems:
-              'activeItems' in e
-                ? e.activeItems
+              'activeItems' in err
+                ? err.activeItems
                 : promptStatuses[index].activeItems,
           };
           index -= 1;

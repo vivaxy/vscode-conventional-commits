@@ -73,6 +73,11 @@
           "default": true,
           "markdownDescription": "%extension.configuration.autoCommit.markdownDescription%"
         },
+        "conventionalCommits.storeScopesGlobally": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.storeScopesGlobally.markdownDescription%"
+        },
         "conventionalCommits.silentAutoCommit": {
           "type": "boolean",
           "default": false,

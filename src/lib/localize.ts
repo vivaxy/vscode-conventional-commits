@@ -2,11 +2,12 @@
  * @since 2020-10-09 15:46
  * @author vivaxy
  */
-import { extensions, env } from 'vscode';
-import * as output from './output';
-import { resolve } from 'path';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
+import { env, extensions } from 'vscode';
+
 import { ID } from '../configs/keys';
+import * as output from './output';
 
 export const rootPath = getRoot(ID);
 
@@ -58,9 +59,10 @@ function getNLS(locale: string = '') {
   try {
     content = readFileSync(resolve(rootPath, packageName), 'utf-8');
   } catch (e) {
-    if (!e.message.includes('ENOENT: no such file or directory')) {
+    const err = e as Error;
+    if (!err.message.includes('ENOENT: no such file or directory')) {
       // Not break and try to use default package.nls.json
-      output.error('getNLS', e);
+      output.error('getNLS', err);
     } else if (locale != 'en') {
       output.warning(`getNLS: Missing translation for ${locale}`);
     }
