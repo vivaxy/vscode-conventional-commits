@@ -51,6 +51,7 @@ export default async function prompts({
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
+  var storedCommitValues = {};
 
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {

@@ -101,7 +101,9 @@ async function getRepository({
 }
 
 export default function createConventionalCommits() {
-  return async function conventionalCommits(repoUri?: VSCodeGit.Repository | vscode.Uri) {
+  return async function conventionalCommits(
+    repoUri?: VSCodeGit.Repository | vscode.Uri,
+  ) {
     try {
       output.info('Conventional commits started.');
 
@@ -121,11 +123,11 @@ export default function createConventionalCommits() {
 
       // 3. get repository
       let _repoUri = repoUri;
-      if (!(repoUri instanceof vscode.Uri) && (repoUri !== undefined)) {
+      if (!(repoUri instanceof vscode.Uri) && repoUri !== undefined) {
         _repoUri = repoUri.rootUri;
       }
       const repository = await getRepository({
-        arg: (<vscode.Uri | undefined>_repoUri),
+        arg: <vscode.Uri | undefined>_repoUri,
         git: git,
         workspaceFolders: vscode.workspace.workspaceFolders,
       });

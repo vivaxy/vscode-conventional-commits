@@ -7,6 +7,10 @@ import * as configuration from '../configuration';
 import createSimpleQuickPick, { confirmButton } from './quick-pick';
 import localize from '../localize';
 import * as output from '../output';
+import { CommitStore } from '../commit-store';
+import commitlint from '../commitlint';
+
+const storeCommit = CommitStore.initialize();
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -36,6 +40,7 @@ type Options = {
   step: number;
   totalSteps: number;
   buttons?: vscode.QuickInputButton[];
+  name: string;
 };
 
 type QuickPickOptions = {
@@ -53,6 +58,7 @@ async function createQuickPick({
   totalSteps,
   noneItem,
   buttons = [],
+  name,
 }: QuickPickOptions): Promise<PromptStatus> {
   if (noneItem && !items.includes(noneItem)) {
     items.unshift(noneItem);
@@ -68,12 +74,14 @@ async function createQuickPick({
     step,
     totalSteps,
     buttons,
+    name,
   });
   return promptStatus;
 }
 
 type InputBoxOptions = {
   validate?: (value: string) => string | undefined;
+  name: string;
 } & Options;
 
 function createInputBox({
@@ -83,6 +91,7 @@ function createInputBox({
   totalSteps,
   validate = () => undefined,
   buttons,
+  name,
 }: InputBoxOptions): Promise<PromptStatus> {
   return new Promise(function (resolve, reject) {
     const input = vscode.window.createInputBox();
@@ -97,6 +106,7 @@ function createInputBox({
     input.onDidChangeValue(function () {
       try {
         input.validationMessage = validate(input.value);
+        promptMessageMaxLength({ input, placeholder, name });
       } catch (e) {
         output.error(`step.${input.step}`, e);
         reject(e);
@@ -108,6 +118,7 @@ function createInputBox({
         if (input.validationMessage) {
           return;
         }
+        storeCommit.store(name, input.value);
         resolve({ value: input.value, activeItems: [] });
         input.dispose();
       } catch (e) {
@@ -115,10 +126,9 @@ function createInputBox({
         reject(e);
       }
     });
-    input.onDidTriggerButton(function (e) {
+    input.onDidTriggerButton(function (e: any) {
       if (e === confirmButton) {
         try {
-          input.validationMessage = validate(input.value);
           if (input.validationMessage) {
             return;
           }
@@ -138,6 +148,7 @@ function createInputBox({
       }
     });
     input.prompt = placeholder;
+    promptMessageMaxLength({ input, placeholder, name });
     input.show();
   });
 }
@@ -162,6 +173,7 @@ async function createConfigurableQuickPick({
   newItemWithoutSetting,
   validate = () => undefined,
   buttons,
+  name,
 }: ConfigurableQuickPickOptions): Promise<PromptStatus> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
   const workspaceConfigurationItemInfo = {
@@ -207,6 +219,7 @@ async function createConfigurableQuickPick({
     totalSteps,
     noneItem,
     buttons,
+    name,
   });
   if (
     promptStatus.activeItems[0] &&
@@ -219,6 +232,7 @@ async function createConfigurableQuickPick({
       totalSteps,
       validate,
       buttons,
+      name,
     });
     promptStatus.value = newItemInputStatus.value;
     if (promptStatus.value) {
@@ -247,6 +261,7 @@ async function createConfigurableQuickPick({
           totalSteps,
           validate,
           buttons,
+          name,
         })
       ).value,
       activeItems: [newItemWithoutSetting],
@@ -260,3 +275,44 @@ export default {
   [PROMPT_TYPES.INPUT_BOX]: createInputBox,
   [PROMPT_TYPES.CONFIGURABLE_QUICK_PICK]: createConfigurableQuickPick,
 };
+
+/**
+ * @description this function represent a complete commit message for help the user regulate the limit of characters in commit
+ */
+function promptMessageMaxLength({
+  input,
+  placeholder,
+  name,
+}: {
+  input: vscode.InputBox;
+  placeholder: string;
+  name?: string;
+}) {
+  const subjectMax: number =
+    Number(commitlint.getSubjectMaxLength()) ||
+    configuration.get<number>('commitMaxLength.subject');
+  const bodyMax: number =
+    Number(commitlint.getBodyMaxLength()) ||
+    configuration.get<number>('commitMaxLength.body');
+  if (name && name === 'subject') {
+    const type = storeCommit.get('type');
+    const scope = storeCommit.get('scope');
+    const gitmoji = storeCommit.get('gitmoji');
+
+    var string = type;
+
+    if (scope.length > 0) {
+      string += `(${scope})`;
+    }
+    string += ': ';
+
+    // If emoji just two caractere count
+    if (gitmoji.length > 0) string += 'A ';
+
+    string += input.value;
+    input.prompt = `(${string.length.toString()}/${subjectMax.toString()}) ${placeholder}`;
+  }
+  if (name && name === 'body') {
+    input.prompt = `(${input.value.length.toString()}/${bodyMax.toString()}) ${placeholder}`;
+  }
+}
