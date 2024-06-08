@@ -4,7 +4,7 @@
  */
 import load from '@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
-import { RuleConfigSeverity, RulesConfig } from '@commitlint/types/lib/rules';
+import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { Commit } from '@commitlint/types/lib/parse';
 import * as output from './output';
 

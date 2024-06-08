@@ -1,6 +1,5 @@
-import { TextDecoder, TextEncoder } from 'util';
 import * as vscode from 'vscode';
-
+import { TextDecoder, TextEncoder } from 'util';
 import { Repository } from '../../vendors/git';
 import * as configuration from '../configuration';
 import * as output from '../output';

@@ -15,16 +15,16 @@ const gitmojis: {
 
 import * as configuration from './configuration';
 import promptTypes, {
+  PROMPT_TYPES,
   Item,
   Prompt,
-  PROMPT_TYPES,
   PromptStatus,
 } from './prompts/prompt-types';
 import * as keys from '../configs/keys';
 import {
   CommitMessage,
-  serializeHeader,
   serializeSubject,
+  serializeHeader,
 } from './commit-message';
 import commitlint from './commitlint';
 import { getPromptLocalize, locale } from './localize';

@@ -2,11 +2,11 @@
  * @since 2020-10-09 15:46
  * @author vivaxy
  */
-import { env, extensions } from 'vscode';
+import { extensions, env } from 'vscode';
+import * as output from './output';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import { ID } from '../configs/keys';
-import * as output from './output';
 
 export const rootPath = getRoot(ID);
 
