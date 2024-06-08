@@ -3,7 +3,6 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
-
 import * as keys from '../configs/keys';
 
 export enum EMOJI_FORMAT {

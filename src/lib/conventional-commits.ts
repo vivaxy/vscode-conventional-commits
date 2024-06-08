@@ -4,17 +4,16 @@
  */
 import * as path from 'path';
 import * as vscode from 'vscode';
-
-import { ID } from '../configs/keys';
 import * as VSCodeGit from '../vendors/git';
-import { serialize } from './commit-message';
-import commitlint from './commitlint';
-import * as configuration from './configuration';
-import openMessageInTab from './editor';
-import { getSourcesLocalize } from './localize';
-import * as output from './output';
 import prompts from './prompts';
+import * as configuration from './configuration';
+import * as output from './output';
+import commitlint from './commitlint';
 import createSimpleQuickPick from './prompts/quick-pick';
+import { serialize } from './commit-message';
+import { getSourcesLocalize } from './localize';
+import openMessageInTab from './editor';
+import { ID } from '../configs/keys';
 
 function getGitAPI(): VSCodeGit.API {
   const vscodeGit = vscode.extensions.getExtension('vscode.git');
@@ -102,9 +101,7 @@ async function getRepository({
 }
 
 export default function createConventionalCommits() {
-  return async function conventionalCommits(
-    repoUri?: VSCodeGit.Repository | vscode.Uri,
-  ) {
+  return async function conventionalCommits(repoUri?: VSCodeGit.Repository | vscode.Uri) {
     try {
       output.info('Conventional commits started.');
 
@@ -124,11 +121,11 @@ export default function createConventionalCommits() {
 
       // 3. get repository
       let _repoUri = repoUri;
-      if (!(repoUri instanceof vscode.Uri) && repoUri !== undefined) {
+      if (!(repoUri instanceof vscode.Uri) && (repoUri !== undefined)) {
         _repoUri = repoUri.rootUri;
       }
       const repository = await getRepository({
-        arg: <vscode.Uri | undefined>_repoUri,
+        arg: (<vscode.Uri | undefined>_repoUri),
         git: git,
         workspaceFolders: vscode.workspace.workspaceFolders,
       });
@@ -187,11 +184,10 @@ export default function createConventionalCommits() {
 
       output.info('conventionalCommits finished successfully.');
     } catch (e) {
-      const err = e as Error;
       // Ignore if the custom error message
-      if (err.message === 'custom breaking error has been catch!') {
+      if (e.message === 'custom breaking error has been catch!') {
         output.info('conventionalCommits finished with custom error.');
-      } else output.error('main', err);
+      } else output.error('main', e);
     }
   };
 }

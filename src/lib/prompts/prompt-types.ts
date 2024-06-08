@@ -3,11 +3,10 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
-
 import * as configuration from '../configuration';
+import createSimpleQuickPick, { confirmButton } from './quick-pick';
 import localize from '../localize';
 import * as output from '../output';
-import createSimpleQuickPick, { confirmButton } from './quick-pick';
 
 export enum PROMPT_TYPES {
   QUICK_PICK,
@@ -99,8 +98,7 @@ function createInputBox({
       try {
         input.validationMessage = validate(input.value);
       } catch (e) {
-        const err = e as Error;
-        output.error(`step.${input.step}`, err);
+        output.error(`step.${input.step}`, e);
         reject(e);
       }
     });
@@ -113,7 +111,7 @@ function createInputBox({
         resolve({ value: input.value, activeItems: [] });
         input.dispose();
       } catch (e) {
-        output.error(`step.${input.step}`, e as Error);
+        output.error(`step.${input.step}`, e);
         reject(e);
       }
     });
@@ -127,7 +125,7 @@ function createInputBox({
           resolve({ value: input.value, activeItems: [] });
           input.dispose();
         } catch (e) {
-          output.error(`step.${input.step}`, e as Error);
+          output.error(`step.${input.step}`, e);
           reject(e);
         }
       }
@@ -150,7 +148,7 @@ export type ConfigurableQuickPickOptions = {
   newItemWithoutSetting: Item;
   addNoneOption: boolean;
   validate?: (value: string) => string | undefined;
-  storeGlobal: boolean | undefined;
+  storeGlobal: boolean;
 } & QuickPickOptions;
 
 async function createConfigurableQuickPick({
@@ -165,7 +163,7 @@ async function createConfigurableQuickPick({
   newItemWithoutSetting,
   validate = () => undefined,
   buttons,
-  storeGlobal = undefined,
+  storeGlobal = false,
 }: ConfigurableQuickPickOptions): Promise<PromptStatus> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
   const workspaceConfigurationItemInfo = {

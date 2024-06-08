@@ -94,7 +94,7 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
             resolve();
           }
         } catch (e) {
-          output.error('writeFile', e as Error);
+          output.error('writeFile', e);
         }
       },
     );
