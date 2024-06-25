@@ -153,22 +153,27 @@
     "deploy": "vsce publish --yarn",
     "build": "node prepare.js && vsce package",
     "_build": "vsce package",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/node": "^16.0.0",
     "@types/vscode": "^1.44.0",
     "@vscode/vsce": "^2.16.0",
     "clean-webpack-plugin": "^4.0.0",
     "husky": "8",
+    "jest": "^29.7.0",
     "lint-staged": "^13.0.0",
     "ovsx": "^0.5.0",
     "pinst": "^3.0.0",
     "prettier": "^2.0.2",
     "standard-version": "^9.0.0",
     "string-replace-loader": "^3.0.1",
+    "ts-jest": "^29.1.5",
     "ts-loader": "^9.0.0",
     "typescript": "^5.0.0",
+    "vscode": "^1.1.37",
     "warnings-to-errors-webpack-plugin": "^2.0.1",
     "webpack": "^5.76.0",
     "webpack-cli": "^4.5.0"
@@ -181,7 +186,7 @@
   "dependencies": {
     "@commitlint/cli": "^13.0.0",
     "@commitlint/config-conventional": "^13.0.0",
-    "@commitlint/load": "^13.0.0",
+    "@commitlint/load": "^19.2.0",
     "@commitlint/rules": "^13.0.0",
     "@yi-xu-0100/conventional-commit-types-i18n": "1.6.0"
   },
