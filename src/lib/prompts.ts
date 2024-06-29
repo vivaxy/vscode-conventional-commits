@@ -140,6 +140,7 @@ export default async function prompts({
       validate(input: string) {
         return commitlint.lintScope(input);
       },
+      storeGlobal: configuration.get<boolean>('storeScopesGlobally'),
     };
   }
 

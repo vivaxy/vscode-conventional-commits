@@ -24,6 +24,7 @@ export type Configuration = {
   promptCI: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
+  storeScopesGlobally: boolean;
 };
 
 export function getConfiguration() {

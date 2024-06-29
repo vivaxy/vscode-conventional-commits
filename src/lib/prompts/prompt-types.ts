@@ -148,6 +148,7 @@ export type ConfigurableQuickPickOptions = {
   newItemWithoutSetting: Item;
   addNoneOption: boolean;
   validate?: (value: string) => string | undefined;
+  storeGlobal: boolean;
 } & QuickPickOptions;
 
 async function createConfigurableQuickPick({
@@ -162,6 +163,7 @@ async function createConfigurableQuickPick({
   newItemWithoutSetting,
   validate = () => undefined,
   buttons,
+  storeGlobal = false,
 }: ConfigurableQuickPickOptions): Promise<PromptStatus> {
   const currentValues: string[] = configuration.get<string[]>(configurationKey);
   const workspaceConfigurationItemInfo = {
@@ -222,10 +224,11 @@ async function createConfigurableQuickPick({
     });
     promptStatus.value = newItemInputStatus.value;
     if (promptStatus.value) {
-      configuration.update(configurationKey, [
-        ...currentValues,
-        promptStatus.value,
-      ]);
+      configuration.update(
+        configurationKey,
+        [...currentValues, promptStatus.value],
+        storeGlobal,
+      );
       promptStatus.activeItems = [
         {
           label: promptStatus.value,

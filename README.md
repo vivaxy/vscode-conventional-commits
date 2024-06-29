@@ -51,6 +51,7 @@ You can access VSCode Conventional Commits in two ways:
 | `conventionalCommits.showNewVersionNotes`  |                                                                                                                                                                                                                                                                                    Control whether the extension should show the new version notes. | true    |
 |  `conventionalCommits.silentAutoCommit`    | Control that auto commit should be silent, without focusing source control panel. |  false   |
 | `conventionalCommits.editor.keepAfterSave` |                                                                                                                                                                                                                                                      Control whether the extension should keep the editor tab open after saving the commit message. | false   |
+| `conventionalCommits.storeScopesGlobally`  |                                                                                                                 Control whether the extension should store the defined scopes within your user settings. Uncheck to store in workspace settings.                                                                                                                 |  false  |
 
 ## Commit Workflow
 
