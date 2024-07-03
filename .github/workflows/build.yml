@@ -33,6 +33,9 @@ jobs:
       - name: Setup package
         run: yarn install
 
+      - name: Run tests
+        run: yarn test
+
       - name: Bump version
         run: |
           yarn standard-version --skip.changelog --skip.commit --skip.tag
