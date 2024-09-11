@@ -18,14 +18,18 @@ class Commitlint {
         output.info('Load commitlint configuration successfully.');
         return rules;
       } catch (e) {
-        // Catch if `Cannot find module "@commitlint/config-conventional"` happens.
-        if (e.message.startsWith('Cannot find module')) {
-          output.warning(`commitlint: The cwd is ${cwd}`);
-          output.warning(`commitlint: ${e.message}`);
+        if (e instanceof Error) {
+          // Catch if `Cannot find module "@commitlint/config-conventional"` happens.
+          if (e.message.startsWith('Cannot find module')) {
+            output.warning(`commitlint: The cwd is ${cwd}`);
+            output.warning(`commitlint: ${e.message}`);
+          } else {
+            output.error('commitlint', `The cwd is ${cwd}`);
+            // Not break even if it gets configuration failure.
+            output.error('commitlint', e);
+          }
         } else {
-          output.error('commitlint', `The cwd is ${cwd}`);
-          // Not break even if it gets configuration failure.
-          output.error('commitlint', e);
+          output.error('commitlint', `Unknown error: ${e}`);
         }
         return {};
       }
