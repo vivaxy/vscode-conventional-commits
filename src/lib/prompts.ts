@@ -29,6 +29,7 @@ import {
 import commitlint from './commitlint';
 import { getPromptLocalize, locale } from './localize';
 import { QuickInputButtons } from 'vscode';
+import { UserPromptConfig } from '@commitlint/types/lib/prompt';
 
 export default async function prompts({
   gitmoji,
@@ -39,6 +40,7 @@ export default async function prompts({
   promptBody,
   promptFooter,
   promptCI,
+  promptConfig,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -48,6 +50,7 @@ export default async function prompts({
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
+  promptConfig?: UserPromptConfig;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
   const conventionalCommitsTypes = getTypesByLocale(locale).types;
@@ -64,7 +67,9 @@ export default async function prompts({
 
   function getTypeItems(): Item[] {
     const typeEnum = commitlint.getTypeEnum();
-    if (typeEnum.length === 0) {
+    const typeEnumFromPrompt = promptConfig?.questions?.type?.enum;
+
+    if (typeEnum.length === 0 && !typeEnumFromPrompt) {
       return Object.keys(conventionalCommitsTypes).map(function (type) {
         const { title, description } = conventionalCommitsTypes[type];
         return {
@@ -74,7 +79,26 @@ export default async function prompts({
         };
       });
     }
-    return typeEnum.map(function (type) {
+
+    // Use types from commitlint enum, or from prompt config enum, or conventional types
+    const allTypes = new Set<string>();
+    typeEnum.forEach((t) => allTypes.add(t));
+    if (typeEnumFromPrompt) {
+      Object.keys(typeEnumFromPrompt).forEach((t) => allTypes.add(t));
+    }
+    Object.keys(conventionalCommitsTypes).forEach((t) => allTypes.add(t));
+
+    return Array.from(allTypes).map(function (type) {
+      // Priority: prompt enum > conventional types > fallback
+      const promptMeta = typeEnumFromPrompt?.[type];
+      if (promptMeta) {
+        return {
+          label: type,
+          description: promptMeta.title || '',
+          detail: promptMeta.description || '',
+        };
+      }
+
       if (type in conventionalCommitsTypes) {
         const { description, title } = conventionalCommitsTypes[type];
         return {
@@ -83,6 +107,7 @@ export default async function prompts({
           detail: description,
         };
       }
+
       return {
         label: type,
         description: '',
@@ -95,12 +120,35 @@ export default async function prompts({
     const name = 'scope';
     const placeholder = getPromptLocalize('scope.placeholder');
     const scopeEnum = commitlint.getScopeEnum();
+    const scopeEnumFromPrompt = promptConfig?.questions?.scope?.enum;
     const noneItem: Item = {
       label: getPromptLocalize('scope.noneItem.label'),
       description: '',
       detail: getPromptLocalize('scope.noneItem.detail'),
       alwaysShow: true,
     };
+
+    // Use scopes from prompt config if available
+    if (scopeEnumFromPrompt && Object.keys(scopeEnumFromPrompt).length > 0) {
+      return {
+        type: PROMPT_TYPES.QUICK_PICK,
+        name,
+        placeholder,
+        items: Object.entries(scopeEnumFromPrompt).map(function ([
+          scope,
+          meta,
+        ]): Item {
+          return {
+            label: scope,
+            description: meta.title || '',
+            detail: meta.description || '',
+          };
+        }),
+        noneItem,
+      };
+    }
+
+    // Fallback to commitlint scope-enum
     if (scopeEnum.length) {
       return {
         type: PROMPT_TYPES.QUICK_PICK,
@@ -194,7 +242,9 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
-      placeholder: getPromptLocalize('subject.placeholder'),
+      placeholder:
+        promptConfig?.questions?.subject?.description ||
+        getPromptLocalize('subject.placeholder'),
       validate(input: string) {
         const { type, scope, gitmoji, ci } = commitMessage;
         const serializedSubject = serializeSubject({
@@ -248,7 +298,9 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
-      placeholder: getPromptLocalize('body.placeholder'),
+      placeholder:
+        promptConfig?.questions?.body?.description ||
+        getPromptLocalize('body.placeholder'),
       validate(input: string) {
         return commitlint.lintBody(input);
       },
@@ -257,7 +309,9 @@ export default async function prompts({
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'footer',
-      placeholder: getPromptLocalize('footer.placeholder'),
+      placeholder:
+        promptConfig?.questions?.footer?.description ||
+        getPromptLocalize('footer.placeholder'),
       validate(input: string) {
         return commitlint.lintFooter(input);
       },

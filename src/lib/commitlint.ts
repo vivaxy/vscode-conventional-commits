@@ -5,18 +5,20 @@
 import load from '@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
 import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
+import { UserPromptConfig } from '@commitlint/types/lib/prompt';
 import { Commit } from '@commitlint/types/lib/parse';
 import * as output from './output';
 
 class Commitlint {
   private ruleConfigs: Partial<RulesConfig> = {};
+  private promptConfig?: UserPromptConfig;
 
   async loadRuleConfigs(cwd: string): Promise<Partial<RulesConfig>> {
     async function getRuleConfigs() {
       try {
-        const { rules } = await load({}, { cwd });
+        const { rules, prompt } = await load({}, { cwd });
         output.info('Load commitlint configuration successfully.');
-        return rules;
+        return { rules, prompt };
       } catch (e) {
         // Catch if `Cannot find module "@commitlint/config-conventional"` happens.
         if (e.message.startsWith('Cannot find module')) {
@@ -27,10 +29,12 @@ class Commitlint {
           // Not break even if it gets configuration failure.
           output.error('commitlint', e);
         }
-        return {};
+        return { rules: {}, prompt: undefined };
       }
     }
-    this.ruleConfigs = await getRuleConfigs();
+    const { rules, prompt } = await getRuleConfigs();
+    this.ruleConfigs = rules;
+    this.promptConfig = prompt;
     return this.ruleConfigs;
   }
 
@@ -139,6 +143,10 @@ class Commitlint {
       'footer-min-length',
       'footer-max-length',
     ]);
+  }
+
+  getPromptConfig() {
+    return this.promptConfig;
   }
 }
 
