@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.27.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.26.0...v1.27.0) (2025-12-14)
+
+### Features
+
+- :sparkles: add prompt support for descriptions ([6fceee4](https://github.com/vivaxy/vscode-conventional-commits/commit/6fceee4deca951c3c5141aa066ebf0a9419794e1))
+
 ## [1.26.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.25.0...v1.26.0) (2024-06-29)
 
 ### Features
