@@ -115,6 +115,9 @@ push the commit to remote.
 - [x] `type-min-length`
 - [ ] `signed-off-by`
 
+## AI Agent Skill
+[git-conventional-commits](https://github.com/wxb/agent-skills/blob/main/git-conventional-commits/SKILL.md)
+
 ## FAQ
 
 **Q:** How do I add a line break in messages?
