@@ -1,7 +1,3 @@
-/**
- * @since 2026-05-06
- * @author vivaxy
- */
 import { expect, test } from 'vitest';
 import {
   CommitMessage,

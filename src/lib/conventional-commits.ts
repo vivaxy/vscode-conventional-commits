@@ -1,7 +1,3 @@
-/**
- * @since 2020-03-25 09:08
- * @author vivaxy
- */
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../vendors/git';
@@ -148,9 +144,8 @@ export default function createConventionalCommits() {
       const commitMessage = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         showEditor: configuration.get<boolean>('showEditor'),
-        emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
-          'emojiFormat',
-        ),
+        emojiFormat:
+          configuration.get<configuration.EMOJI_FORMAT>('emojiFormat'),
         lineBreak: configuration.get<string>('lineBreak'),
         promptScopes: configuration.get<boolean>('promptScopes'),
         promptBody: configuration.get<boolean>('promptBody'),

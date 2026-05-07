@@ -1,7 +1,3 @@
-/**
- * @since 2024-06-25 18:53
- * @author vivaxy
- */
 import { expect, test, vi } from 'vitest';
 import * as path from 'path';
 import commitlint from '../commitlint';

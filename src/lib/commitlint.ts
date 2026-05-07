@@ -1,7 +1,3 @@
-/**
- * @since 2020-04-28 14:37
- * @author vivaxy
- */
 import load from '@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
 import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';

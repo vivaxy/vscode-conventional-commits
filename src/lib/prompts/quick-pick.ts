@@ -1,7 +1,3 @@
-/**
- * @since 2020-06-12 13:25
- * @author vivaxy
- */
 import * as vscode from 'vscode';
 
 export const confirmButton: vscode.QuickInputButton = {

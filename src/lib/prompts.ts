@@ -1,7 +1,3 @@
-/**
- * @since 2020-03-25 09:09
- * @author vivaxy
- */
 import getTypesByLocale from '@yi-xu-0100/conventional-commit-types-i18n';
 import gitmojis from '../vendors/gitmojis.json' with { type: 'json' };
 

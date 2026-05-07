@@ -1,7 +1,3 @@
-/**
- * @since 2020-10-09 15:46
- * @author vivaxy
- */
 import { extensions, env } from 'vscode';
 import * as output from './output';
 import { resolve } from 'path';
