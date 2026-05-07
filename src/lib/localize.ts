@@ -15,7 +15,7 @@ function getRoot(name: string) {
   if (extension) return extension.extensionPath;
   else {
     // It does not have an output channel when activating the extension.
-    return resolve(__dirname, '../');
+    return resolve(import.meta.dirname, '../');
   }
 }
 

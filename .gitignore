@@ -9,3 +9,4 @@ yarn-error.log
 locale/
 .idea
 src/vendors/gitmojis.json
+*.local.*

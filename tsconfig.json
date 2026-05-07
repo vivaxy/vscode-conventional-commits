@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "es2020",
     "outDir": "out",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "lib": ["es2020"],
     "types": ["node"],
     "sourceMap": true,
@@ -14,8 +14,7 @@
     // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
     // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
     // "noUnusedParameters": true,  /* Report errors on unused parameters. */
-    "useUnknownInCatchVariables": false,
-    "ignoreDeprecations": "6.0"
+    "useUnknownInCatchVariables": false
   },
   "include": ["src/**/*.ts"]
 }
