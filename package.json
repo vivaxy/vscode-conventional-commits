@@ -98,7 +98,7 @@
         },
         "conventionalCommits.gitmoji": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "markdownDescription": "%extension.configuration.gitmoji.markdownDescription%"
         },
         "conventionalCommits.lineBreak": {

@@ -304,23 +304,15 @@ suite('extension.conventionalCommits e2e', () => {
     const originalDescriptor = originalInputBoxDescriptor;
 
     try {
-      // ----- script the prompts (default config: gitmoji on, scope on, ci
+      // ----- script the prompts (default config: gitmoji off, scope on, ci
       // off, body on, footer on, showEditor off, autoCommit on, emojiFormat
       // 'code'). Order from src/lib/prompts.ts after filtering:
       //   1. type     QuickPick   → 'feat'
       //   2. scope    QuickPick   → '' (no scope; stub maps to noneItem)
-      //   3. gitmoji  QuickPick   → ':sparkles:'  (label === code)
-      //   4. subject  InputBox    → 'add e2e harness'
-      //   5. body     InputBox    → ''
-      //   6. footer   InputBox    → ''
-      stubs = installPromptStubs([
-        'feat',
-        '',
-        ':sparkles:',
-        'add e2e harness',
-        '',
-        '',
-      ]);
+      //   3. subject  InputBox    → 'add e2e harness'
+      //   4. body     InputBox    → ''
+      //   5. footer   InputBox    → ''
+      stubs = installPromptStubs(['feat', '', 'add e2e harness', '', '']);
 
       // Edit the tracked file so there is a working-tree change to stage.
       const trackedFileUri = vscode.Uri.file(path.join(repoPath, 'README.md'));
@@ -363,7 +355,7 @@ suite('extension.conventionalCommits e2e', () => {
 
     // (iii) inputBox.value matched the expected serialized message at the
     //       time the prompt machine resolved.
-    const expectedMessage = 'feat: :sparkles: add e2e harness';
+    const expectedMessage = 'feat: add e2e harness';
     assert.strictEqual(
       capturedInputBoxValue,
       expectedMessage,
@@ -383,7 +375,7 @@ suite('extension.conventionalCommits e2e', () => {
 
     assert.match(
       headMessage,
-      /^feat: :sparkles: add e2e harness/,
+      /^feat: add e2e harness/,
       `HEAD commit message should match the conventional-commits header — got ${JSON.stringify(
         headMessage,
       )}`,
