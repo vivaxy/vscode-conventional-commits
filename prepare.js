@@ -1,6 +1,6 @@
 // download latest gitmojis.json
-const https = require('https');
-const fs = require('fs');
+import https from 'node:https';
+import fs from 'node:fs';
 
 const file = fs.createWriteStream('./src/vendors/gitmojis.json');
 const request = https.get(
