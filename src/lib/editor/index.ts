@@ -1,8 +1,3 @@
-/**
- * @since 2021-01-29 11:09
- * @author sbacic
- */
-
 import * as vscode from 'vscode';
 import * as VSCodeGit from '../../vendors/git';
 import { state } from './provider';

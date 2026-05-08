@@ -1,7 +1,3 @@
-/**
- * @since 2020-10-09 15:46
- * @author vivaxy
- */
 import { extensions, env } from 'vscode';
 import * as output from './output';
 import { resolve } from 'path';
@@ -15,7 +11,7 @@ function getRoot(name: string) {
   if (extension) return extension.extensionPath;
   else {
     // It does not have an output channel when activating the extension.
-    return resolve(__dirname, '../');
+    return resolve(import.meta.dirname, '../');
   }
 }
 

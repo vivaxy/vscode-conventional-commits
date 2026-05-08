@@ -1,7 +1,3 @@
-/**
- * @since 2020-03-27 08:00
- * @author vivaxy
- */
 import * as vscode from 'vscode';
 import localize from './localize';
 import { getSourcesLocalize } from './localize';

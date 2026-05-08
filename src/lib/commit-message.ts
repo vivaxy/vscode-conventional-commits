@@ -1,7 +1,3 @@
-/**
- * @since 2020-07-06 23:02
- * @author vivaxy
- */
 export class CommitMessage {
   private _type: string = '';
   private _scope: string = '';

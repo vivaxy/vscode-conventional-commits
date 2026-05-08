@@ -1,7 +1,3 @@
-/**
- * @since 2020-03-25 09:12
- * @author vivaxy
- */
 import * as vscode from 'vscode';
 import * as configuration from '../configuration';
 import createSimpleQuickPick, { confirmButton } from './quick-pick';

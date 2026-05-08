@@ -1,17 +1,5 @@
-/**
- * @since 2020-03-25 09:09
- * @author vivaxy
- */
 import getTypesByLocale from '@yi-xu-0100/conventional-commit-types-i18n';
-const gitmojis: {
-  gitmojis: {
-    emoji: string;
-    entity: string;
-    code: string;
-    description: string;
-    name: string;
-  }[];
-} = require('../vendors/gitmojis.json');
+import gitmojis from '../vendors/gitmojis.json' with { type: 'json' };
 
 import * as configuration from './configuration';
 import promptTypes, {
