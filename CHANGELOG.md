@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.31.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.31.0...v1.31.1) (2026-08-09)
+
+### Bug Fixes
+
+- **commitlint:** give an actionable error for ERR_PACKAGE_PATH_NOT_EXPORTED ([0835a3f](https://github.com/vivaxy/vscode-conventional-commits/commit/0835a3f7055c239a3a6fc2e416336a0b01ef1827)), closes [#417](https://github.com/vivaxy/vscode-conventional-commits/issues/417), references [commitlint#4864](https://github.com/vivaxy/vscode-conventional-commits/issues/4864)
+- **commitlint:** report a single error toast on config load failure ([9803cef](https://github.com/vivaxy/vscode-conventional-commits/commit/9803cef544371b2647415fff6770379c5a18148f)), references [#417](https://github.com/vivaxy/vscode-conventional-commits/issues/417)
+
 ## [1.31.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.29.0...v1.31.0) (2026-05-23)
 
 ### Features
