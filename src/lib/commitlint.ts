@@ -37,7 +37,7 @@ class Commitlint {
             output.warning(`commitlint: The cwd is ${cwd}`);
             output.warning(`commitlint: ${e.message}`);
           } else {
-            output.error('commitlint', `The cwd is ${cwd}`);
+            output.appendLine(`[error] commitlint: The cwd is ${cwd}`);
             // Not break even if it gets configuration failure.
             output.error('commitlint', e);
           }

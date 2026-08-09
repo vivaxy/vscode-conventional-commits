@@ -5,12 +5,14 @@
 import { expect, test, vi } from 'vitest';
 import * as path from 'path';
 import commitlint from '../commitlint';
+import * as output from '../output';
 
 vi.mock('../output', function () {
   return {
     info: vi.fn(),
-    error: console.error,
-    warning: console.warn,
+    error: vi.fn(console.error),
+    warning: vi.fn(console.warn),
+    appendLine: vi.fn(),
   };
 });
 
@@ -73,4 +75,22 @@ test('should load TypeScript config (regression for issue #395 / jiti.cjs create
     path.join(fixtureRootPath, 'should-load-ts-config'),
   );
   expect(commitlint.getTypeEnum()).toStrictEqual(['ts-type']);
+});
+
+// Regression test for issue #417: an extended config whose parserPreset
+// resolves to a package with an ESM-only `exports` map (no `require`/
+// `default` condition) makes @commitlint/resolve-extends throw
+// ERR_PACKAGE_PATH_NOT_EXPORTED. loadRuleConfigs must still report the
+// failure through a single toast, not two.
+test('should report a single error when a parser preset is unresolvable (issue #417)', async function () {
+  vi.mocked(output.error).mockClear();
+  const rules = await commitlint.loadRuleConfigs(
+    path.join(
+      fixtureRootPath,
+      'should-report-single-error-for-broken-parser-preset',
+    ),
+  );
+  expect(rules).toStrictEqual({});
+  expect(commitlint.getTypeEnum()).toStrictEqual([]);
+  expect(output.error).toHaveBeenCalledTimes(1);
 });

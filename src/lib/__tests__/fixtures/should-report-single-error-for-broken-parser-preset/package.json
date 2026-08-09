@@ -1,0 +1,6 @@
+{
+  "name": "should-report-single-error-for-broken-parser-preset",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
