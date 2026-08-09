@@ -1,6 +1,8 @@
 node_modules/
 !src/lib/__tests__/fixtures/should-report-single-error-for-broken-parser-preset/node_modules/
 !src/lib/__tests__/fixtures/should-report-single-error-for-broken-parser-preset/node_modules/**
+!src/lib/__tests__/fixtures/should-report-actionable-error-for-conventionalcommits-preset/node_modules/
+!src/lib/__tests__/fixtures/should-report-actionable-error-for-conventionalcommits-preset/node_modules/**
 out/
 e2e-test/out/
 .vscode-test/

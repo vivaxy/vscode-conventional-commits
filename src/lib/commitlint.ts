@@ -20,6 +20,33 @@ type Commit = {
 };
 import * as output from './output';
 
+// `ERR_PACKAGE_PATH_NOT_EXPORTED` is Node's stable error code (not just a
+// message string) for a `require()` resolution hitting a package.json
+// `exports` map that has no `require`/`default` condition — e.g. a pure-ESM
+// package. commitlint hits this via `@commitlint/resolve-extends`'s
+// `parserPreset` resolution (see issue #417): `@commitlint/config-conventional`
+// sets `parserPreset: 'conventional-changelog-conventionalcommits'`, and if a
+// project's installed copy of that package is v10.x, its `exports` field is
+// `{"import": "./src/index.js"}` with no CJS fallback.
+function formatUnexportedPackageError(e: NodeJS.ErrnoException): string {
+  const match = e.message.match(/[\\/]([^\\/]+)[\\/]package\.json$/);
+  const packageName = match ? match[1] : undefined;
+  if (packageName === 'conventional-changelog-conventionalcommits') {
+    return (
+      `commitlint: "conventional-changelog-conventionalcommits" ships an ESM-only "exports" field ` +
+      `(no "require"/"default" condition), so Node cannot load it here. This is a known upstream ` +
+      `commitlint issue (https://github.com/conventional-changelog/commitlint/issues/4864) with no fix yet. ` +
+      `Workaround: pin "conventional-changelog-conventionalcommits" to "9.3.1" in your project, e.g. via ` +
+      `"resolutions" in package.json (Yarn) or "overrides" (npm).`
+    );
+  }
+  return (
+    `commitlint: ${packageName ?? 'a commitlint config dependency'} ships an ESM-only "exports" field ` +
+    `(no "require"/"default" condition), so Node cannot load it here. Pinning that package to a version ` +
+    `with a CommonJS-compatible "exports" field should resolve this.`
+  );
+}
+
 class Commitlint {
   private ruleConfigs: Partial<RulesConfig> = {};
   private promptConfig?: UserPromptConfig;
@@ -36,6 +63,17 @@ class Commitlint {
           if (e.message.startsWith('Cannot find module')) {
             output.warning(`commitlint: The cwd is ${cwd}`);
             output.warning(`commitlint: ${e.message}`);
+          } else if (
+            (e as NodeJS.ErrnoException).code ===
+            'ERR_PACKAGE_PATH_NOT_EXPORTED'
+          ) {
+            output.appendLine(`[error] commitlint: The cwd is ${cwd}`);
+            output.appendLine(`[error] commitlint: ${e.stack}`);
+            // Not break even if it gets configuration failure.
+            output.error(
+              'commitlint',
+              formatUnexportedPackageError(e as NodeJS.ErrnoException),
+            );
           } else {
             output.appendLine(`[error] commitlint: The cwd is ${cwd}`);
             // Not break even if it gets configuration failure.

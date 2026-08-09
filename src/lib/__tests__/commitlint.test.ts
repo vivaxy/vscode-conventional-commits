@@ -81,8 +81,9 @@ test('should load TypeScript config (regression for issue #395 / jiti.cjs create
 // resolves to a package with an ESM-only `exports` map (no `require`/
 // `default` condition) makes @commitlint/resolve-extends throw
 // ERR_PACKAGE_PATH_NOT_EXPORTED. loadRuleConfigs must still report the
-// failure through a single toast, not two.
-test('should report a single error when a parser preset is unresolvable (issue #417)', async function () {
+// failure through a single toast, not two, and the toast must explain the
+// ESM-only-exports cause rather than surface the raw Node error text.
+test('should report a single, explanatory error when a parser preset is unresolvable (issue #417)', async function () {
   vi.mocked(output.error).mockClear();
   const rules = await commitlint.loadRuleConfigs(
     path.join(
@@ -93,4 +94,32 @@ test('should report a single error when a parser preset is unresolvable (issue #
   expect(rules).toStrictEqual({});
   expect(commitlint.getTypeEnum()).toStrictEqual([]);
   expect(output.error).toHaveBeenCalledTimes(1);
+  const [, message] = vi.mocked(output.error).mock.calls[0];
+  expect(message).toContain('pkg-esm-only');
+  expect(message).toContain('ESM-only "exports" field');
+});
+
+// Regression test for issue #417: when the unresolvable parserPreset is
+// specifically `conventional-changelog-conventionalcommits` (the package
+// @commitlint/config-conventional sets as its parserPreset, and whose v10.x
+// releases ship an ESM-only `exports` map), the toast must name the known
+// upstream commitlint bug and the documented workaround (pin to 9.3.1)
+// instead of a generic message.
+test('should report an actionable error naming the pin-to-9.3.1 workaround for conventional-changelog-conventionalcommits (issue #417)', async function () {
+  vi.mocked(output.error).mockClear();
+  const rules = await commitlint.loadRuleConfigs(
+    path.join(
+      fixtureRootPath,
+      'should-report-actionable-error-for-conventionalcommits-preset',
+    ),
+  );
+  expect(rules).toStrictEqual({});
+  expect(commitlint.getTypeEnum()).toStrictEqual([]);
+  expect(output.error).toHaveBeenCalledTimes(1);
+  const [, message] = vi.mocked(output.error).mock.calls[0];
+  expect(message).toContain('conventional-changelog-conventionalcommits');
+  expect(message).toContain('9.3.1');
+  expect(message).toContain(
+    'https://github.com/conventional-changelog/commitlint/issues/4864',
+  );
 });
