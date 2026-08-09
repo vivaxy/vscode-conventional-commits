@@ -52,13 +52,13 @@ You can access VSCode Conventional Commits in two ways:
 |     `conventionalCommits.promptScopes`     |                                                                                                                                        Control whether the extension should prompt for the `scope` section.                                                                                                                                         |  true   |
 |        `conventionalCommits.scopes`        |                                                                                                                                                Specify available selections in the `scope` section.                                                                                                                                                 |   []    |
 |      `conventionalCommits.promptTag`       |                                                                                                                                         Control whether the extension should prompt for the `tag` section.                                                                                                                                          |  false  |
-|        `conventionalCommits.tags`          |                                                                                                                                                 Specify available selections in the `tag` section.                                                                                                                                                  |   []    |
+|         `conventionalCommits.tags`         |                                                                                                                                                 Specify available selections in the `tag` section.                                                                                                                                                  |   []    |
 |      `conventionalCommits.showEditor`      |                                                                                                                         Control whether the extension should show the commit message as a text document in a separate tab.                                                                                                                          |  false  |
 | `conventionalCommits.showNewVersionNotes`  |                                                                                                                                          Control whether the extension should show the new version notes.                                                                                                                                           |  true   |
 |   `conventionalCommits.silentAutoCommit`   |                                                                                                                                  Control that auto commit should be silent, without focusing source control panel.                                                                                                                                  |  false  |
 | `conventionalCommits.editor.keepAfterSave` |                                                                                                                           Control whether the extension should keep the editor tab open after saving the commit message.                                                                                                                            |  false  |
-|     `conventionalCommits.storeScopesGlobally`  |                                                                                                          Control whether the extension should store the defined scopes within your user settings. Uncheck to store in workspace settings.                                                                                                           |  false  |
-|      `conventionalCommits.storeTagsGlobally`   |                                                                                                           Control whether the extension should store the defined tags within your user settings. Uncheck to store in workspace settings.                                                                                                           |  false  |
+| `conventionalCommits.storeScopesGlobally`  |                                                                                                          Control whether the extension should store the defined scopes within your user settings. Uncheck to store in workspace settings.                                                                                                           |  false  |
+|  `conventionalCommits.storeTagsGlobally`   |                                                                                                           Control whether the extension should store the defined tags within your user settings. Uncheck to store in workspace settings.                                                                                                            |  false  |
 
 ## Commit Workflow
 
@@ -142,6 +142,37 @@ Or `\\n` in JSON format.
 **A:** The extension - [vscode-commitlint] will helpful!
 
 [vscode-commitlint]: https://github.com/joshbolduc/vscode-commitlint
+
+**Q:** Why do I see an error like
+`No "exports" main defined in .../node_modules/conventional-changelog-conventionalcommits/package.json`
+(or `ERR_PACKAGE_PATH_NOT_EXPORTED`), and type/scope suggestions are empty?
+
+**A:** This is a known, currently-open upstream bug in `commitlint`
+([commitlint#4864](https://github.com/conventional-changelog/commitlint/issues/4864)):
+`@commitlint/config-conventional` sets its `parserPreset` to
+`conventional-changelog-conventionalcommits`, but that package's v10.x releases
+ship an ESM-only `exports` field with no `require`/`default` condition, which
+Node cannot resolve. Pin `conventional-changelog-conventionalcommits` to `9.3.1`
+in your project to work around it, e.g. via `"resolutions"` in `package.json`
+for Yarn:
+
+```json
+{
+  "resolutions": {
+    "conventional-changelog-conventionalcommits": "9.3.1"
+  }
+}
+```
+
+or `"overrides"` for npm:
+
+```json
+{
+  "overrides": {
+    "conventional-changelog-conventionalcommits": "9.3.1"
+  }
+}
+```
 
 ## Troubleshooting
 
