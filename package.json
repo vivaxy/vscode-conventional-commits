@@ -195,7 +195,7 @@
     "prettier": "^3.0.0",
     "string-replace-loader": "^3.0.1",
     "ts-loader": "^9.0.0",
-    "typescript": "^6.0.0",
+    "typescript": "^7.0.0",
     "vitest": "^4.0.0",
     "warnings-to-errors-webpack-plugin": "^2.0.1",
     "webpack": "^5.76.0",
