@@ -181,7 +181,7 @@ export default function createConventionalCommits() {
       // 7. auto commit
       const autoCommit = configuration.get<boolean>('autoCommit');
       if (autoCommit && !showEditor) {
-        await vscode.commands.executeCommand('git.commit', repository);
+        await vscode.commands.executeCommand('git.commit', repository.rootUri);
         output.info('Auto commit finished successfully.');
       }
 
