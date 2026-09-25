@@ -33,7 +33,7 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
           if (autoCommit) {
             await vscode.commands.executeCommand(
               'git.commit',
-              state.repository,
+              state.repository.rootUri,
             );
             output.info('Auto commit finished successfully.');
           }
@@ -85,7 +85,7 @@ const CommitProvider = new (class implements vscode.FileSystemProvider {
                 await vscode.commands.executeCommand('workbench.view.scm');
                 await vscode.commands.executeCommand(
                   'git.commit',
-                  state.repository,
+                  state.repository.rootUri,
                 );
                 output.info('Auto commit finished successfully.');
               }
