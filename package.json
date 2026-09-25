@@ -183,7 +183,7 @@
     "@types/node": "^24.0.0",
     "@types/vscode": "^1.44.0",
     "@vscode/test-electron": "^2.4.0",
-    "@vscode/vsce": "^3.0.0",
+    "@vscode/vsce": "^4.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "commit-and-tag-version": "^12.0.0",
     "glob": "^13.0.0",
