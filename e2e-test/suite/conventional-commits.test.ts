@@ -220,12 +220,6 @@ suite('extension.conventionalCommits e2e', () => {
       ) => Thenable<unknown>;
     };
     const originalExecuteCommand = commandApi.executeCommand;
-    commandApi.executeCommand = (command, ...rest) => {
-      if (command === 'git.commit') {
-        gitCommitArgument = rest[0];
-      }
-      return originalExecuteCommand.call(vscode.commands, command, ...rest);
-    };
 
     // ----------------------------------------------------------------------
     // Set up the inputBox.value capture before kicking off the command. The
@@ -326,6 +320,16 @@ suite('extension.conventionalCommits e2e', () => {
     const originalDescriptor = originalInputBoxDescriptor;
 
     try {
+      // Install the git.commit spy inside try so any setup failure above still
+      // leaves executeCommand unrestored only if we never get here — and the
+      // finally below always restores once installed.
+      commandApi.executeCommand = (command, ...rest) => {
+        if (command === 'git.commit') {
+          gitCommitArgument = rest[0];
+        }
+        return originalExecuteCommand.call(vscode.commands, command, ...rest);
+      };
+
       // ----- script the prompts (default config: gitmoji on, scope on, ci
       // off, body on, footer on, showEditor off, autoCommit on, emojiFormat
       // 'code'). Order from src/lib/prompts.ts after filtering:
