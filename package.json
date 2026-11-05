@@ -190,7 +190,7 @@
     "husky": "9",
     "lint-staged": "^17.0.0",
     "mocha": "^11.0.0",
-    "ovsx": "^0.10.0",
+    "ovsx": "^1.0.0",
     "pinst": "^3.0.0",
     "prettier": "^3.0.0",
     "string-replace-loader": "^3.0.1",
